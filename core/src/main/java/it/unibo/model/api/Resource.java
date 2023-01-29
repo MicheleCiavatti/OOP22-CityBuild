@@ -4,7 +4,8 @@ public enum Resource {
     WATER("Water"),
     WOOD("Wood"),
     ENERGY("Energy"),
-    METAL("Metal");
+    METAL("Metal"),
+    CITIZEN("Citizen");
 
 
     private final String name;
