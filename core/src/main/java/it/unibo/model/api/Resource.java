@@ -1,7 +1,20 @@
 package it.unibo.model.api;
 
-public interface Resource {
+public enum Resource {
+    WATER("Water"),
+    WOOD("Wood"),
+    ENERGY("Energy"),
+    METAL("Metal");
 
-    public String getName();
+
+    private final String name;
+
+    private Resource(final String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
     
 }
