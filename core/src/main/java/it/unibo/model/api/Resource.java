@@ -7,7 +7,6 @@ public enum Resource {
     METAL("Metal"),
     CITIZEN("Citizen");
 
-
     private final String name;
 
     private Resource(final String name) {
