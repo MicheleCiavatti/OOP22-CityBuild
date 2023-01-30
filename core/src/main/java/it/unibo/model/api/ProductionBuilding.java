@@ -2,7 +2,7 @@ package it.unibo.model.api;
 
 import java.util.Map;
 
-public interface Building {
+public interface ProductionBuilding {
 
     public int getResource();
 

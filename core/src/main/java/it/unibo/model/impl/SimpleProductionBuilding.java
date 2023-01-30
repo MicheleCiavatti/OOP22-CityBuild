@@ -1,15 +1,15 @@
 package it.unibo.model.impl;
 
 import java.util.Map;
-import it.unibo.model.api.Building;
+import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
-public class BuildingImpl implements Building {
+public class SimpleProductionBuilding implements ProductionBuilding {
 
     private int resource;
     private final Map<Resource, Integer> resourcesRequiredUpgrade = null; //TODO
 
-    public BuildingImpl(final Resource r) {
+    public SimpleProductionBuilding(final Resource r) {
         //TODO: switch for setting this.resource
         this.resource = 0;
     }
