@@ -1,18 +1,18 @@
 package it.unibo.model.api;
 import java.util.Map;
 
-public interface RevenueFactory {
+public interface Revenue {
     
-    //Imposta la produzione dell'edificio
+    //Sets the type of material to produce
     public void setProduction(Resource r);
 
-    //Ritorna la revenue, il materiale prodotto
+    //Returns the amount of material producted
     public Map<Resource, Integer> getResource();
 
-    //Fa partire la produzione
+    //Starts the production of the material
     public void production();
 
-    //Imposta il tempo di produzione
+    //Sets the amount of time for the production
     public void setTime(int time);
 
     

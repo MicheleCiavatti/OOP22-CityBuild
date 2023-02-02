@@ -1,5 +1,5 @@
 package it.unibo.model.api;
-public interface MoneyFactory {
+public interface Money {
 
     public void setMoney();
     public int getMoney();

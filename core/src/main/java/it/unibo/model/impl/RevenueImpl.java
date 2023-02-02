@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.unibo.model.api.Resource;
-import it.unibo.model.api.RevenueFactory;
+import it.unibo.model.api.Revenue;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class RevenueFactoryImpl implements RevenueFactory{
+public class RevenueImpl implements Revenue{
 
     Resource materialProducted;
     private int time=30000;
