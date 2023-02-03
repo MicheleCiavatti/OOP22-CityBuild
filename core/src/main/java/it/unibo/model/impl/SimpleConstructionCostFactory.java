@@ -9,7 +9,7 @@ public class SimpleConstructionCostFactory {
             return null;
         }
         else if(type == TypeBuilding.UPGRADE_CONSTRUCTION){
-            return new UpgradeCostImpl();
+            return new SimpleUpgradeCostImpl();
         }
         else if(type == TypeBuilding.FIRST_CONSTRUCTION){
             return new SimpleConstructionCostImpl();
