@@ -17,7 +17,7 @@ public class UpgradeCostImpl implements Cost{
     @Override
     public Map<Resource, Integer> getCost() {
         // TODO Auto-generated method stub
-        return null;
+        return this.costUpgrade;
     }
     
 }
