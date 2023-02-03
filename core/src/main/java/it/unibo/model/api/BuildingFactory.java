@@ -10,6 +10,7 @@ public interface BuildingFactory {
      * ENERGY -> Power Plant
      * METAL -> Foundry
      * CITIZEN -> House
+     * GOLD -> Mine
      * @param resource used to specify the building required
      * @return a class implementing {@link ProductionBuilding}
     */
