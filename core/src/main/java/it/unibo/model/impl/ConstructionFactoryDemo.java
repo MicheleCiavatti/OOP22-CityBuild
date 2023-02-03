@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class ConstructionFactoryDemo {
     public static void main(String[] args) {
-        ConstructionCostFactory constructionFactory = new ConstructionCostFactory();
+        SimpleConstructionCostFactory constructionFactory = new SimpleConstructionCostFactory();
         Cost construction1 = constructionFactory.getType(TypeBuilding.FIRST_CONSTRUCTION);
 
         Map<Resource, Integer> costConstructionMap1 = new HashMap<>();
