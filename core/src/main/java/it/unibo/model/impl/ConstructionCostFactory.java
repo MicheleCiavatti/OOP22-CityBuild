@@ -8,10 +8,10 @@ public class ConstructionCostFactory {
         if(type == null){
             return null;
         }
-        else if(type == TypeBuilding.UPGRADECONSTRUCTION){
+        else if(type == TypeBuilding.UPGRADE_CONSTRUCTION){
             return new UpgradeCostImpl();
         }
-        else if(type == TypeBuilding.FIRSTCONSTRUCTION){
+        else if(type == TypeBuilding.FIRST_CONSTRUCTION){
             return new ConstructionCostImpl();
         }
         return null;
