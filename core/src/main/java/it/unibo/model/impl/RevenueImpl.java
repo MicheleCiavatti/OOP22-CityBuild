@@ -18,7 +18,7 @@ public class RevenueImpl implements Revenue{
 
 
     @Override
-    public void setProduction(Resource r) {
+    public void setResourceProduction(Resource r) {
         this.materialProducted = r;
         setResource(materialProducted);
     }
@@ -30,7 +30,7 @@ public class RevenueImpl implements Revenue{
     }
 
     @Override
-    public Map<Resource, Integer> getResource() {
+    public Map<Resource, Integer> getRevenue() {
         return resourceMap;
     }
 
@@ -52,7 +52,7 @@ public class RevenueImpl implements Revenue{
     }
 
     @Override
-    public void setTime(int time) {
+    public void setTimeProduction(int time) {
         this.time = time;
     }
     
