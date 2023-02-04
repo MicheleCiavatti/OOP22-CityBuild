@@ -6,7 +6,7 @@ import java.util.Map;
 public interface ProductionBuilding {
 
     /** */
-    public int getResource();
+    public Map<Resource, Integer> getRevenue();
 
     /** */
     public Map<Resource, Integer> getCostUpgrade();

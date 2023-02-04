@@ -1,22 +1,30 @@
 package it.unibo.model.impl;
 
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
 public class SimpleProductionBuilding implements ProductionBuilding {
 
-    private int resource;
-    private final Map<Resource, Integer> resourcesRequiredUpgrade = null; //TODO
+    private static final int MULTIPLIER = 2;
+    private final Map<Resource, Integer> upgradeCost;
+    private final Map<Resource, Integer> revenue;
+    private final Map<Resource, Integer> constructionCost;
 
     public SimpleProductionBuilding(final Resource r) {
         //TODO: switch for setting this.resource
-        this.resource = 0;
+        var economyHandler = new EconomyHandlerFactory().createEconomyHandler(r);
+        this.upgradeCost = economyHandler.getSimpleUpgradeTable();
+        this.revenue = economyHandler.getSimpleRevenueTable();
+        this.constructionCost = economyHandler.getSimpleCostTable();
     }
 
     @Override
-    public int getResource() {
-        return this.resource;
+    public Map<Resource, Integer> getRevenue() {
+        return this.revenue;
     }
 
     @Override
@@ -28,7 +36,6 @@ public class SimpleProductionBuilding implements ProductionBuilding {
     @Override
     public void upgrade(Map<Resource, Integer> resourcesForUpgrade) {
         //TODO: check if the argument is valid for upgrading
-        this.resource = 0; //TODO: upgrade the resource
+        this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
     }
-    
 }
