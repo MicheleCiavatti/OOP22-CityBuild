@@ -21,6 +21,8 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     private static final String REVENUE_IN_FILE = "revenue";
     private static final String CONSTRUCTION_IN_FILE = "construction";
     private static final String UPGRADE_IN_FILE = "upgrade";
+    private static final String SIMPLE_BUILDING_DIR = "simple_buildings";
+    private static final String FILE_EXTENSION = ".yml";
     private static final String PATH_RES = System.getProperty("user.dir")
         + File.separator
         + "src"
@@ -33,9 +35,9 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
 
     /**{@inheritDoc} */
     @Override
-    public List<Map<Resource, Integer>> getSimpleEconomyTables(Resource r) {
-        var path = PATH_RES + File.separator + "simple_buildings" 
-            + File.separator + r.getSimpleBuilding().toLowerCase() + ".yml";
+    public List<Map<Resource, Integer>> getSimpleEconomyTables(final Resource r) {
+        var path = PATH_RES + File.separator + SIMPLE_BUILDING_DIR 
+            + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION;
         try (InputStream input = new FileInputStream(path)) {
            Yaml yaml = new Yaml(new Constructor(EconomyTables.class));
            data = yaml.load(input);
