@@ -15,7 +15,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.model.api.Resource;
 
-/**An implementation of {@link it.unibo.controller.api.EconomyFileReader}*/
+/**An implementation of {@link it.unibo.controller.api.EconomyFileReader}.*/
 public class EconomyFileReaderImpl implements EconomyFileReader {
 
     private static final String REVENUE_IN_FILE = "revenue";
