@@ -20,8 +20,11 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         + "resources";
 
     @Override
-    public List<Map<String, Integer>> getEconomyTables(Resource r) {
-        
+    public List<Map<String, Integer>> getSimpleEconomyTables(Resource r) {
+        var path = PATH_RES + File.separator + "simple_buildings" 
+            + File.separator + r.getSimpleBuilding().toLowerCase();
+        return null;
+
     }
     
 }
