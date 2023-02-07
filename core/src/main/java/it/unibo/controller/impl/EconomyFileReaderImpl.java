@@ -55,7 +55,7 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         return Arrays.stream(Resource.values())
                 .filter(val -> val.getName().equalsIgnoreCase(s))
                 .findFirst()
-                .get();
+                .orElseThrow();
     }
     
 }
