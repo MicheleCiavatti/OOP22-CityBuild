@@ -7,7 +7,7 @@ import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.controller.impl.EconomyFileReaderImpl;
 import it.unibo.model.api.Resource;
 
-/**A class to test the functioning of {@link it.unibo.controller.api.EconomyFileReader} */
+/**A class to test the functioning of {@link it.unibo.controller.api.EconomyFileReader}. */
 public class TestEconomyFileReader {
 
     private final EconomyFileReader economyFileReader = new EconomyFileReaderImpl();
