@@ -7,5 +7,5 @@ import it.unibo.model.api.Resource;
 
 public interface EconomyFileReader {
     
-    public List<Map<String, Integer>> getSimpleEconomyTables(final Resource r);
+    public List<Map<Resource, Integer>> getSimpleEconomyTables(final Resource r);
 }
