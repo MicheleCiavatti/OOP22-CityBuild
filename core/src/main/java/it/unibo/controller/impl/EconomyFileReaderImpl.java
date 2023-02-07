@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Arrays;
 
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.model.api.Resource;
@@ -27,15 +28,16 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         + File.separator
         + "resources";
 
-    private Map<String, Map<String, Integer>> data;
+    private Table data;
 
     @Override
     public List<Map<Resource, Integer>> getSimpleEconomyTables(Resource r) {
         var path = PATH_RES + File.separator + "simple_buildings" 
             + File.separator + r.getSimpleBuilding().toLowerCase() + ".yml";
         try (InputStream input = new FileInputStream(path)) {
-           Yaml yaml = new Yaml();
-           data = yaml.load(path);
+           Yaml yaml = new Yaml(new Constructor(Table.class));
+           data = yaml.load(input);
+           System.out.println(data.getRevenue());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,8 +46,13 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
 
     private Map<Resource, Integer> getTable(final String key) {
         Map<Resource, Integer> table = new HashMap<>();
-        data.get(key).entrySet()
-            .forEach(entry -> table.put(this.fromString(entry.getKey()), entry.getValue()));
+        Map<String, Integer> oldTable = switch(key) {
+            case REVENUE_IN_FILE -> data.getRevenue();
+            case CONSTRUCTION_IN_FILE -> data.getConstruction();
+            case UPGRADE_IN_FILE -> data.getUpgrade();
+            default -> throw new IllegalStateException();
+        };
+        oldTable.entrySet().forEach(entry -> table.put(this.fromString(entry.getKey()), entry.getValue()));
         return table;
     }
 
@@ -55,5 +62,4 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
                 .findFirst()
                 .orElseThrow();
     }
-    
 }
