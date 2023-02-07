@@ -21,8 +21,7 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
 
     @Override
     public List<Map<String, Integer>> getEconomyTables(Resource r) {
-        // TODO Auto-generated method stub
-        return null;
+        
     }
     
 }
