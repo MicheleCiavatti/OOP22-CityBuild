@@ -1,4 +1,7 @@
-package it.unibo.controller;
+package it.unibo.controller.api;
+
+import java.util.List;
+import java.util.Map;
 
 import it.unibo.model.api.Resource;
 
