@@ -21,8 +21,6 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     private static final String UPGRADE_IN_FILE = "upgrade";
     private static final String PATH_RES = System.getProperty("user.dir")
         + File.separator
-        + "core"
-        + File.separator
         + "src"
         + File.separator
         + "main"
@@ -34,7 +32,7 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     @Override
     public List<Map<Resource, Integer>> getSimpleEconomyTables(Resource r) {
         var path = PATH_RES + File.separator + "simple_buildings" 
-            + File.separator + r.getSimpleBuilding().toLowerCase();
+            + File.separator + r.getSimpleBuilding().toLowerCase() + ".yml";
         try (InputStream input = new FileInputStream(path)) {
            Yaml yaml = new Yaml();
            data = yaml.load(path);
