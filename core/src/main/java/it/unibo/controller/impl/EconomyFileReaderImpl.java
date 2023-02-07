@@ -28,14 +28,14 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         + File.separator
         + "resources";
 
-    private Table data;
+    private EconomyTables data;
 
     @Override
     public List<Map<Resource, Integer>> getSimpleEconomyTables(Resource r) {
         var path = PATH_RES + File.separator + "simple_buildings" 
             + File.separator + r.getSimpleBuilding().toLowerCase() + ".yml";
         try (InputStream input = new FileInputStream(path)) {
-           Yaml yaml = new Yaml(new Constructor(Table.class));
+           Yaml yaml = new Yaml(new Constructor(EconomyTables.class));
            data = yaml.load(input);
            System.out.println(data.getRevenue());
         } catch (IOException e) {

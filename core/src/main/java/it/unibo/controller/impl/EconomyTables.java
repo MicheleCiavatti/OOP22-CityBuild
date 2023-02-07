@@ -2,7 +2,7 @@ package it.unibo.controller.impl;
 
 import java.util.Map;
 
-public class Table {
+public class EconomyTables {
         
     private Map<String, Integer> revenue;
     private Map<String, Integer> construction;
