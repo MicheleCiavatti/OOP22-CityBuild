@@ -2,6 +2,7 @@ package it.unibo.controller.impl;
 
 import java.util.Map;
 
+/**A simple class that models the 3 types of economy tables, mainly used by {@link it.unibo.controller.impl.EconomyFileReaderImpl}.*/
 public class EconomyTables {
         
     private Map<String, Integer> revenue;
