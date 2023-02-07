@@ -41,8 +41,7 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        return null;
+        return List.of(this.getTable(REVENUE_IN_FILE), this.getTable(CONSTRUCTION_IN_FILE), this.getTable(UPGRADE_IN_FILE));
     }
 
     private Map<Resource, Integer> getTable(final String key) {
