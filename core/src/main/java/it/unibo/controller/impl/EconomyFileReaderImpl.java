@@ -29,22 +29,27 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         + File.separator
         + "resources";
 
+    private Map<String, Map<String, Integer>> data;
+
     @Override
     public List<Map<Resource, Integer>> getSimpleEconomyTables(Resource r) {
         var path = PATH_RES + File.separator + "simple_buildings" 
             + File.separator + r.getSimpleBuilding().toLowerCase();
-        Map<String, Map<String, Integer>> data;
         try (InputStream input = new FileInputStream(path)) {
            Yaml yaml = new Yaml();
            data = yaml.load(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Map<Resource, Integer> revenue = new HashMap<>();
-        data.get(REVENUE_IN_FILE).entrySet().forEach(entry -> {
-
-        });
+        
         return null;
+    }
+
+    private Map<Resource, Integer> getTable(final String key) {
+        Map<Resource, Integer> table = new HashMap<>();
+        data.get(key).entrySet()
+            .forEach(entry -> table.put(this.fromString(entry.getKey()), entry.getValue()));
+        return table;
     }
 
     private Resource fromString(final String s) {
