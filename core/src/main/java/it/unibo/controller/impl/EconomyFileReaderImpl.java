@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import org.yaml.snakeyaml.Yaml;
+
 import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.model.api.Resource;
 
@@ -23,8 +25,9 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     public List<Map<String, Integer>> getSimpleEconomyTables(Resource r) {
         var path = PATH_RES + File.separator + "simple_buildings" 
             + File.separator + r.getSimpleBuilding().toLowerCase();
-        return null;
+        Yaml y = new Yaml();
 
+        return null;
     }
     
 }
