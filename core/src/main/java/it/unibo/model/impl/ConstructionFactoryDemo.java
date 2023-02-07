@@ -6,11 +6,13 @@ import it.unibo.model.api.Resource;
 import it.unibo.model.api.TypeBuilding;
 import it.unibo.model.api.Cost;
 import java.util.Map;
-
+/**
+ * Class test ConstructionFactoryDemo in order to test ConstructionCostFactory Class
+ */
 public class ConstructionFactoryDemo {
     public static void main(String[] args) {
-        ConstructionCostFactory constructionFactory = new ConstructionCostFactory();
-        Cost construction1 = constructionFactory.getType(TypeBuilding.FIRSTCONSTRUCTION);
+        SimpleConstructionCostFactory constructionFactory = new SimpleConstructionCostFactory();
+        Cost construction1 = constructionFactory.getType(TypeBuilding.FIRST_CONSTRUCTION);
 
         Map<Resource, Integer> costConstructionMap1 = new HashMap<>();
         costConstructionMap1.put(Resource.WATER, 1);

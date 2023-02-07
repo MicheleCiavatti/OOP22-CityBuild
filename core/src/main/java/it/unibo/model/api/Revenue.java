@@ -3,17 +3,29 @@ import java.util.Map;
 
 public interface Revenue {
     
-    //Sets the type of material to produce
-    public void setProduction(Resource r);
+    /**
+     * Sets the type of Resource to be producted
+     * @param r specify the type of resource to be producted
+     */
+    public void setResourceProduction(Resource resource);
 
-    //Returns the amount of material producted
-    public Map<Resource, Integer> getResource();
+    /**
+     * 
+     * @return a Map<Resource, Integer> of the resource producted
+     */
+    public Map<Resource, Integer> getRevenue();
 
-    //Starts the production of the material
+    /**
+     * Starts the production of the material
+     */
     public void production();
 
-    //Sets the amount of time for the production
-    public void setTime(int time);
+    /**
+     * Sets the time of the production
+     * @param time used to specify the amount of time needed for the productions
+     * 
+     */
+    public void setTimeProduction(int time);
 
     
 }
