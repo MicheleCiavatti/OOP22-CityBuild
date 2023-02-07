@@ -37,7 +37,6 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         try (InputStream input = new FileInputStream(path)) {
            Yaml yaml = new Yaml(new Constructor(EconomyTables.class));
            data = yaml.load(input);
-           System.out.println(data.getRevenue());
         } catch (IOException e) {
             e.printStackTrace();
         }

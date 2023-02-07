@@ -18,5 +18,6 @@ public class TestEconomyFileReader {
     public void testHouse() {
         var tables = economyFileReader.getSimpleEconomyTables(Resource.CITIZEN);
         assertEquals(tables.get(0), Map.of(Resource.CITIZEN, 10));
+        assertEquals(tables.get(1), Map.of(Resource.METAL, 5, Resource.WOOD, 7));
     }
 }
