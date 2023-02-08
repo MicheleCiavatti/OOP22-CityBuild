@@ -34,8 +34,7 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     /**{@inheritDoc} */
     @Override
     public List<Map<Resource, Integer>> getSimpleEconomyTables(final Resource r) {
-        var path = PATH_RES + File.separator + SIMPLE_BUILDING_DIR 
-            + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION;
+        var path = this.getPath(true, r);
         try (InputStream input = new FileInputStream(path)) {
            Yaml yaml = new Yaml(new Constructor(EconomyTables.class));
            data = yaml.load(input);
@@ -43,6 +42,15 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
             e.printStackTrace();
         }
         return List.of(this.getTable(REVENUE_IN_FILE), this.getTable(CONSTRUCTION_IN_FILE), this.getTable(UPGRADE_IN_FILE));
+    }
+
+    private String getPath(final boolean isSimpleBuilding, final Resource r) {
+        if (isSimpleBuilding) {
+            return PATH_RES + File.separator + SIMPLE_BUILDING_DIR 
+            + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION;
+        }
+        //TODO: return appropriate string for advanced buildings
+        return null;
     }
 
     private Map<Resource, Integer> getTable(final String key) {
