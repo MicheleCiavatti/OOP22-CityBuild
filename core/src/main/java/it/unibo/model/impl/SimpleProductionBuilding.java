@@ -1,9 +1,6 @@
 package it.unibo.model.impl;
 
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import it.unibo.controller.impl.EconomyFileReaderImpl;
 import it.unibo.model.api.EconomyHandler;
 import it.unibo.model.api.EconomyHandlerFactory;
 import it.unibo.model.api.ProductionBuilding;
@@ -17,7 +14,6 @@ public class SimpleProductionBuilding implements ProductionBuilding {
     private final Map<Resource, Integer> constructionCost;
 
     public SimpleProductionBuilding(final Resource r) {
-        //TODO: switch for setting this.resource
         EconomyHandlerFactory economyHandlerFactory = new EconomyHandlerFactoryImpl();
         EconomyHandler economyHandler = economyHandlerFactory.createEconomyHandler();
         this.upgradeCost = Map.copyOf(economyHandler.getSimpleUpgradeTable(r));
@@ -37,7 +33,13 @@ public class SimpleProductionBuilding implements ProductionBuilding {
 
     @Override
     public void upgrade(Map<Resource, Integer> resourcesForUpgrade) {
-        //TODO: check if the argument is valid for upgrading
-        this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
+        if (this.upgradeCost.equals(resourcesForUpgrade)) {
+            this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
+        }
+    }
+
+    @Override
+    public Map<Resource, Integer> getCostConstruction() {
+        return Map.copyOf(this.constructionCost);
     }
 }
