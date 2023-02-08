@@ -2,7 +2,7 @@ package it.unibo.model.api;
 
 /**Enumerates all possible resources of the game. */
 public enum Resource {
-    WATER("Water", "Purificator"),
+    WATER("Water", "Depurator"),
     WOOD("Wood", "Woodcutter"),
     ENERGY("Energy", "Power_Plant"),
     METAL("Metal", "Foundry"),
