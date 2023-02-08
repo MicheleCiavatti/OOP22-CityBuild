@@ -2,7 +2,9 @@ package it.unibo.model.api;
 
 import java.util.Map;
 
-/**This interface is used to model any building that produces resources.*/
+/**This interface is used to model any building that produces resources.
+ * @see it.unibo.model.api.Resource
+*/
 public interface ProductionBuilding {
 
     /**Returns the revenue of the building.

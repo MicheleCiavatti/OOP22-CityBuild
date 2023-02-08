@@ -1,6 +1,6 @@
 package it.unibo.model.api;
 
-/**Factory class for creating different kinds of {@link Building}.*/
+/**Factory class for creating different kinds of buildings.*/
 public interface BuildingFactory {
     
     /**Returns an instance of a specific {@link ProductionBuilding}. 

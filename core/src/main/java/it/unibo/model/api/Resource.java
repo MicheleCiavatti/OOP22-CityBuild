@@ -1,6 +1,6 @@
 package it.unibo.model.api;
 
-/**Enumerates all possible resources of the game */
+/**Enumerates all possible resources of the game. */
 public enum Resource {
     WATER("Water", "Purificator"),
     WOOD("Wood", "Woodcutter"),
@@ -17,15 +17,15 @@ public enum Resource {
         this.simpleBuilding = simpleBuilding;
     }
 
-    /**Returns the name of the specific resource
+    /**Returns the name of the specific resource.
      * @return a string containing the name of the resource
      */
     public String getName() {
         return this.name;
     }
     
-    /**Returns the simple building that produces the resource.
-     * @return a string with the name of the simple building associated
+    /**Returns the {@link it.unibo.model.impl.SimpleProductionBuilding} that produces the resource.
+     * @return a string with the name of the simple building associated, used by {@link it.unibo.controller.impl.EconomyFileReaderImpl}
      */
     public String getSimpleBuilding() {
         return this.simpleBuilding;

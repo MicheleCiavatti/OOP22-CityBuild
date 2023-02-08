@@ -8,7 +8,8 @@ import it.unibo.model.api.Resource;
 public interface EconomyFileReader {
     
     /**Returns a list containing the tables of a simple building.
-     * @return a list with always 3 maps: the first is the revenue table, the second is the construction table and the third is the upgrade table
+     * @return a list with always 3 {@link java.util.Map}: the first is the revenue table, 
+     * the second is the construction table and the third is the upgrade table
      * @param r used to specify which simple building
      */
     public List<Map<Resource, Integer>> getSimpleEconomyTables(final Resource r);

@@ -42,7 +42,7 @@ public class SimpleProductionBuilding implements ProductionBuilding {
     /**{@inheritDoc} */
     @Override
     public void upgrade(Map<Resource, Integer> resourcesForUpgrade) {
-        if (this.upgradeCost.equals(this.removeEmptyResources(resourcesForUpgrade)) && this.upgradable) {
+        if (this.upgradable && this.upgradeCost.equals(this.removeEmptyResources(resourcesForUpgrade)) ) {
             this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
             this.upgradable = false;
         }
@@ -54,7 +54,7 @@ public class SimpleProductionBuilding implements ProductionBuilding {
         return Map.copyOf(this.constructionCost);
     }
 
-    //A transformation so that keys with value = 0 are removed
+    //A transformation so that keys with value = 0 are removed, allowing for a safe compare between maps.
     private Map<Resource, Integer> removeEmptyResources(final Map<Resource, Integer> m) {
         return m.entrySet()
                 .stream()
