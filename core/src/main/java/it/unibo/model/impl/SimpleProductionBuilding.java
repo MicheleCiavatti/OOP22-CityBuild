@@ -3,7 +3,6 @@ package it.unibo.model.impl;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
@@ -16,7 +15,7 @@ public class SimpleProductionBuilding implements ProductionBuilding {
 
     public SimpleProductionBuilding(final Resource r) {
         //TODO: switch for setting this.resource
-        var economyHandler = new EconomyHandlerFactory().createEconomyHandler(r);
+        var economyHandler = 
         this.upgradeCost = economyHandler.getSimpleUpgradeTable();
         this.revenue = economyHandler.getSimpleRevenueTable();
         this.constructionCost = economyHandler.getSimpleCostTable();
