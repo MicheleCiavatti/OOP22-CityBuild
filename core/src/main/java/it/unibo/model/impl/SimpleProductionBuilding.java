@@ -39,7 +39,7 @@ public class SimpleProductionBuilding implements ProductionBuilding {
         return Map.copyOf(this.upgradeCost);
     }
 
-        /**{@inheritDoc} */
+    /**{@inheritDoc} */
     @Override
     public void upgrade(Map<Resource, Integer> resourcesForUpgrade) {
         if (this.upgradeCost.equals(this.removeEmptyResources(resourcesForUpgrade)) && this.upgradable) {
