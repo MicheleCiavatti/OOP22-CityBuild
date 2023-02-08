@@ -59,6 +59,6 @@ public class SimpleProductionBuilding implements ProductionBuilding {
         return m.entrySet()
                 .stream()
                 .filter(entry -> entry.getValue() > 0)
-                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
