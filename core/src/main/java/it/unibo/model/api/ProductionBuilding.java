@@ -10,6 +10,9 @@ public interface ProductionBuilding {
 
     /** */
     public Map<Resource, Integer> getCostUpgrade();
+
+    /** */
+    public Map<Resource, Integer> getCostConstruction();
     
     /** */
     public void upgrade(final Map<Resource, Integer> resourcesForUpgrade);
