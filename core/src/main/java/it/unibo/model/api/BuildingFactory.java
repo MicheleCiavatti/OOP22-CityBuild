@@ -12,7 +12,7 @@ public interface BuildingFactory {
      * CITIZEN -> House;
      * GOLD -> Mine.
      * @param resource used to specify the building required
-     * @return a class implementing {@link ProductionBuilding}
+     * @return a class implementing {@link ProductionBuilding} with appropriate functionalities
     */
     public ProductionBuilding createSimpleProductionBuilding(final Resource resource);
 }
