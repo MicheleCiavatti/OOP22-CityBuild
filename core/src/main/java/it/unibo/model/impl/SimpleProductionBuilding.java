@@ -54,7 +54,7 @@ public class SimpleProductionBuilding implements ProductionBuilding {
         return Map.copyOf(this.constructionCost);
     }
 
-    //A transformation so that keys with 0 value are removed
+    //A transformation so that keys with value = 0 are removed
     private Map<Resource, Integer> removeEmptyResources(final Map<Resource, Integer> m) {
         return m.entrySet()
                 .stream()
