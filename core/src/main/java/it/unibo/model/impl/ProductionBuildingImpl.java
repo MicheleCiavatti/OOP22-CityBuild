@@ -31,6 +31,7 @@ public class ProductionBuildingImpl implements ProductionBuilding {
             this.revenue = this.removeEmptyResources(tables.getAdvancedRevenueTable(r));
             this.constructionCost = this.removeEmptyResources(tables.getAdvancedCostTable(r));
             this.upgradeCost = this.removeEmptyResources(tables.getAdvancedUpgradeTable(r));
+            this.name = r.getAdvancedBuilding();
         }
         this.upgradable = true;
     }
@@ -56,6 +57,11 @@ public class ProductionBuildingImpl implements ProductionBuilding {
         }
     }
 
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
     /**{@inheritDoc} */
     @Override
     public Map<Resource, Integer> getCostConstruction() {
@@ -69,4 +75,6 @@ public class ProductionBuildingImpl implements ProductionBuilding {
                 .filter(entry -> entry.getValue() > 0)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
+
+    
 }

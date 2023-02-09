@@ -21,6 +21,8 @@ public interface ProductionBuilding {
      * @return a {@link java.util.Map} representing the construction cost of the production building
      */
     public Map<Resource, Integer> getCostConstruction();
+
+    public String getName();
     
     /**Upgrades the building. 
      * @param resourcesForUpgrade the method makes a check to verify that the resources passed are appropriate 
