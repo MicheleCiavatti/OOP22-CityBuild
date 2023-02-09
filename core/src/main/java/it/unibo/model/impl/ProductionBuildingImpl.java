@@ -69,7 +69,7 @@ public class ProductionBuildingImpl implements ProductionBuilding {
         return Map.copyOf(this.constructionCost);
     }
 
-    //A transformation so that keys with value = 0 are removed, allowing for a safe compare between maps.
+    //A transformation so that keys with value = 0 are removed, allowing for a safe comparison between maps.
     private Map<Resource, Integer> removeEmptyResources(final Map<Resource, Integer> m) {
         return m.entrySet()
                 .stream()
