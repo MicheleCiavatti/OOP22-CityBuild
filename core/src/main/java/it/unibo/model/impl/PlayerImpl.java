@@ -6,6 +6,7 @@ import java.util.Map;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 
+/**An implementation of {@link it.unibo.model.api.Player}. */
 public class PlayerImpl implements Player {
 
     private final Map<Resource, Integer> resources;
