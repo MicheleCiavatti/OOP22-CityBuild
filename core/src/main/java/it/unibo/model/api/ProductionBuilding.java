@@ -22,6 +22,10 @@ public interface ProductionBuilding {
      */
     public Map<Resource, Integer> getCostConstruction();
 
+    /**Returns the name of the production building.
+     * @return a string containing the name of the production building. The string is obtained through 
+     * {@link it.unibo.model.api.Resource} methods.
+     */
     public String getName();
     
     /**Upgrades the building. 
