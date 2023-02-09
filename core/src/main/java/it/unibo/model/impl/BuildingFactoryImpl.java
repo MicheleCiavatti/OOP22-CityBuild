@@ -12,5 +12,10 @@ public class BuildingFactoryImpl implements BuildingFactory {
     public ProductionBuilding createSimpleProductionBuilding(final Resource resource) {
         return new ProductionBuildingImpl(resource, true);
     }
+
+    @Override
+    public ProductionBuilding createAdvancedProductionBuilding(final Resource resource) {
+        return new ProductionBuildingImpl(resource, false);
+    }
     
 }

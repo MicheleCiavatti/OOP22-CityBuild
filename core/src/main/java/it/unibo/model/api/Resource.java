@@ -2,19 +2,21 @@ package it.unibo.model.api;
 
 /**Enumerates all possible resources of the game. */
 public enum Resource {
-    WATER("Water", "Depurator"),
-    WOOD("Wood", "Woodcutter"),
-    ENERGY("Energy", "Power_Plant"),
-    METAL("Metal", "Foundry"),
-    CITIZEN("Citizen", "House"),
-    GOLD("Gold", "Mine");
+    WATER("Water", "Depurator", ""),
+    WOOD("Wood", "Woodcutter", ""),
+    ENERGY("Energy", "Power_Plant", ""),
+    METAL("Metal", "Foundry", ""),
+    CITIZEN("Citizen", "House", "Skyscraper"),
+    GOLD("Gold", "Mine", "");
 
     private final String name;
     private final String simpleBuilding;
+    private final String advancedBuilding;
 
-    private Resource(final String name, final String simpleBuilding) {
+    private Resource(final String name, final String simpleBuilding, final String advancedBuilding) {
         this.name = name;
         this.simpleBuilding = simpleBuilding;
+        this.advancedBuilding = advancedBuilding;
     }
 
     /**Returns the name of the specific resource.
@@ -29,6 +31,10 @@ public enum Resource {
      */
     public String getSimpleBuilding() {
         return this.simpleBuilding;
+    }
+
+    public String getAdvancedBuilding() {
+        return this.advancedBuilding;
     }
     
 }

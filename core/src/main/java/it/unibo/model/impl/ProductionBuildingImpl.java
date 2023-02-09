@@ -16,6 +16,7 @@ public class ProductionBuildingImpl implements ProductionBuilding {
     private final Map<Resource, Integer> upgradeCost;
     private final Map<Resource, Integer> revenue;
     private final Map<Resource, Integer> constructionCost;
+    private final String name;
     private boolean upgradable;
 
     public ProductionBuildingImpl(final Resource r, final boolean isSimpleBuilding) {
@@ -25,6 +26,7 @@ public class ProductionBuildingImpl implements ProductionBuilding {
             this.revenue = this.removeEmptyResources(tables.getSimpleRevenueTable(r));
             this.constructionCost = this.removeEmptyResources(tables.getSimpleCostTable(r));
             this.upgradeCost = this.removeEmptyResources(tables.getSimpleUpgradeTable(r));
+            this.name = r.getSimpleBuilding();
         } else {
             this.revenue = this.removeEmptyResources(tables.getAdvancedRevenueTable(r));
             this.constructionCost = this.removeEmptyResources(tables.getAdvancedCostTable(r));

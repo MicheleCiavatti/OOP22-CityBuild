@@ -15,4 +15,6 @@ public interface BuildingFactory {
      * @return a class implementing {@link ProductionBuilding} with appropriate functionalities
     */
     public ProductionBuilding createSimpleProductionBuilding(final Resource resource);
+
+    public ProductionBuilding createAdvancedProductionBuilding(final Resource resource);
 }
