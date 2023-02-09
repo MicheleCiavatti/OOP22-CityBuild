@@ -9,12 +9,12 @@ public interface Player {
      * @param r resource requested
      * @return an integer with the quantity associated to the resource
      */
-    public int getResourceAvailable(final Resource r);
+    public int getResource(final Resource r);
 
     /**Returns all resources available to the player.
      * @return a {@link java.util.Map} containing all resources in possession of the player
      */
-    public Map<Resource, Integer> getAllResourcesAvailable();
+    public Map<Resource, Integer> getAllResources();
 
     /**Removes the specified resources to the player. 
      * The method makes an internal check to verify that the resources we want to spend are available to the player

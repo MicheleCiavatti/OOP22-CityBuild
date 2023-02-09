@@ -17,13 +17,13 @@ public class PlayerImpl implements Player {
 
     /**{@inheritDoc} */
     @Override
-    public int getResourceAvailable(final Resource r) {
+    public int getResource(final Resource r) {
         return this.resources.get(r);
     }
 
     /**{@inheritDoc} */
     @Override
-    public Map<Resource, Integer> getAllResourcesAvailable() {
+    public Map<Resource, Integer> getAllResources() {
         return Map.copyOf(this.resources);
     }
 
