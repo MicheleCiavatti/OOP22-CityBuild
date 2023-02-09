@@ -30,4 +30,11 @@ public class TestPlayer {
         assertEquals(player.getResourceAvailable(Resource.WATER), 10);
         assertEquals(player.getResourceAvailable(Resource.CITIZEN), 0);
     }
+
+    @Test
+    public void testAddResources() {
+        player.addResources(Map.of(Resource.CITIZEN, -2, Resource.WATER, -5));
+        assertEquals(player.getResourceAvailable(Resource.CITIZEN), 2);
+        assertEquals(player.getResourceAvailable(Resource.WATER), 15);
+    }
 }
