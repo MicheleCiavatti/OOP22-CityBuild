@@ -29,17 +29,39 @@ public class PlayerImpl implements Player {
 
     @Override
     public boolean spendResources(Map<Resource, Integer> toSpend) {
-        if (this.checkResourcesToSpend(toSpend)) {
-            toSpend.entrySet().forEach(entry -> this.resources.replace(entry.getKey(), this.resources.get(entry.getKey()) - entry.getValue()));
+        var input = this.transform(toSpend, false);
+        if (this.checkResourcesToSpend(input)) {
+            this.setResources(input);
             return true;
         }
         return false;
     }
 
+    @Override
+    public void addResources(final Map<Resource, Integer> toAdd) {
+        var input = this.transform(toAdd, true);
+        this.setResources(input);
+    }
+
+    //A method that transforms all values of a map as positive if alwaysPositive == true, negative if alwaysPositive == false
+    private Map<Resource, Integer> transform(final Map<Resource, Integer> origin, final boolean alwaysPositive) {
+        Map<Resource, Integer> out = new HashMap<>();
+        origin.entrySet().forEach(entry -> out.put(entry.getKey(), Math.abs(entry.getValue()) * (alwaysPositive ? 1 : -1)));
+        return out;
+    }
+
+    private void setResources(final Map<Resource, Integer> map) {
+        map.entrySet()
+            .forEach(entry -> this.resources.replace(entry.getKey(), this.resources.get(entry.getKey()) + entry.getValue()));
+    }
+
     private boolean checkResourcesToSpend(Map<Resource, Integer> toSpend) {
         return toSpend.entrySet()
             .stream()
-            .allMatch(entry -> this.resources.get(entry.getKey()) >= entry.getValue());
+            .allMatch(entry -> this.resources.get(entry.getKey()) - entry.getValue() >= 0);
     }
+
+
+    
     
 }
