@@ -26,13 +26,18 @@ public enum Resource {
         return this.name;
     }
     
-    /**Returns the {@link it.unibo.model.impl.ProductionBuildingImpl} that produces the resource.
-     * @return a string with the name of the simple building associated, used by {@link it.unibo.controller.impl.EconomyFileReaderImpl}
+    /**Returns the simple {@link it.unibo.model.impl.ProductionBuildingImpl} that produces the resource.
+     * @return a string with the name of the simple building associated, used by {@link it.unibo.controller.impl.EconomyFileReaderImpl} 
+     * and {@link it.unibo.model.impl.ProductionBuildingImpl}
      */
     public String getSimpleBuilding() {
         return this.simpleBuilding;
     }
 
+    /**Returns the advanced {@link it.unibo.model.api.ProductionBuildingImpl} that produces the resource.
+     * @return a string with the name of the simple building associated, used by {@link it.unibo.controller.impl.EconomyFileReaderImpl}
+     * and {@link it.unibo.model.impl.ProductionBuildingImpl}
+    */
     public String getAdvancedBuilding() {
         return this.advancedBuilding;
     }
