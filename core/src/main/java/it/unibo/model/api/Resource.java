@@ -24,7 +24,7 @@ public enum Resource {
         return this.name;
     }
     
-    /**Returns the {@link it.unibo.model.impl.SimpleProductionBuilding} that produces the resource.
+    /**Returns the {@link it.unibo.model.impl.ProductionBuildingImpl} that produces the resource.
      * @return a string with the name of the simple building associated, used by {@link it.unibo.controller.impl.EconomyFileReaderImpl}
      */
     public String getSimpleBuilding() {

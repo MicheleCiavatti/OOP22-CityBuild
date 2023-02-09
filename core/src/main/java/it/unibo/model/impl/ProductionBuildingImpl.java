@@ -10,7 +10,7 @@ import it.unibo.model.api.Resource;
 /**The class is an implementation of {@link it.unibo.model.api.ProductionBuilding} that models only Simple buildings.
  * The software has both Simple and Advanced building.
  */
-public class SimpleProductionBuilding implements ProductionBuilding {
+public class ProductionBuildingImpl implements ProductionBuilding {
 
     private static final int MULTIPLIER = 2;
     private final Map<Resource, Integer> upgradeCost;
@@ -18,7 +18,7 @@ public class SimpleProductionBuilding implements ProductionBuilding {
     private final Map<Resource, Integer> constructionCost;
     private boolean upgradable;
 
-    public SimpleProductionBuilding(final Resource r) {
+    public ProductionBuildingImpl(final Resource r) {
         EconomyHandlerFactory economyHandlerFactory = new EconomyHandlerFactoryImpl();
         EconomyHandler economyHandler = economyHandlerFactory.createEconomyHandler();
         this.upgradeCost = this.removeEmptyResources(economyHandler.getSimpleUpgradeTable(r));
