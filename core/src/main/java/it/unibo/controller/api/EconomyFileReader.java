@@ -13,4 +13,11 @@ public interface EconomyFileReader {
      * @param r used to specify which simple building
      */
     public List<Map<Resource, Integer>> getSimpleEconomyTables(final Resource r);
+
+    /**Returns a list containing the tables of an advanced building.
+     * @return a list with always 3 {@link java.util.Map}: the first is the revenue table, 
+     * the second is the construction table and the third is the upgrade table
+     * @param r used to specify which advanced building
+     */
+    public List<Map<Resource, Integer>> getAdvancedEconomyTables(final Resource r);
 }
