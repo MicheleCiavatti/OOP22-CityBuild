@@ -3,6 +3,8 @@ package it.unibo.model.impl;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
+
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 
@@ -31,7 +33,8 @@ public class PlayerImpl implements Player {
     /**{@inheritDoc} */
     @Override
     public boolean spendResources(Map<Resource, Integer> toSpend) {
-        var input = this.transform(toSpend, false);
+        Map<Resource, Integer> input = new HashMap<>(toSpend);
+        input.replaceAll(this.func(false));
         if (this.checkResourcesToSpend(input)) {
             this.setResources(input);
             return true;
@@ -42,17 +45,11 @@ public class PlayerImpl implements Player {
     /**{@inheritDoc} */
     @Override
     public void addResources(final Map<Resource, Integer> toAdd) {
-        var input = this.transform(toAdd, true);
+        Map<Resource, Integer> input = new HashMap<>(toAdd);
+        input.replaceAll(this.func(true));
         this.setResources(input);
     }
 
-    //A method that transforms all values of a map as positive if alwaysPositive == true, negative if alwaysPositive == false
-    private Map<Resource, Integer> transform(final Map<Resource, Integer> origin, final boolean alwaysPositive) {
-        Map<Resource, Integer> out = new HashMap<>();
-        origin.entrySet().forEach(entry -> out.put(entry.getKey(), Math.abs(entry.getValue()) * (alwaysPositive ? 1 : -1)));
-        return out;
-    }
-    
     private void setResources(final Map<Resource, Integer> map) {
         map.entrySet()
             .forEach(entry -> this.resources.replace(entry.getKey(), this.resources.get(entry.getKey()) + entry.getValue()));
@@ -62,5 +59,12 @@ public class PlayerImpl implements Player {
         return toSpend.entrySet()
             .stream()
             .allMatch(entry -> this.resources.get(entry.getKey()) + entry.getValue() >= 0);
+    }
+
+    /*A BiFunction that can be used by Map.replaceAll method. If alwaysPositive == true, then
+     * the function transform an integer of the map into positve, negative otherwise.
+     */
+    private BiFunction<Resource, Integer, Integer> func(final boolean alwaysPositive) {
+        return (k, v) -> Math.abs(v) * (alwaysPositive ? 1 : -1);
     }
 }
