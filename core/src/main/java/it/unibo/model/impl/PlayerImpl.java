@@ -3,7 +3,6 @@ package it.unibo.model.impl;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 
@@ -16,17 +15,19 @@ public class PlayerImpl implements Player {
         Arrays.stream(Resource.values()).forEach(value -> this.resources.put(value, 0));
     }
 
-
+    /**{@inheritDoc} */
     @Override
     public int getResourceAvailable(final Resource r) {
         return this.resources.get(r);
     }
 
+    /**{@inheritDoc} */
     @Override
     public Map<Resource, Integer> getAllResourcesAvailable() {
         return Map.copyOf(this.resources);
     }
 
+    /**{@inheritDoc} */
     @Override
     public boolean spendResources(Map<Resource, Integer> toSpend) {
         var input = this.transform(toSpend, false);
@@ -37,6 +38,7 @@ public class PlayerImpl implements Player {
         return false;
     }
 
+    /**{@inheritDoc} */
     @Override
     public void addResources(final Map<Resource, Integer> toAdd) {
         var input = this.transform(toAdd, true);
@@ -60,8 +62,4 @@ public class PlayerImpl implements Player {
             .stream()
             .allMatch(entry -> this.resources.get(entry.getKey()) - entry.getValue() >= 0);
     }
-
-
-    
-    
 }
