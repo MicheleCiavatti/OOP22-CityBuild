@@ -57,6 +57,7 @@ public class ProductionBuildingImpl implements ProductionBuilding {
         }
     }
 
+    /**{@inheritDoc} */
     @Override
     public String getName() {
         return this.name;
