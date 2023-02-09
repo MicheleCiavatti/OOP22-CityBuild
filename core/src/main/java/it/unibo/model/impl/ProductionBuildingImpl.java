@@ -7,8 +7,8 @@ import it.unibo.model.api.EconomyHandlerFactory;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
-/**The class is an implementation of {@link it.unibo.model.api.ProductionBuilding} that models only Simple buildings.
- * The software has both Simple and Advanced building.
+/**The class is an implementation of {@link it.unibo.model.api.ProductionBuilding} that models Production buildings.
+ * The software has both Simple and Advanced production building.
  */
 public class ProductionBuildingImpl implements ProductionBuilding {
 
@@ -18,12 +18,18 @@ public class ProductionBuildingImpl implements ProductionBuilding {
     private final Map<Resource, Integer> constructionCost;
     private boolean upgradable;
 
-    public ProductionBuildingImpl(final Resource r) {
+    public ProductionBuildingImpl(final Resource r, final boolean isSimpleBuilding) {
         EconomyHandlerFactory economyHandlerFactory = new EconomyHandlerFactoryImpl();
-        EconomyHandler economyHandler = economyHandlerFactory.createEconomyHandler();
-        this.upgradeCost = this.removeEmptyResources(economyHandler.getSimpleUpgradeTable(r));
-        this.revenue = this.removeEmptyResources(economyHandler.getSimpleRevenueTable(r));
-        this.constructionCost = this.removeEmptyResources(economyHandler.getSimpleCostTable(r));
+        EconomyHandler tables = economyHandlerFactory.createEconomyHandler();
+        if (isSimpleBuilding) {
+            this.revenue = this.removeEmptyResources(tables.getSimpleRevenueTable(r));
+            this.constructionCost = this.removeEmptyResources(tables.getSimpleCostTable(r));
+            this.upgradeCost = this.removeEmptyResources(tables.getSimpleUpgradeTable(r));
+        } else {
+            this.revenue = this.removeEmptyResources(tables.getAdvancedRevenueTable(r));
+            this.constructionCost = this.removeEmptyResources(tables.getAdvancedCostTable(r));
+            this.upgradeCost = this.removeEmptyResources(tables.getAdvancedUpgradeTable(r));
+        }
         this.upgradable = true;
     }
 

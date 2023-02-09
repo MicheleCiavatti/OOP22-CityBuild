@@ -10,7 +10,7 @@ public class BuildingFactoryImpl implements BuildingFactory {
     /**{@inheritDoc} */
     @Override
     public ProductionBuilding createSimpleProductionBuilding(final Resource resource) {
-        return new ProductionBuildingImpl(resource);
+        return new ProductionBuildingImpl(resource, true);
     }
     
 }
