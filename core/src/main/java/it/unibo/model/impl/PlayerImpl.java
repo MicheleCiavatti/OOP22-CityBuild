@@ -51,7 +51,7 @@ public class PlayerImpl implements Player {
         origin.entrySet().forEach(entry -> out.put(entry.getKey(), Math.abs(entry.getValue()) * (alwaysPositive ? 1 : -1)));
         return out;
     }
-
+    
     private void setResources(final Map<Resource, Integer> map) {
         map.entrySet()
             .forEach(entry -> this.resources.replace(entry.getKey(), this.resources.get(entry.getKey()) + entry.getValue()));
@@ -60,6 +60,6 @@ public class PlayerImpl implements Player {
     private boolean checkResourcesToSpend(Map<Resource, Integer> toSpend) {
         return toSpend.entrySet()
             .stream()
-            .allMatch(entry -> this.resources.get(entry.getKey()) - entry.getValue() >= 0);
+            .allMatch(entry -> this.resources.get(entry.getKey()) + entry.getValue() >= 0);
     }
 }
