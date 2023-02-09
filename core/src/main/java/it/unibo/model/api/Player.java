@@ -9,4 +9,6 @@ public interface Player {
     public Map<Resource, Integer> getAllResourcesAvailable();
 
     public boolean spendResources(final Map<Resource, Integer> toSpend);
+
+    public void addResources(final Map<Resource, Integer> toAdd);
 }
