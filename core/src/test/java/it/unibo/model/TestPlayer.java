@@ -24,21 +24,19 @@ public class TestPlayer {
     /**Tests all getter methods of the class */
     @Test
     public void testRetrieveResources() {
-        assertEquals(player.getAllResources(), Map.of(Resource.WOOD, 0, 
-                Resource.WATER, 10,
-                Resource.ENERGY, 5,
-                Resource.METAL, 0,
-                Resource.CITIZEN, 0));
-        assertEquals(player.getResource(Resource.WATER), 10);
-        assertEquals(player.getResource(Resource.CITIZEN), 0);
+        assertEquals(Map.of(Resource.WOOD, 0, Resource.WATER, 10,
+            Resource.ENERGY, 5, Resource.METAL, 0,
+            Resource.CITIZEN, 0), player.getAllResources());
+        assertEquals(10, player.getResource(Resource.WATER));
+        assertEquals(0, player.getResource(Resource.CITIZEN));
     }
 
     /**Tests the method to add resources. The method is safe towards negative and positive integers. */
     @Test
     public void testAddResources() {
         player.addResources(Map.of(Resource.CITIZEN, -2, Resource.WATER, 5));
-        assertEquals(player.getResource(Resource.CITIZEN), 2);
-        assertEquals(player.getResource(Resource.WATER), 15);
+        assertEquals(2, player.getResource(Resource.CITIZEN));
+        assertEquals(15, player.getResource(Resource.WATER));
     }
 
     /**Tests the method to remove resources and its internal check. The method is safe towards negative and positive integers. */
