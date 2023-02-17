@@ -36,7 +36,7 @@ public class MainMenu extends ApplicationAdapter {
 			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
 			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
 		this.stage.addActor(background);
-		final Skin skin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
+		final Skin skin = new Skin(Gdx.files.internal("skin_flatEarth/flat-earth-ui.json"));
 		final Button newGame = new TextButton("New Game", skin);
 		final Button loadGame = new TextButton("Load Game", skin);
 		loadGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
