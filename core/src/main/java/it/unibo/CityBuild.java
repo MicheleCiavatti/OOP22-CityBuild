@@ -10,15 +10,15 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class CityBuild extends ApplicationAdapter {
 	
-	public static int MENU_WIDTH = 960;
-	public static int MENU_HEIGHT = 540;
+	public static int MENU_WIDTH = 1440;
+	public static int MENU_HEIGHT = 810;
 
 	private Stage stage;
 	
 	@Override
 	public void create () {
 		this.stage = new Stage(new ScreenViewport());
-		Image background = new Image(new Texture("CityBuild.jpg"));
+		Image background = new Image(new Texture("CityBuild.png"));
 		background.setName("Background");
 		background.setPosition(
 			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
