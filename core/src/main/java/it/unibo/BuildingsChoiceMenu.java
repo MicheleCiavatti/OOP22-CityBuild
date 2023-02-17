@@ -35,5 +35,16 @@ public class BuildingsChoiceMenu {
 
         Gdx.input.setInputProcessor(stage);
     } 
+
+    public void show(){
+        stage.act();
+        stage.draw();
+    }
+
+    public void dispose(){
+        stage.dispose();
+    }
+
+    
     
 }
