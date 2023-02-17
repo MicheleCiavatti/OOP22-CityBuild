@@ -43,6 +43,8 @@ public class CityBuild extends ApplicationAdapter {
 		loadGame.setPosition(Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, rowHeight);
 		/*newGame in upper part of the screen. */
 		newGame.setPosition(Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, Gdx.graphics.getHeight() - BUTTON_HEIGHT - rowHeight);
+		
+		/*Listener for the buttons. TODO. */
 		loadGame.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
