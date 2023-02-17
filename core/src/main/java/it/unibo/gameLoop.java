@@ -1,5 +1,7 @@
 package it.unibo;
 
+import it.unibo.controller.BackgroundTask;
+
 public class gameLoop {
     private boolean running = true;
     private CityBuild cityBuild;
