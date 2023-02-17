@@ -32,6 +32,7 @@ public class MainMenu extends ApplicationAdapter {
 		this.stage = new Stage(new ScreenViewport());
 		final Image background = new Image(new Texture("CityBuild.png"));
 		background.setName("Background");
+		/*Centers the background. */
 		background.setPosition(
 			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
 			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
