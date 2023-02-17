@@ -2,7 +2,7 @@ package it.unibo;
 
 import it.unibo.controller.BackgroundTask;
 
-public class gameLoop {
+public class GameLoop {
     private boolean running = true;
     private CityBuild cityBuild;
     private BackgroundTask backgroundTask;
@@ -10,7 +10,7 @@ public class gameLoop {
     private final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
 
-    public gameLoop(CityBuild cityBuild, BackgroundTask backgroundTask) {
+    public GameLoop(CityBuild cityBuild, BackgroundTask backgroundTask) {
         this.cityBuild = cityBuild;
         this.backgroundTask = backgroundTask;
     }
