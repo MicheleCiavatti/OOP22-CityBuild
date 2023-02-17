@@ -34,7 +34,12 @@ public class MainMenu extends ApplicationAdapter {
 	/**{@inheritDoc} */
 	@Override
 	public void create () {
+		/*Setting up the sounds and music. */
 		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal("sounds" + File.separator + "button.wav"));
+		this.theme = Gdx.audio.newMusic(Gdx.files.internal("sounds" + File.separator + "tlou_theme.mp3"));
+		this.theme.play();
+		this.theme.setOnCompletionListener(music -> music.play());
+		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
 		this.stage = new Stage(new ScreenViewport());
 		final Image background = new Image(new Texture("images" + File.separator + "CityBuild.png"));
