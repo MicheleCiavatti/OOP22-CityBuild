@@ -1,8 +1,11 @@
 package it.unibo;
+
 public class gameLoop {
     private boolean running = true;
     private CityBuild cityBuild;
     private BackgroundTask backgroundTask;
+    private final int TARGET_FPS = 60;
+    private final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
 
     public gameLoop(CityBuild cityBuild, BackgroundTask backgroundTask) {
@@ -18,14 +21,14 @@ public class gameLoop {
             now = System.nanoTime();
             updateLength = now - lastUpdateTime;
             lastUpdateTime = now;
-            cityBuild.update(updateLength);
+            //cityBuild.update(updateLength);   TODO
             
             timeSinceLastRender = now - lastRenderTime;
-            if (timeSinceLastRender > 1_000_000_000 / 60) {
+            if (timeSinceLastRender > OPTIMAL_TIME) {
                 lastRenderTime = now;
                 cityBuild.render();
             }else{
-                sleepTime = (1_000_000_000 - timeSinceLastRender) / 1_000_000;
+                sleepTime = (OPTIMAL_TIME - timeSinceLastRender) / 1_000_000;
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
