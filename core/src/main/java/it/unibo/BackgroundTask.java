@@ -18,7 +18,11 @@ public class BackgroundTask {
                 //TODO
             }
         };
-        }
+        executorService.scheduleAtFixedRate(task, 1, TimeUnit.SECONDS);
+    }
+
+    public void stop(){
+        executorService.shutdown();
     }
     
 }
