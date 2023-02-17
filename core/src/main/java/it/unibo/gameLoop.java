@@ -15,6 +15,7 @@ public class gameLoop {
         this.backgroundTask = backgroundTask;
     }
     public void start() {
+        //cityBuild.start(); //avvia il gioco //TODO
         long lastUpdateTime = System.nanoTime();
         long lastRenderTime = System.nanoTime();
         long now, updateLength, sleepTime, timeSinceLastRender;
