@@ -1,4 +1,7 @@
 package it.unibo;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /*A class for executing specific procedures when application is 
 closed*/
@@ -8,7 +11,7 @@ public class BackgroundTask {
     private ScheduledExecutorService executorService;
 
     public BackgroundTask() {
-        executorService = Executors.newSingleThreadExecutor();
+        executorService = Executors.newSingleThreadScheduledExecutor();
     }    
 
     public void start(){
@@ -18,7 +21,7 @@ public class BackgroundTask {
                 //TODO
             }
         };
-        executorService.scheduleAtFixedRate(task, 1, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
     }
 
     public void stop(){
