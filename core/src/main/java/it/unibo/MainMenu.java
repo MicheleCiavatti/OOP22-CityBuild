@@ -13,7 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class CityBuild extends ApplicationAdapter {
+/**This class is responsible for the main menù of the game. */
+public class MainMenu extends ApplicationAdapter {
 	
 	public static final int MENU_WIDTH = 1440;
 	public static final int MENU_HEIGHT = 810;
@@ -24,6 +25,7 @@ public class CityBuild extends ApplicationAdapter {
 
 	private Stage stage;
 	
+	/**{@inheritDoc} */
 	@Override
 	public void create () {
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
@@ -64,6 +66,7 @@ public class CityBuild extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(this.stage);
 	}
 
+	/**{@inheritDoc} */
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 0, 0, 1);
@@ -71,6 +74,7 @@ public class CityBuild extends ApplicationAdapter {
 		this.stage.draw();
 	}
 	
+	/**{@inheritDoc} */
 	@Override
 	public void dispose () {
 		this.stage.dispose();
