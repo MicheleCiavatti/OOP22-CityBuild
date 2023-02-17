@@ -62,5 +62,6 @@ public class BuildingsChoiceMenu implements Screen {
     public void dispose() {
         stage.dispose(); 
     }     
-    
 }
+
+
