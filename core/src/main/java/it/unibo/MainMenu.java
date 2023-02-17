@@ -1,7 +1,11 @@
 package it.unibo;
 
+import java.io.File;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -24,20 +28,23 @@ public class MainMenu extends ApplicationAdapter {
 	private static final float BUTTON_HEIGHT = 150f;
 
 	private Stage stage;
+	private Sound buttonClick;
+	private Music theme;
 	
 	/**{@inheritDoc} */
 	@Override
 	public void create () {
+		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal("sounds" + File.separator + "button.wav"));
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
 		this.stage = new Stage(new ScreenViewport());
-		final Image background = new Image(new Texture("CityBuild.png"));
+		final Image background = new Image(new Texture("images" + File.separator + "CityBuild.png"));
 		background.setName("Background");
 		/*Centers the background. */
 		background.setPosition(
 			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
 			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
 		this.stage.addActor(background);
-		final Skin skin = new Skin(Gdx.files.internal("skin_flatEarth/flat-earth-ui.json"));
+		final Skin skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
 		final Button newGame = new TextButton("New Game", skin);
 		final Button loadGame = new TextButton("Load Game", skin);
 		loadGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -52,6 +59,7 @@ public class MainMenu extends ApplicationAdapter {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("Button pressed");
+				MainMenu.this.buttonClick.play();
 				return true;
 			} 
 		});
@@ -59,6 +67,7 @@ public class MainMenu extends ApplicationAdapter {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("Button pressed");
+				MainMenu.this.buttonClick.play();
 				return true;
 			} 
 		});
@@ -78,6 +87,7 @@ public class MainMenu extends ApplicationAdapter {
 	/**{@inheritDoc} */
 	@Override
 	public void dispose () {
+		this.buttonClick.dispose();
 		this.stage.dispose();
 	}
 }
