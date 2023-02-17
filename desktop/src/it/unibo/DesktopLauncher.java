@@ -1,7 +1,5 @@
 package it.unibo;
 
-import java.awt.Toolkit;
-import java.awt.Dimension;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import it.unibo.CityBuild;
@@ -10,8 +8,7 @@ import it.unibo.CityBuild;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		var size = Toolkit.getDefaultToolkit().getScreenSize();
-		config.setWindowedMode((int) size.getWidth(), (int) size.getHeight());
+		config.setWindowedMode(CityBuild.MENU_WIDTH, CityBuild.MENU_HEIGHT);
 		config.setForegroundFPS(60);
 		config.setTitle("CityBuild");
 		new Lwjgl3Application(new CityBuild(), config);
