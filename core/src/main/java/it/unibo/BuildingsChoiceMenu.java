@@ -1,13 +1,14 @@
 package it.unibo;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class BuildingsChoiceMenu {
+public class BuildingsChoiceMenu implements Screen {
     private Stage stage;
 
     private void addButton(float x, float y, float width, float height, String imagePath){
@@ -20,7 +21,8 @@ public class BuildingsChoiceMenu {
         button.setSize(width, height);
     }
 
-    public BuildingsChoiceMenu(){
+    @Override
+    public void show() {
         stage = new Stage();
         
         addButton(0, 0, 100, 100, "button1.png");
@@ -34,17 +36,31 @@ public class BuildingsChoiceMenu {
         addButton(0, 240, 100, 100, "button1.png");
 
         Gdx.input.setInputProcessor(stage);
-    } 
+        
+    }
 
-    public void show(){
-        stage.act();
+    @Override
+    public void render(float delta) {
+        stage.act(delta);
         stage.draw();
     }
 
-    public void dispose(){
-        stage.dispose();
-    }
+    @Override
+    public void resize(int width, int height) {}
 
+    @Override
+    public void pause() {}
+
+    @Override
+    public void resume(){}
     
+
+    @Override
+    public void hide() {}
+
+    @Override
+    public void dispose() {
+        stage.dispose(); 
+    }     
     
 }
