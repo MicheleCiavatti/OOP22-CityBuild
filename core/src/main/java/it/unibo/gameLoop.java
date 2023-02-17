@@ -1,6 +1,9 @@
 package it.unibo;
 public class gameLoop {
     private boolean running = true;
+    private CityBuild cityBuild;
+    private BackgroundTask backgroundTask;
+
 
     public gameLoop(CityBuild cityBuild, BackgroundTask backgroundTask) {
         this.cityBuild = cityBuild;
