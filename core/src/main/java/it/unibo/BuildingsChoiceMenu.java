@@ -27,13 +27,8 @@ public class BuildingsChoiceMenu implements Screen {
         
         addButton(0, 0, 100, 100, "button1.png");
         addButton(120, 0, 100, 100, "button1.png");
-        addButton(240, 0, 100, 100, "button1.png");
-        addButton(0, 120, 100, 100, "button1.png");
-        addButton(120, 120, 100, 100, "button1.png");
-        addButton(240, 120, 100, 100, "button1.png");
-        addButton(0, 240, 100, 100, "button1.png");
-        addButton(0, 240, 100, 100, "button1.png");
-        addButton(0, 240, 100, 100, "button1.png");
+        addButton(240, 0, 100, 100, "/home/mattiaf/Desktop/OOP22-CityBuild/desktop/bin/main/badlogic.jpg");
+
 
         Gdx.input.setInputProcessor(stage);
         
@@ -63,5 +58,4 @@ public class BuildingsChoiceMenu implements Screen {
         stage.dispose(); 
     }     
 }
-
 
