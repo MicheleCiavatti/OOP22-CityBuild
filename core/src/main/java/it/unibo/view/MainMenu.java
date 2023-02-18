@@ -51,6 +51,8 @@ public class MainMenu implements Screen {
 	/**{@inheritDoc} */
 	@Override
 	public void dispose () {
+		this.theme.stop();
+		this.theme.dispose();
 		this.buttonClick.dispose();
 		this.skin.dispose();
 		this.stage.dispose();
@@ -76,6 +78,7 @@ public class MainMenu implements Screen {
 		loadGame.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				buttonClick.play();
 				System.out.println("Button pressed");
 				MainMenu.this.buttonClick.play();
 				return true;
@@ -85,8 +88,9 @@ public class MainMenu implements Screen {
 		newGame.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				System.out.println("Button pressed.");
+				buttonClick.play();
 				game.setScreen(new GameScreen());
+				dispose();
 			}
 		});
 		this.setStage(newGame, loadGame);
