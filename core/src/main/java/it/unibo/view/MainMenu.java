@@ -28,6 +28,7 @@ public class MainMenu implements Screen {
 	public static final int MENU_WIDTH = 1440;
 	public static final int MENU_HEIGHT = 810;
 	
+	private static final long DELAY_CLICK_BUTTON = 25;
 	private static final String SOUND_FOLDER = "sounds" + File.separator;
 	private static final String IMAGE_FOLDER = "images" + File.separator;
 	private static final int SCREEN_DIVISOR = 12;
@@ -64,31 +65,27 @@ public class MainMenu implements Screen {
 		this.startMusic();
 		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
-		final Button newGame = new TextButton("New Game", skin);
-		final Button loadGame = new TextButton("Load Game", skin);
-		
-		loadGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		newGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		/*loadGame in lower part of the screen. */
-		loadGame.setPosition(Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, rowHeight);
-		/*newGame in upper part of the screen. */
-		newGame.setPosition(Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, Gdx.graphics.getHeight() - BUTTON_HEIGHT - rowHeight);
-		
-		loadGame.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				// TODO Auto-generated method stub
-			}
-		});
-		
-		newGame.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				buttonClick.play();
-				game.setScreen(new GameScreen());
-				dispose();
-			}
-		});
+		var newGame = this.createButton("New Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2,
+			Gdx.graphics.getHeight() - BUTTON_HEIGHT - rowHeight,
+			new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					buttonClick.play();
+					sleeping(DELAY_CLICK_BUTTON);
+					//game.setScreen(new GameScreen());
+					dispose();
+				}
+			});
+		var loadGame = this.createButton("Load Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, rowHeight, 
+			new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					buttonClick.play();
+					sleeping(DELAY_CLICK_BUTTON);
+					// TODO Auto-generated method stub
+					dispose();
+				}
+			});
 		this.setStage(newGame, loadGame);
 	}
 
@@ -98,7 +95,22 @@ public class MainMenu implements Screen {
 		ScreenUtils.clear(0, 0, 0, 1);
 		this.stage.act(delta);
 		this.stage.draw();
-		
+	}
+
+	private void sleeping(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Button createButton(final String text, final float x, final float y, final ChangeListener listener) {
+		Button button = new TextButton(text, this.skin);
+		button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+		button.setPosition(x, y);
+		button.addListener(listener);
+		return button;
 	}
 
 	private void setStage(final Button newGame, final Button loadGame) {
