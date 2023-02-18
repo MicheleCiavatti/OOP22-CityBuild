@@ -3,7 +3,9 @@ package it.unibo;
 import java.io.File;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +20,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**This class is responsible for the main menù of the game. */
-public class MainMenu extends ApplicationAdapter {
+public class MainMenu implements Screen {
 	
 	public static final int MENU_WIDTH = 1440;
 	public static final int MENU_HEIGHT = 810;
@@ -29,21 +31,35 @@ public class MainMenu extends ApplicationAdapter {
 	private static final float BUTTON_WIDTH = 300f;
 	private static final float BUTTON_HEIGHT = 150f;
 
-	private Stage stage;
-	private Sound buttonClick;
-	private Music theme;
+	private final CityBuild game;
+
+	private final Skin skin;
+	private final Stage stage;
+	private final Sound buttonClick;
+	private final Music theme;
+
 	
-	/**{@inheritDoc} */
-	@Override
-	public void create () {
-		/*Setting up the sounds and music. */
+	public MainMenu(final CityBuild game) {
+		this.game = game;
 		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "button.wav"));
 		this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "tlou_theme.mp3"));
+		this.stage = new Stage(new ScreenViewport());
+		this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
+	}
+
+	/**{@inheritDoc} */
+	@Override
+	public void dispose () {
+		this.buttonClick.dispose();
+		this.skin.dispose();
+		this.stage.dispose();
+	}
+
+	@Override
+	public void show() {	
 		this.theme.play();
 		this.theme.setOnCompletionListener(music -> music.play());
-		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
-		this.stage = new Stage(new ScreenViewport());
 		final Image background = new Image(new Texture(IMAGE_FOLDER + "CityBuild.png"));
 		background.setName("Background");
 		/*Centers the background. */
@@ -51,7 +67,6 @@ public class MainMenu extends ApplicationAdapter {
 			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
 			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
 		this.stage.addActor(background);
-		final Skin skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
 		final Button newGame = new TextButton("New Game", skin);
 		final Button loadGame = new TextButton("Load Game", skin);
 		loadGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -84,18 +99,35 @@ public class MainMenu extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(this.stage);
 	}
 
-	/**{@inheritDoc} */
 	@Override
-	public void render () {
+	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
-		this.stage.act(Gdx.graphics.getDeltaTime());
+		this.stage.act(delta);
 		this.stage.draw();
+		
 	}
-	
-	/**{@inheritDoc} */
+
 	@Override
-	public void dispose () {
-		this.buttonClick.dispose();
-		this.stage.dispose();
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
 	}
 }

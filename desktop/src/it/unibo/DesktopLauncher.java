@@ -11,6 +11,6 @@ public class DesktopLauncher {
 		config.setWindowedMode(MainMenu.MENU_WIDTH, MainMenu.MENU_HEIGHT);
 		config.setForegroundFPS(60);
 		config.setTitle("CityBuild");
-		new Lwjgl3Application(new MainMenu(), config);
+		new Lwjgl3Application(new CityBuild(), config);
 	}
 }
