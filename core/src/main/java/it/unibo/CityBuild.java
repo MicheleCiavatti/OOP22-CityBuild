@@ -8,6 +8,6 @@ public class CityBuild extends Game {
     
     @Override
     public void create() {
-        super.setScreen(new MainMenu(this));
+        this.setScreen(new MainMenu(this));
     }
 }

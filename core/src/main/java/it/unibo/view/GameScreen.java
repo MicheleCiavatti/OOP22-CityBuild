@@ -1,4 +1,4 @@
-package it.unibo;
+package it.unibo.view;
 
 import com.badlogic.gdx.Screen;
 

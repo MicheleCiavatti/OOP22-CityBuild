@@ -2,8 +2,6 @@ package it.unibo.view;
 
 import java.io.File;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -57,18 +55,11 @@ public class MainMenu implements Screen {
 		this.stage.dispose();
 	}
 
+	/**{@inheritDoc} */
 	@Override
 	public void show() {	
-		this.theme.play();
-		this.theme.setOnCompletionListener(music -> music.play());
+		this.startMusic();
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
-		final Image background = new Image(new Texture(IMAGE_FOLDER + "CityBuild.png"));
-		background.setName("Background");
-		/*Centers the background. */
-		background.setPosition(
-			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
-			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
-		this.stage.addActor(background);
 		final Button newGame = new TextButton("New Game", skin);
 		final Button loadGame = new TextButton("Load Game", skin);
 		loadGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -96,11 +87,10 @@ public class MainMenu implements Screen {
 				return true;
 			} 
 		});
-		this.stage.addActor(newGame);
-		this.stage.addActor(loadGame);
-		Gdx.input.setInputProcessor(this.stage);
+		this.setStage(newGame, loadGame);
 	}
 
+	/**{@inheritDoc} */
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
@@ -109,27 +99,37 @@ public class MainMenu implements Screen {
 		
 	}
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
+	private void setStage(final Button newGame, final Button loadGame) {
+		this.stage.addActor(this.setBackground());
+		this.stage.addActor(newGame);
+		this.stage.addActor(loadGame);
+		Gdx.input.setInputProcessor(this.stage);
+	}
+
+	private void startMusic() {
+		this.theme.play();
+		this.theme.setOnCompletionListener(music -> music.play());
+	}
+
+	private Image setBackground() {
+		final Image background = new Image(new Texture(IMAGE_FOLDER + "CityBuild.png"));
+		background.setName("Background");
+		/*Centers the background. */
+		background.setPosition(
+			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
+			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
+		return background;
 	}
 
 	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void hide() {}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void pause() {}
+
+	@Override
+	public void resume() {}
 }
