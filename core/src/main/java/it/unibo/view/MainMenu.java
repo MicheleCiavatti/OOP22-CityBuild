@@ -3,10 +3,12 @@ package it.unibo.view;
 import java.io.File;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -32,13 +35,11 @@ public class MainMenu implements Screen {
 	private static final float BUTTON_HEIGHT = 150f;
 
 	private final CityBuild game;
-
 	private final Skin skin;
 	private final Stage stage;
 	private final Sound buttonClick;
 	private final Music theme;
 
-	
 	public MainMenu(final CityBuild game) {
 		this.game = game;
 		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "button.wav"));
@@ -59,9 +60,11 @@ public class MainMenu implements Screen {
 	@Override
 	public void show() {	
 		this.startMusic();
+		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
 		final Button newGame = new TextButton("New Game", skin);
 		final Button loadGame = new TextButton("Load Game", skin);
+		
 		loadGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		newGame.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		/*loadGame in lower part of the screen. */
@@ -79,13 +82,12 @@ public class MainMenu implements Screen {
 			} 
 		});
 		
-		newGame.addListener(new InputListener() {
+		newGame.addListener(new ChangeListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Button pressed");
-				MainMenu.this.buttonClick.play();
-				return true;
-			} 
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("Button pressed.");
+				game.setScreen(new GameScreen());
+			}
 		});
 		this.setStage(newGame, loadGame);
 	}
@@ -103,6 +105,15 @@ public class MainMenu implements Screen {
 		this.stage.addActor(this.setBackground());
 		this.stage.addActor(newGame);
 		this.stage.addActor(loadGame);
+		this.stage.addListener(new InputListener() {
+			@Override
+			public boolean keyDown(InputEvent event, int keycode) {
+				if (keycode == Input.Keys.ESCAPE) {
+					Gdx.app.exit();
+				}
+				return true;
+			}
+		});
 		Gdx.input.setInputProcessor(this.stage);
 	}
 

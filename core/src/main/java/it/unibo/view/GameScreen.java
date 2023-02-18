@@ -1,20 +1,27 @@
 package it.unibo.view;
 
+import java.io.File;
+
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen{
 
-    private GameInterface game;
+    private SpriteBatch batch;
+    private Texture img;
 
     @Override
     public void show() {
-        game = new GameInterface();
-        //game.create();      
+        img = new Texture("images" + File.separator + "badlogic.jpg");
+        batch = new SpriteBatch();
     }
 
     @Override
     public void render(float delta) {
-        game.render();
+        batch.begin();
+        batch.draw(img, 0, 0);
+        batch.end();
     }
 
     @Override
