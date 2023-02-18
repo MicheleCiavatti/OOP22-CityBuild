@@ -23,6 +23,8 @@ public class MainMenu extends ApplicationAdapter {
 	public static final int MENU_WIDTH = 1440;
 	public static final int MENU_HEIGHT = 810;
 	
+	private static final String SOUND_FOLDER = "sounds" + File.separator;
+	private static final String IMAGE_FOLDER = "images" + File.separator;
 	private static final int SCREEN_DIVISOR = 12;
 	private static final float BUTTON_WIDTH = 300f;
 	private static final float BUTTON_HEIGHT = 150f;
@@ -35,14 +37,14 @@ public class MainMenu extends ApplicationAdapter {
 	@Override
 	public void create () {
 		/*Setting up the sounds and music. */
-		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal("sounds" + File.separator + "button.wav"));
-		this.theme = Gdx.audio.newMusic(Gdx.files.internal("sounds" + File.separator + "tlou_theme.mp3"));
+		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "button.wav"));
+		this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "tlou_theme.mp3"));
 		this.theme.play();
 		this.theme.setOnCompletionListener(music -> music.play());
 		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
 		this.stage = new Stage(new ScreenViewport());
-		final Image background = new Image(new Texture("images" + File.separator + "CityBuild.png"));
+		final Image background = new Image(new Texture(IMAGE_FOLDER + "CityBuild.png"));
 		background.setName("Background");
 		/*Centers the background. */
 		background.setPosition(
@@ -68,6 +70,7 @@ public class MainMenu extends ApplicationAdapter {
 				return true;
 			} 
 		});
+		
 		newGame.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
