@@ -74,15 +74,11 @@ public class MainMenu implements Screen {
 		/*newGame in upper part of the screen. */
 		newGame.setPosition(Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, Gdx.graphics.getHeight() - BUTTON_HEIGHT - rowHeight);
 		
-		/*Listener for the buttons. TODO. */
-		loadGame.addListener(new InputListener() {
+		loadGame.addListener(new ChangeListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				buttonClick.play();
-				System.out.println("Button pressed");
-				MainMenu.this.buttonClick.play();
-				return true;
-			} 
+			public void changed(ChangeEvent event, Actor actor) {
+				// TODO Auto-generated method stub
+			}
 		});
 		
 		newGame.addListener(new ChangeListener() {
