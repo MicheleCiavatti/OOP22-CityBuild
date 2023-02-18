@@ -2,7 +2,6 @@ package it.unibo;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,6 +14,7 @@ public class BuildingsChoiceMenu implements ApplicationListener {
 
     private Stage stage;
     private String selectedBuildingName;
+    private static final String EXTENSION = ".png";
 
     private void addButton(float x, float y, float width, float height, String imagePath, String buildingName){
         Texture iconTexture = new Texture(imagePath);
@@ -29,7 +29,7 @@ public class BuildingsChoiceMenu implements ApplicationListener {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selectedBuildingName = buildingName;
+                selectedBuildingName = buildingName+EXTENSION;
                 System.out.println("Selected building: " + selectedBuildingName);
             }
         });
@@ -55,12 +55,8 @@ public class BuildingsChoiceMenu implements ApplicationListener {
         stage = new Stage();
         
         addButton(0, 0, 100, 100, "./desktop/bin/main/badlogic.jpg", "button1");
-        addButton(120, 0, 100, 100, "/./desktop/bin/main/badlogic.jpg", "button2");
+        addButton(120, 0, 100, 100, "./desktop/bin/main/badlogic.jpg", "button2");
         addButton(240, 0, 100, 100, "./desktop/bin/main/badlogic.jpg", "button3");
-
-        
-
-        
 
         Gdx.input.setInputProcessor(stage);
         
