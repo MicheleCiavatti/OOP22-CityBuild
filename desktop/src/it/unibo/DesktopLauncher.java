@@ -9,7 +9,7 @@ import it.unibo.view.MainMenu;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(MainMenu.MENU_WIDTH, MainMenu.MENU_HEIGHT);
+		config.setWindowedMode(CityBuild.GAME_WIDTH, CityBuild.GAME_HEIGHT);
 		config.setForegroundFPS(60);
 		config.setTitle("CityBuild");
 		new Lwjgl3Application(new CityBuild(), config);

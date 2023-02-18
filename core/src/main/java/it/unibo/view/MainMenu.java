@@ -23,9 +23,6 @@ import it.unibo.CityBuild;
 /**This class is responsible for the main menù of the game. */
 public class MainMenu implements Screen {
 	
-	public static final int MENU_WIDTH = 1440;
-	public static final int MENU_HEIGHT = 810;
-	
 	private static final long DELAY_CLICK_BUTTON = 25;
 	private static final String SOUND_FOLDER = "sounds" + File.separator;
 	private static final String IMAGE_FOLDER = "images" + File.separator;
