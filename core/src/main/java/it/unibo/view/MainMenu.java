@@ -63,7 +63,7 @@ public class MainMenu implements Screen {
 		this.startMusic();
 		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
-		var newGame = this.createButton("New Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2,
+		final var newGame = this.createButton("New Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2,
 			Gdx.graphics.getHeight() - BUTTON_HEIGHT - rowHeight,
 			new ChangeListener() {
 				@Override
@@ -74,7 +74,7 @@ public class MainMenu implements Screen {
 					dispose();
 				}
 			});
-		var loadGame = this.createButton("Load Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, rowHeight, 
+		final var loadGame = this.createButton("Load Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2, rowHeight, 
 			new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
@@ -89,13 +89,13 @@ public class MainMenu implements Screen {
 
 	/**{@inheritDoc} */
 	@Override
-	public void render(float delta) {
+	public void render(final float delta) {
 		ScreenUtils.clear(0, 0, 0, 1);
 		this.stage.act(delta);
 		this.stage.draw();
 	}
 
-	private void sleeping(long millis) {
+	private void sleeping(final long millis) {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
@@ -104,7 +104,7 @@ public class MainMenu implements Screen {
 	}
 
 	private Button createButton(final String text, final float x, final float y, final ChangeListener listener) {
-		Button button = new TextButton(text, this.skin);
+		final Button button = new TextButton(text, this.skin);
 		button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		button.setPosition(x, y);
 		button.addListener(listener);
