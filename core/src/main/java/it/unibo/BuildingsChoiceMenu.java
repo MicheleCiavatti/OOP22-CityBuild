@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class BuildingsChoiceMenu implements Screen, ApplicationListener {
+public class BuildingsChoiceMenu implements ApplicationListener {
 
     private Stage stage;
     private String selectedBuildingName;
@@ -36,26 +36,6 @@ public class BuildingsChoiceMenu implements Screen, ApplicationListener {
     }
 
     @Override
-    public void show() {
-        stage = new Stage();
-
-
-        addButton(0, 0, 100, 100, "/home/mattiaf/Desktop/OOP22-CityBuild/desktop/bin/main/badlogic.jpg", "button1");
-        addButton(120, 0, 100, 100, "/home/mattiaf/Desktop/OOP22-CityBuild/desktop/bin/main/badlogic.jpg", "button2");
-        addButton(240, 0, 100, 100, "/home/mattiaf/Desktop/OOP22-CityBuild/desktop/bin/main/badlogic.jpg", "button3");
-
-
-        Gdx.input.setInputProcessor(stage);
-        
-    }
-
-    @Override
-    public void render(float delta) {
-        stage.act(delta);
-        stage.draw();
-    }
-
-    @Override
     public void resize(int width, int height) {}
 
     @Override
@@ -66,9 +46,6 @@ public class BuildingsChoiceMenu implements Screen, ApplicationListener {
     
 
     @Override
-    public void hide() {}
-
-    @Override
     public void dispose() {
         stage.dispose(); 
     }
@@ -77,9 +54,9 @@ public class BuildingsChoiceMenu implements Screen, ApplicationListener {
     public void create() {
         stage = new Stage();
         
-        addButton(0, 0, 100, 100, "/home/mattiaf/Desktop/OOP22-CityBuild/desktop/bin/main/badlogic.jpg", "button1");
-        addButton(120, 0, 100, 100, "/home/mattiaf/Desktop/OOP22-CityBuild/desktop/bin/main/badlogic.jpg", "button2");
-        addButton(240, 0, 100, 100, "/home/mattiaf/Desktop/OOP22-CityBuild/desktop/bin/main/badlogic.jpg", "button3");
+        addButton(0, 0, 100, 100, "./desktop/bin/main/badlogic.jpg", "button1");
+        addButton(120, 0, 100, 100, "/./desktop/bin/main/badlogic.jpg", "button2");
+        addButton(240, 0, 100, 100, "./desktop/bin/main/badlogic.jpg", "button3");
 
         
 
