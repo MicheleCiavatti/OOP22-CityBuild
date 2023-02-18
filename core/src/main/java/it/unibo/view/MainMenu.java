@@ -1,7 +1,6 @@
 package it.unibo.view;
 
 import java.io.File;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -19,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import it.unibo.CityBuild;
 
 /**This class is responsible for the main menù of the game. */
@@ -131,7 +129,7 @@ public class MainMenu implements Screen {
 
 	private void startMusic() {
 		this.theme.play();
-		this.theme.setOnCompletionListener(music -> music.play());
+		this.theme.setOnCompletionListener(Music::play);
 	}
 
 	private Image setBackground() {
