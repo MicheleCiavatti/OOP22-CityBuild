@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class ScreenExample implements Screen, InputProcessor {
+public class ScreenExample extends ScreenAdapter implements InputProcessor {
 
     private static final int RECT_WIDTH = 150;
     private static final int RECT_HEIGHT = 225;
@@ -40,13 +40,6 @@ public class ScreenExample implements Screen, InputProcessor {
         return true;
     }
 
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-        
-    }
-
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
@@ -63,30 +56,6 @@ public class ScreenExample implements Screen, InputProcessor {
     @Override
     public void dispose() {
         shapeRenderer.dispose();
-    }
-    
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override

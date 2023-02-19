@@ -4,6 +4,7 @@ import java.io.File;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import it.unibo.CityBuild;
 
 /**This class is responsible for the main menù of the game. */
-public class MainMenu implements Screen {
+public class MainMenu extends ScreenAdapter {
 	
 	private static final long DELAY_CLICK_BUTTON = 25;
 	private static final String SOUND_FOLDER = "sounds" + File.separator;
@@ -139,16 +140,4 @@ public class MainMenu implements Screen {
 			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
 		return background;
 	}
-
-	@Override
-	public void hide() {}
-
-	@Override
-	public void resize(int width, int height) {}
-
-	@Override
-	public void pause() {}
-
-	@Override
-	public void resume() {}
 }
