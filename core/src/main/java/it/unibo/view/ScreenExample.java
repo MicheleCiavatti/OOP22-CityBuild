@@ -29,6 +29,7 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final List<Rectangle> rectangles;
+    private boolean pressingShift;
     private Optional<Rectangle> rectangle;
 
     public ScreenExample() {
@@ -39,13 +40,14 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "chill_gaming_lofi.mp3"));
         this.rectangles = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
+        this.pressingShift = false;
         rectangle = Optional.empty();
         Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void show() {
-        //this.startMusic();
+        this.startMusic();
     }
 
     @Override
@@ -58,6 +60,12 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
                 this.wrong.play();
             }
             this.rectangle = Optional.empty();
+        } else if (this.pressingShift) {
+            var demolishing = this.rectangles.stream().filter(rect -> rect.contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
+            if (demolishing.isPresent()) {
+                this.destruction.play();
+                this.rectangles.remove(demolishing.get());
+            }
         }
         return true;
     }
@@ -78,6 +86,7 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
 
     private void startMusic() {
         this.theme.play();
+        this.theme.setVolume(0.25f);
         this.theme.setOnCompletionListener(Music::play);
     }
 
@@ -110,13 +119,19 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
                 computeY(Gdx.input.getY()),
                 RECT_WIDTH, RECT_HEIGHT));
                 return true;
+        } else if (keycode == Input.Keys.SHIFT_LEFT) {
+            this.pressingShift = true;
+            return true;
         }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        // TODO Auto-generated method stub
+        if (keycode == Input.Keys.SHIFT_LEFT) {
+            this.pressingShift = false;
+            return true;
+        }
         return false;
     }
 
