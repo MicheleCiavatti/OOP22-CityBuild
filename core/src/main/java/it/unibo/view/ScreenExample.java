@@ -1,14 +1,15 @@
 package it.unibo.view;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,15 +17,26 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class ScreenExample extends ScreenAdapter implements InputProcessor {
 
+    private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final int RECT_WIDTH = 150;
     private static final int RECT_HEIGHT = 225;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
 
+    private final Sound selection;
+    private final Sound destruction;
+    private final Sound construction;
+    private final Sound wrong;
+    private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final List<Rectangle> rectangles;
     private Optional<Rectangle> rectangle;
 
     public ScreenExample() {
+        this.selection = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "select_building.ogg"));
+        this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction.ogg"));
+        this.construction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "construction.ogg"));
+        this.wrong = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "wrong1.ogg"));
+        this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "chill_gaming_lofi.mp3"));
         this.rectangles = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
         rectangle = Optional.empty();
