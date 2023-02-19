@@ -3,11 +3,13 @@ package it.unibo.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -32,7 +34,8 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (this.rectangle.isPresent()) {
-            this.rectangles.add(this.rectangle.get());
+            if (this.rectangles.stream().allMatch(rect -> !rect.overlaps(this.rectangle.get())))
+                this.rectangles.add(this.rectangle.get());
             this.rectangle = Optional.empty();
         }
         return true;
@@ -47,13 +50,15 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(0, 1, 0, 1);
         drawRectangle(this.rectangle.orElse(NULL_RECTANGLE));
         this.rectangles.forEach(this::drawRectangle);
         shapeRenderer.end();
     }
 
     private void drawRectangle(Rectangle rectangle) {
+        shapeRenderer.setColor(rectangles.stream().anyMatch(rect -> rect.overlaps(rectangle))
+            ? Color.RED
+            : Color.GREEN);
         shapeRenderer.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
