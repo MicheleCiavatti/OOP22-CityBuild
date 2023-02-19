@@ -27,6 +27,7 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
     private final Sound destruction;
     private final Sound construction;
     private final Sound wrong;
+    private final Sound scroll;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final List<Rectangle> rectangles;
@@ -38,6 +39,7 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
         this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction2.ogg"));
         this.construction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "construction.ogg"));
         this.wrong = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "wrong1.ogg"));
+        this.scroll = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "scroll.ogg"));
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "chill_gaming_lofi.mp3"));
         this.rectangles = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
@@ -95,6 +97,8 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
         switch(keycode) {
             case Input.Keys.Q -> this.selectingBuilding();
             case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
+            case Input.Keys.UP -> this.scroll.play();
+            case Input.Keys.DOWN -> this.scroll.play();
         }
         return false;
     }
@@ -164,7 +168,8 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        return false;
+        this.scroll.play();
+        return true;
     }
 
     @Override
