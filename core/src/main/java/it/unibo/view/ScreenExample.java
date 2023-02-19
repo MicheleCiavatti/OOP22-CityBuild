@@ -44,10 +44,19 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
     }
 
     @Override
+    public void show() {
+        //this.startMusic();
+    }
+
+    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (this.rectangle.isPresent()) {
-            if (this.rectangles.stream().allMatch(rect -> !rect.overlaps(this.rectangle.get())))
+            if (this.rectangles.stream().allMatch(rect -> !rect.overlaps(this.rectangle.get()))) {
+                this.construction.play();
                 this.rectangles.add(this.rectangle.get());
+            } else {
+                this.wrong.play();
+            }
             this.rectangle = Optional.empty();
         }
         return true;
@@ -65,6 +74,11 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
         drawRectangle(this.rectangle.orElse(NULL_RECTANGLE));
         this.rectangles.forEach(this::drawRectangle);
         shapeRenderer.end();
+    }
+
+    private void startMusic() {
+        this.theme.play();
+        this.theme.setOnCompletionListener(Music::play);
     }
 
     private void drawRectangle(Rectangle rectangle) {
@@ -90,6 +104,7 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if ((keycode == Input.Keys.ENTER || keycode == Input.Keys.Q) && this.rectangle.isEmpty()) {
+            this.selection.play();
             this.rectangle = Optional.of(new Rectangle(
                 computeX(Gdx.input.getX()), 
                 computeY(Gdx.input.getY()),
