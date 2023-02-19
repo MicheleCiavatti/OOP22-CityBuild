@@ -1,6 +1,7 @@
 package it.unibo.view;
 
 import java.io.File;
+import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,22 +35,40 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
 
     public ScreenExample() {
         this.selection = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "select_building.ogg"));
-        this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction.ogg"));
+        this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction2.ogg"));
         this.construction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "construction.ogg"));
         this.wrong = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "wrong1.ogg"));
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "chill_gaming_lofi.mp3"));
         this.rectangles = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
         this.pressingShift = false;
-        rectangle = Optional.empty();
+        this.rectangle = Optional.empty();
         Gdx.input.setInputProcessor(this);
     }
 
+    /**{@inheritDoc} */
     @Override
     public void show() {
         this.startMusic();
     }
 
+    /**{@inheritDoc} */
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0, 1);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        drawRectangle(this.rectangle.orElse(NULL_RECTANGLE));
+        this.rectangles.forEach(this::drawRectangle);
+        shapeRenderer.end();
+    }
+
+    /**{@inheritDoc} */
+    @Override
+    public void dispose() {
+        shapeRenderer.dispose();
+    }
+
+    /**{@inheritDoc} */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (this.rectangle.isPresent()) {
@@ -70,18 +89,46 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
         return true;
     }
 
+    /**{@inheritDoc} */
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return true;
+    public boolean keyDown(int keycode) {
+        switch(keycode) {
+            case Input.Keys.Q -> this.selectingBuilding();
+            case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
+        }
+        return false;
     }
 
+    /**{@inheritDoc} */
     @Override
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        drawRectangle(this.rectangle.orElse(NULL_RECTANGLE));
-        this.rectangles.forEach(this::drawRectangle);
-        shapeRenderer.end();
+    public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.SHIFT_LEFT) {
+            this.pressingShift = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**{@inheritDoc} */
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+       if (this.rectangle.isPresent()) {
+            this.rectangle.get().setPosition(computeX(screenX), computeY(screenY));
+            return true;
+       }
+       return false;
+    }
+
+    private boolean selectingBuilding() {
+        if (this.rectangle.isEmpty()) {
+            this.selection.play();
+            this.rectangle = Optional.of(new Rectangle(
+                computeX(Gdx.input.getX()), 
+                computeY(Gdx.input.getY()),
+                RECT_WIDTH, RECT_HEIGHT));
+                return true;
+        }
+        return false;
     }
 
     private void startMusic() {
@@ -106,59 +153,22 @@ public class ScreenExample extends ScreenAdapter implements InputProcessor {
     }
 
     @Override
-    public void dispose() {
-        shapeRenderer.dispose();
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        if ((keycode == Input.Keys.ENTER || keycode == Input.Keys.Q) && this.rectangle.isEmpty()) {
-            this.selection.play();
-            this.rectangle = Optional.of(new Rectangle(
-                computeX(Gdx.input.getX()), 
-                computeY(Gdx.input.getY()),
-                RECT_WIDTH, RECT_HEIGHT));
-                return true;
-        } else if (keycode == Input.Keys.SHIFT_LEFT) {
-            this.pressingShift = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.SHIFT_LEFT) {
-            this.pressingShift = false;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        // TODO Auto-generated method stub
         return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-       if (this.rectangle.isPresent()) {
-            this.rectangle.get().setPosition(computeX(screenX), computeY(screenY));
-            return true;
-       }
-       return false;
     }
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return true;
     }
 }
