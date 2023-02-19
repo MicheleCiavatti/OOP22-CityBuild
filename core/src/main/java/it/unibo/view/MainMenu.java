@@ -67,6 +67,7 @@ public class MainMenu implements Screen {
 				public void changed(ChangeEvent event, Actor actor) {
 					buttonClick.play();
 					sleeping(DELAY_CLICK_BUTTON);
+					game.setScreen(new ScreenExample());
 					//game.setScreen(new GameScreen());
 					dispose();
 				}
