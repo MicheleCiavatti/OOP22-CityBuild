@@ -1,6 +1,7 @@
 package it.unibo;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class BuildingsChoiceMenu implements ApplicationListener, Screen {
+public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationListener {
 
     private Stage stage;
     private String selectedBuildingName;
@@ -36,16 +37,6 @@ public class BuildingsChoiceMenu implements ApplicationListener, Screen {
     }
 
     @Override
-    public void resize(int width, int height) {}
-
-    @Override
-    public void pause() {}
-
-    @Override
-    public void resume(){}
-    
-
-    @Override
     public void dispose() {
         stage.dispose(); 
     }
@@ -68,24 +59,6 @@ public class BuildingsChoiceMenu implements ApplicationListener, Screen {
         stage.draw();
         
     }
-
-    @Override
-    public void show() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void render(float delta) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-        
-    } 
 }
 
 
