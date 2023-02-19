@@ -43,7 +43,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         stage.dispose(); 
     }
 
-    @Override
+ /*   @Override
     public void create() {
         /*stage = new Stage();
         
@@ -54,7 +54,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         Gdx.input.setInputProcessor(stage);*/
 
 
-        
+ /*       
         stage = new Stage();
         float buttonWidth = 100;
         float buttonHeight = 100;
@@ -64,8 +64,26 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button1");
         addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button2");
         addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button3");
+        addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button2");
+        addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button3");
+
 
         Gdx.input.setInputProcessor(stage);
+}*/
+
+@Override
+public void create() {
+    stage = new Stage();
+    float buttonWidth = 100;
+    float buttonHeight = 100;
+    float buttonSpacing = 10;
+    float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
+    
+    addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button1");
+    addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button2");
+    addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button3");
+
+    Gdx.input.setInputProcessor(stage);
 }
 
     @Override
@@ -80,9 +98,6 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
 
     @Override
     public void resize(int width, int height) {
-
-        
-
         stage.getViewport().update(width, height, true);
         float buttonWidth = 100;
         float buttonHeight = 100;
