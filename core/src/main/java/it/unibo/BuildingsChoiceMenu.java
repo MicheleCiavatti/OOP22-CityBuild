@@ -79,9 +79,11 @@ public void create() {
     float buttonSpacing = 10;
     float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
     
-    addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button1");
-    addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button2");
-    addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button3");
+    
+    for (int i = 1; i <= 10; i++) {
+        addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button" + i);
+        buttonY += buttonHeight + buttonSpacing;
+    }
 
     Gdx.input.setInputProcessor(stage);
 }
@@ -98,6 +100,7 @@ public void create() {
 
     @Override
     public void resize(int width, int height) {
+        isResizing = true;
         stage.getViewport().update(width, height, true);
         float buttonWidth = 100;
         float buttonHeight = 100;
@@ -113,6 +116,7 @@ public void create() {
                 buttonY += buttonHeight + buttonSpacing;
             }
         }
+        isResizing = false;
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
