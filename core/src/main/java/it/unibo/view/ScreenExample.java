@@ -34,7 +34,7 @@ public class ScreenExample extends ScreenAdapter {
     private Optional<Rectangle> selected;
 
     public ScreenExample() {
-        this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "chill_gaming_lofi.mp3"));
+        this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
@@ -99,7 +99,7 @@ public class ScreenExample extends ScreenAdapter {
 
         public GameProcessor() {
             this.selection = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "select_building.ogg"));
-            this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction2.ogg"));
+            this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction.ogg"));
             this.construction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "construction.ogg"));
             this.wrong = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "wrong1.ogg"));
             this.scroll = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "scroll.ogg"));
@@ -176,7 +176,6 @@ public class ScreenExample extends ScreenAdapter {
             return false;
         }
 
-        
         /*When the user has selected a building from the icon menù, this method 
         is used to determine the consequences of a click of the mouse */
         private boolean handlePlacement() {
