@@ -67,7 +67,9 @@ public class ScreenExample extends ScreenAdapter {
     /**{@inheritDoc} */
     @Override
     public void dispose() {
-        shapeRenderer.dispose();
+        this.shapeRenderer.dispose();
+        this.theme.dispose();
+        this.stage.dispose();
     }
 
     private void startMusic() {
@@ -77,16 +79,16 @@ public class ScreenExample extends ScreenAdapter {
     }
 
     private void drawRectangle(final Rectangle rectangle) {
-        shapeRenderer.setColor(buildings.stream().anyMatch(rect -> rect.overlaps(rectangle))
+        this.shapeRenderer.setColor(buildings.stream().anyMatch(rect -> rect.overlaps(rectangle))
             ? Color.RED
             : Color.GREEN);
-        shapeRenderer.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        this.shapeRenderer.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
     private class GameProcessor extends InputAdapter {
 
-        private static final int RECT_WIDTH = 150;
-        private static final int RECT_HEIGHT = 225;
+        private static final int RECT_WIDTH = 200;
+        private static final int RECT_HEIGHT = 200;
 
         private final Sound selection;
         private final Sound destruction;
@@ -110,7 +112,7 @@ public class ScreenExample extends ScreenAdapter {
 
         /**{@inheritDoc} */
         @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        public boolean touchDown(final int screenX, final int screenY, final int pointer, final int button) {
             return selected.isPresent()
                 ? this.handlePlacement()
                 : this.handleTouch(screenX, screenY);
@@ -118,20 +120,21 @@ public class ScreenExample extends ScreenAdapter {
 
         /**{@inheritDoc} */
         @Override
-        public boolean keyDown(int keycode) {
+        public boolean keyDown(final int keycode) {
             switch(keycode) {
                 case Input.Keys.Q -> this.selectingBuilding();
                 case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
                 case Input.Keys.CONTROL_LEFT -> this.pressingCtrl = true;
                 case Input.Keys.UP -> this.scroll.play();
                 case Input.Keys.DOWN -> this.scroll.play();
+                case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
             }
             return false;
         }
 
         /**{@inheritDoc} */
         @Override
-        public boolean keyUp(int keycode) {
+        public boolean keyUp(final int keycode) {
             switch(keycode) {
                 case Input.Keys.SHIFT_LEFT -> this.pressingShift = false;
                 case Input.Keys.CONTROL_LEFT -> this.pressingCtrl = false;
@@ -141,9 +144,9 @@ public class ScreenExample extends ScreenAdapter {
 
         /**{@inheritDoc} */
         @Override
-        public boolean mouseMoved(int screenX, int screenY) {
+        public boolean mouseMoved(final int screenX, final int screenY) {
         if (selected.isPresent()) {
-                selected.get().setPosition(computeX(screenX), computeY(screenY));
+                selected.get().setPosition(this.computeX(screenX), this.computeY(screenY));
                 return true;
             }
             return false;
@@ -151,7 +154,7 @@ public class ScreenExample extends ScreenAdapter {
 
         /**{@inheritDoc} */
         @Override
-        public boolean scrolled(float amountX, float amountY) {
+        public boolean scrolled(final float amountX, final float amountY) {
             this.scroll.play();
             return true;
         }
@@ -200,7 +203,7 @@ public class ScreenExample extends ScreenAdapter {
 
         /*This method is used to determine the consequences of a click of the mouse without carrying a building for placement. */
         private boolean handleTouch(final int screenX, final int screenY) {
-            var touched = buildings.stream()
+            final var touched = buildings.stream()
                 .filter(rect -> rect.contains(screenX, Gdx.graphics.getHeight() - screenY))
                 .findFirst();
             if (touched.isPresent()) {
