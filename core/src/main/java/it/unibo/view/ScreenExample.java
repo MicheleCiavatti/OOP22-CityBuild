@@ -69,27 +69,7 @@ public class ScreenExample extends ScreenAdapter {
     public void dispose() {
         shapeRenderer.dispose();
     }
-
-    List<Rectangle> getBuildings() {
-        return this.getBuildings();
-    }
-
-    Optional<Rectangle> getSelected() {
-        return this.selected;
-    }
-
-    Dialog getWarning() {
-        return this.warning;
-    }
-
-    Stage getStage() {
-        return this.stage;
-    }
-
-    void setSelected(Optional<Rectangle> newSelected) {
-        this.selected = newSelected;
-    }
-
+    
     private void startMusic() {
         this.theme.play();
         this.theme.setVolume(0.25f);
