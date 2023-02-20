@@ -69,7 +69,7 @@ public class ScreenExample extends ScreenAdapter {
     public void dispose() {
         shapeRenderer.dispose();
     }
-    
+
     private void startMusic() {
         this.theme.play();
         this.theme.setVolume(0.25f);
@@ -111,41 +111,9 @@ public class ScreenExample extends ScreenAdapter {
         /**{@inheritDoc} */
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if (selected.isPresent()) {
-                if (buildings
-                        .stream()
-                        .allMatch(rect -> !rect.overlaps(selected.get()))) {
-                    this.construction.play();
-                    buildings.add(selected.get());
-                } else {
-                    warning.show(stage);
-                    warning.setPosition(Gdx.graphics.getWidth() / 2 - warning.getWidth() / 2, 
-                        Gdx.graphics.getHeight() - warning.getHeight() - Gdx.graphics.getHeight() / 12);
-                    Timer.schedule(new Task() {
-                        @Override
-                        public void run() {
-                            warning.hide();
-                        }
-                    }, 2f);
-                    this.wrong.play();
-                }
-                selected = Optional.empty();
-            } else {
-                var touched = buildings
-                        .stream()
-                        .filter(rect -> rect.contains(screenX, Gdx.graphics.getHeight() - screenY))
-                        .findFirst();
-                if (touched.isPresent()) {
-                    if (this.pressingShift) {
-                        this.destruction.play();
-                        buildings.remove(touched.get());
-                    } else if (this.pressingCtrl) {
-                        this.upgrading.play();
-                    }
-                }
-                return true;
-            }
-            return false;
+            return selected.isPresent()
+                ? this.handlePlacement()
+                : this.handleTouch(screenX, screenY);
         }
 
         /**{@inheritDoc} */
@@ -204,6 +172,46 @@ public class ScreenExample extends ScreenAdapter {
                     computeY(Gdx.input.getY()),
                     RECT_WIDTH, RECT_HEIGHT));
                     return true;
+            }
+            return false;
+        }
+
+        
+        /*When the user has selected a building from the icon menù, this method 
+        is used to determine the consequences of a click of the mouse */
+        private boolean handlePlacement() {
+            if (buildings.stream().allMatch(rect -> !rect.overlaps(selected.get()))) {
+                this.construction.play();
+                buildings.add(selected.get());
+            } else {
+                warning.show(stage);
+                warning.setPosition(Gdx.graphics.getWidth() / 2 - warning.getWidth() / 2, 
+                    Gdx.graphics.getHeight() - warning.getHeight() - Gdx.graphics.getHeight() / 12);
+                Timer.schedule(new Task() {
+                    @Override
+                    public void run() {
+                        warning.hide();
+                    }
+                }, 2f);
+                this.wrong.play();
+            }
+            selected = Optional.empty();
+            return true;
+        }
+
+        /*This method is used to determine the consequences of a click of the mouse without carrying a building for placement. */
+        private boolean handleTouch(final int screenX, final int screenY) {
+            var touched = buildings.stream()
+                .filter(rect -> rect.contains(screenX, Gdx.graphics.getHeight() - screenY))
+                .findFirst();
+            if (touched.isPresent()) {
+                if (this.pressingShift) {
+                    this.destruction.play();
+                    buildings.remove(touched.get());
+                } else if (this.pressingCtrl) {
+                    this.upgrading.play();
+                }
+                return true;
             }
             return false;
         }
