@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -25,11 +24,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class ScreenExample extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
-    private static final int RECT_WIDTH = 150;
-    private static final int RECT_HEIGHT = 225;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
 
-   
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final List<Rectangle> buildings;
@@ -53,7 +49,6 @@ public class ScreenExample extends ScreenAdapter {
         this.startMusic();
         this.warning.hide();
         this.warning.text("You can't place a building on top of another building");
-        this.warning.setPosition(Gdx.graphics.getWidth() / 2 - this.warning.getWidth() / 2, Gdx.graphics.getHeight() - this.warning.getHeight() - Gdx.graphics.getHeight() / 12);
         this.stage.addActor(warning);
     }
 
@@ -83,13 +78,25 @@ public class ScreenExample extends ScreenAdapter {
         return this.selected;
     }
 
+    Dialog getWarning() {
+        return this.warning;
+    }
+
+    Stage getStage() {
+        return this.stage;
+    }
+
+    void setSelected(Optional<Rectangle> newSelected) {
+        this.selected = newSelected;
+    }
+
     private void startMusic() {
         this.theme.play();
         this.theme.setVolume(0.25f);
         this.theme.setOnCompletionListener(Music::play);
     }
 
-    private void drawRectangle(Rectangle rectangle) {
+    private void drawRectangle(final Rectangle rectangle) {
         shapeRenderer.setColor(buildings.stream().anyMatch(rect -> rect.overlaps(rectangle))
             ? Color.RED
             : Color.GREEN);
@@ -97,6 +104,9 @@ public class ScreenExample extends ScreenAdapter {
     }
 
     private class GameProcessor extends InputAdapter {
+
+        private static final int RECT_WIDTH = 150;
+        private static final int RECT_HEIGHT = 225;
 
         private final Sound selection;
         private final Sound destruction;
@@ -121,14 +131,16 @@ public class ScreenExample extends ScreenAdapter {
         /**{@inheritDoc} */
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            if (ScreenExample.this.selected.isPresent()) {
-                if (ScreenExample.this.buildings
+            if (selected.isPresent()) {
+                if (buildings
                         .stream()
-                        .allMatch(rect -> !rect.overlaps(ScreenExample.this.selected.get()))) {
+                        .allMatch(rect -> !rect.overlaps(selected.get()))) {
                     this.construction.play();
-                    ScreenExample.this.buildings.add(ScreenExample.this.selected.get());
+                    buildings.add(selected.get());
                 } else {
-                    ScreenExample.this.warning.show(stage);
+                    warning.show(stage);
+                    warning.setPosition(Gdx.graphics.getWidth() / 2 - warning.getWidth() / 2, 
+                        Gdx.graphics.getHeight() - warning.getHeight() - Gdx.graphics.getHeight() / 12);
                     Timer.schedule(new Task() {
                         @Override
                         public void run() {
@@ -137,16 +149,16 @@ public class ScreenExample extends ScreenAdapter {
                     }, 2f);
                     this.wrong.play();
                 }
-                ScreenExample.this.selected = Optional.empty();
+                selected = Optional.empty();
             } else {
-                var touched = ScreenExample.this.buildings
+                var touched = buildings
                         .stream()
                         .filter(rect -> rect.contains(screenX, Gdx.graphics.getHeight() - screenY))
                         .findFirst();
                 if (touched.isPresent()) {
                     if (this.pressingShift) {
                         this.destruction.play();
-                        ScreenExample.this.buildings.remove(touched.get());
+                        buildings.remove(touched.get());
                     } else if (this.pressingCtrl) {
                         this.upgrading.play();
                     }
@@ -182,13 +194,14 @@ public class ScreenExample extends ScreenAdapter {
         /**{@inheritDoc} */
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
-        if (ScreenExample.this.selected.isPresent()) {
-                ScreenExample.this.selected.get().setPosition(computeX(screenX), computeY(screenY));
+        if (selected.isPresent()) {
+                selected.get().setPosition(computeX(screenX), computeY(screenY));
                 return true;
             }
             return false;
         }
 
+        /**{@inheritDoc} */
         @Override
         public boolean scrolled(float amountX, float amountY) {
             this.scroll.play();
@@ -204,9 +217,9 @@ public class ScreenExample extends ScreenAdapter {
         }
 
         private boolean selectingBuilding() {
-            if (ScreenExample.this.selected.isEmpty()) {
+            if (selected.isEmpty()) {
                 this.selection.play();
-                ScreenExample.this.selected = Optional.of(new Rectangle(
+                selected = Optional.of(new Rectangle(
                     computeX(Gdx.input.getX()), 
                     computeY(Gdx.input.getY()),
                     RECT_WIDTH, RECT_HEIGHT));
