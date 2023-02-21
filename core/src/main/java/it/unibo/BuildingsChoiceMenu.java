@@ -1,10 +1,7 @@
 package it.unibo;
+
 import java.util.ArrayList;
-
 import java.util.List;
-
-
-
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.ScreenAdapter;
@@ -14,7 +11,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -22,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class BuildingsChoiceMenu extends ScreenAdapter {
 
@@ -48,9 +43,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selectedBuildingName = buildingName+EXTENSION;
-                /*only test*/
                 System.out.println("Selected building: " + selectedBuildingName);
-                /*end test */
             }
         });
         return button;
@@ -99,12 +92,41 @@ public class BuildingsChoiceMenu extends ScreenAdapter {
         float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
         
         
-        for (int i = 0; i <= 10; i++) {
-            buttonList.add(addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button1"));
+        for (int i = 0; i <= 1; i++) {
+            //aggiunge i bottoni con delle immagini chiamate immagine1, immagine2, ecc
+            buttonList.add(addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/immagine"+i+".png", "button"+i));
             buttonY += buttonHeight + buttonSpacing;
         }
 
+        /*only test */
         System.out.println(buttonList.size());
+        /*only test*/
+
+        
+        this.stage.addListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch(keycode){
+                    case Input.Keys.UP:
+                        if(index > 0){
+                            index--;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.DOWN:
+                        if(index < buttonList.size() - 1){
+                            index++;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.ENTER:
+                        System.out.println(index);
+                        break;
+                }
+                return true;
+            }
+
+        });
 
 
         Gdx.input.setInputProcessor(stage);
@@ -112,31 +134,48 @@ public class BuildingsChoiceMenu extends ScreenAdapter {
     */
 
     private void selectButton(int index){
-        //imposta il colore di tutti i bottoni a bianco
         for (ImageButton button : buttonList) {
-            button.setColor(Color.WHITE);
+            //setta dimensioni normali
+            button.setBounds(100, 100,0 , 0);
         }
         //imposta il colore del bottone selezionato a rosso
-        buttonList.get(index).setColor(Color.RED);
+        buttonList.get(index).setBounds(200, 200, 200, 200);
 
     }
 
+    /* 
     @Override
     public void show(){
         this.stage = new Stage(new ScreenViewport());
         this.stage.addListener(new InputListener(){
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
+                //controllando di non uscire dai limiti della lista 
+                //TODO
                 switch(keycode){
-                    case Input.Keys.UP -> index++;
-                    case Input.Keys.DOWN -> index--;
-                    case Input.Keys.ENTER -> System.out.println(index);
+                    case Input.Keys.UP:
+                        if(index > 0){
+                            index--;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.DOWN:
+                        if(index < buttonList.size() - 1){
+                            index++;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.ENTER:
+                        System.out.println("PREMUTO");
+                        break;
                 }
                 return true;
             }
+
         });
+        
         Gdx.input.setInputProcessor(stage);
-    }
+    }*/
 
 /*
     @Override
