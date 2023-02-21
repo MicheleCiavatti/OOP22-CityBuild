@@ -11,12 +11,18 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -34,6 +40,15 @@ public class ScreenExample extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected;
+
+
+
+    private int index = 0;
+    private final List<ImageButton> buttonList = new ArrayList<>();
+    private String selectedBuildingName;
+    private static final String EXTENSION = ".png";
+    private static final int NUMBUTTONS=3;
+
 
     public ScreenExample() {
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
@@ -133,8 +148,8 @@ public class ScreenExample extends ScreenAdapter {
                 case Input.Keys.Q -> this.selectingBuilding();
                 case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
                 case Input.Keys.CONTROL_LEFT -> this.pressingCtrl = true;
-                case Input.Keys.UP -> this.scroll.play();
-                case Input.Keys.DOWN -> this.scroll.play();
+                case Input.Keys.UP -> roundButtonList(index+1);
+                case Input.Keys.DOWN -> roundButtonList(index-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
             }
             return false;
@@ -225,14 +240,86 @@ public class ScreenExample extends ScreenAdapter {
             }
             return false;
         }
+    }
 
-        private void roundButtonList(final List<Button> buttonList, int index){
-            if(index < 0){
-                index = buttonList.size() - 1;
+    private ImageButton addButton(float x, float y, float width, float height, String imagePath, String buildingName){
+        Texture iconTexture = new Texture(imagePath);
+        TextureRegion icon = new TextureRegion(iconTexture);
+
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName(buildingName);
+        stage.addActor(button);
+        button.setPosition(x, y);
+        button.setSize(width, height);
+
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedBuildingName = buildingName+EXTENSION;
+                System.out.println("Selected building: " + selectedBuildingName);
             }
-            if(index > buttonList.size() - 1){
-                index = 0;
-            }
+        });
+        return button;
+    }
+
+   
+    public void create() {
+        stage = new Stage();
+        float buttonWidth = 100;
+        float buttonHeight = 100;
+        float buttonSpacing = 10;
+        float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
+        
+        
+        for (int i = 0; i < NUMBUTTONS; i++) {
+            //aggiunge i bottoni con delle immagini chiamate immagine1, immagine2, ecc
+            buttonList.add(addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/immagine"+i+".png", "button"+i));
+            buttonY += buttonHeight + buttonSpacing;
         }
+
+        /*this.stage.addListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch(keycode){
+                    case Input.Keys.DOWN:
+                        index++;
+                        roundButtonList();
+                        selectButton(index);
+                        break;
+                    case Input.Keys.UP:
+                        index--;
+                        roundButtonList();
+                        selectButton(index);
+                        break;
+                    case Input.Keys.ENTER:
+                        System.out.println("Selected building: " + buttonList.get(index).getName());
+                        break;
+                }
+                return true;
+            }
+
+        });*/
+        //Gdx.input.setInputProcessor(stage);
+    }
+
+
+    private void roundButtonList(int param){
+        
+        index = param;
+        if(index < 0){
+            index = buttonList.size() - 1;
+        }
+        if(index > buttonList.size() - 1){
+            index = 0;
+        }
+        selectButton(index);
+    }
+
+    private void selectButton(int index){
+        for (ImageButton button : buttonList) {
+            button.setBounds(100, 100,0 , 0);
+        }
+        buttonList.get(index).setBounds(200, 200, 200, 200);
+
     }
 }
