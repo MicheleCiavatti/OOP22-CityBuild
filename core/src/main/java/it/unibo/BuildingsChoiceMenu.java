@@ -1,4 +1,11 @@
 package it.unibo;
+import java.util.ArrayList;
+
+import java.util.List;
+
+
+
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
@@ -15,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationListener {
 
@@ -22,8 +30,9 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
     private boolean isResizing;
-    private ImageButton[] buttons = new ImageButton[11];
-    private int selectIndexButton = 0;
+    private int index = 0;
+    private final List<ImageButton> buttonList = new ArrayList<>();
+
 
     private ImageButton addButton(float x, float y, float width, float height, String imagePath, String buildingName){
         Texture iconTexture = new Texture(imagePath);
@@ -39,7 +48,9 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selectedBuildingName = buildingName+EXTENSION;
+                /*only test*/
                 System.out.println("Selected building: " + selectedBuildingName);
+                /*end test */
             }
         });
         return button;
@@ -79,53 +90,52 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         Gdx.input.setInputProcessor(stage);
 }*/
 
-@Override
-public void create() {
-    stage = new Stage();
-    float buttonWidth = 100;
-    float buttonHeight = 100;
-    float buttonSpacing = 10;
-    float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
-    
-    
-    for (int i = 0; i <= 10; i++) {
-        buttons[i]=addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button1");
-        buttonY += buttonHeight + buttonSpacing;
+    @Override
+    public void create() {
+        stage = new Stage();
+        float buttonWidth = 100;
+        float buttonHeight = 100;
+        float buttonSpacing = 10;
+        float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
+        
+        
+        for (int i = 0; i <= 10; i++) {
+            buttonList.add(addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button1"));
+            buttonY += buttonHeight + buttonSpacing;
+        }
 
-        buttons[i].addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                if (keycode == Input.Keys.UP) {
-                    selectButton(selectIndexButton - 1);
-                } else if (keycode == Input.Keys.DOWN) {
-                    selectButton(selectIndexButton + 1);
-                } else if (keycode == Input.Keys.ENTER) {
-                    System.out.println("Selected building: " + buttons[selectIndexButton].getName());
-                }
-                return false;
-            }
-        });
+        System.out.println(buttonList.size());
 
-        stage.addActor(buttons[i]);
+
         Gdx.input.setInputProcessor(stage);
     }
 
-    selectButton(0);
-}
-
     private void selectButton(int index){
         //imposta il colore di tutti i bottoni a bianco
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i].setColor(Color.RED);
+        for (ImageButton button : buttonList) {
+            button.setColor(Color.WHITE);
         }
-        selectIndexButton = MathUtils.clamp(index, 0, buttons.length - 1);
-        //only test
-        System.out.println(selectIndexButton);
-        //end test
-        buttons[selectIndexButton].setColor(Color.GREEN);
+        //imposta il colore del bottone selezionato a rosso
+        buttonList.get(index).setColor(Color.RED);
 
     }
 
+    @Override
+    public void show(){
+        this.stage = new Stage(new ScreenViewport());
+        this.stage.addListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch(keycode){
+                    case Input.Keys.UP -> index++;
+                    case Input.Keys.DOWN -> index--;
+                    case Input.Keys.ENTER -> System.out.println(index);
+                }
+                return true;
+            }
+        });
+        Gdx.input.setInputProcessor(stage);
+    }
 
     @Override
     public void render() {
