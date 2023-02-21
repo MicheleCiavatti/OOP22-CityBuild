@@ -102,6 +102,35 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         System.out.println(buttonList.size());
         /*only test*/
 
+        
+        this.stage.addListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                //controllando di non uscire dai limiti della lista 
+                //TODO
+                switch(keycode){
+                    case Input.Keys.UP:
+                        if(index > 0){
+                            index--;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.DOWN:
+                        if(index < buttonList.size() - 1){
+                            index++;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.ENTER:
+                        System.out.println(index);
+                        break;
+                }
+                return true;
+            }
+
+        });
+
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -115,6 +144,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
 
     }
 
+    /* 
     @Override
     public void show(){
         this.stage = new Stage(new ScreenViewport());
@@ -124,15 +154,29 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
                 //controllando di non uscire dai limiti della lista 
                 //TODO
                 switch(keycode){
-                    case Input.Keys.UP -> index++;
-                    case Input.Keys.DOWN -> index--;
-                    case Input.Keys.ENTER -> System.out.println(index);
+                    case Input.Keys.UP:
+                        if(index > 0){
+                            index--;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.DOWN:
+                        if(index < buttonList.size() - 1){
+                            index++;
+                            selectButton(index);
+                        }
+                        break;
+                    case Input.Keys.ENTER:
+                        System.out.println("PREMUTO");
+                        break;
                 }
                 return true;
             }
+
         });
+        
         Gdx.input.setInputProcessor(stage);
-    }
+    }*/
 
     @Override
     public void render() {
