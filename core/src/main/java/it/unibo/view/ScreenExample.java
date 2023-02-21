@@ -32,6 +32,10 @@ public class ScreenExample extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
+    private static final float BUTTON_WIDTH = 100;
+    private static final float BUTTON_HEIGHT = 100;
+    private static final float BUTTON_SPACING = 10;
+
 
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
@@ -68,6 +72,16 @@ public class ScreenExample extends ScreenAdapter {
         this.warning.hide();
         this.warning.text("You can't place a building on top of another building");
         this.stage.addActor(warning);
+
+        
+        float buttonY = (Gdx.graphics.getHeight() - BUTTON_HEIGHT * 3 - BUTTON_SPACING * 2) / 2;
+        
+        
+        for (int i = 0; i < NUMBUTTONS; i++) {
+            //aggiunge i bottoni con delle immagini chiamate immagine1, immagine2, ecc
+            buttonList.add(addButton((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, buttonY, "button"+i));
+            buttonY += BUTTON_HEIGHT + BUTTON_SPACING;
+        }
     }
 
     /**{@inheritDoc} */
@@ -88,6 +102,46 @@ public class ScreenExample extends ScreenAdapter {
         this.shapeRenderer.dispose();
         this.theme.dispose();
         this.stage.dispose();
+    }
+
+    private ImageButton addButton(float x, float y, String buildingName){
+        Texture iconTexture = new Texture("images" + File.separator + "badlogic.jpg");
+        TextureRegion icon = new TextureRegion(iconTexture);
+
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName(buildingName);
+        stage.addActor(button);
+        button.setPosition(x, y);
+        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedBuildingName = buildingName+EXTENSION;
+                System.out.println("Selected building: " + selectedBuildingName);
+            }
+        });
+        return button;
+    }
+
+    private void roundButtonList(int param){
+        
+        index = param;
+        if(index < 0){
+            index = buttonList.size() - 1;
+        }
+        if(index > buttonList.size() - 1){
+            index = 0;
+        }
+        selectButton(index);
+    }
+
+    private void selectButton(int index){
+        for (ImageButton button : buttonList) {
+            button.setBounds(100, 100,0 , 0);
+        }
+        buttonList.get(index).setBounds(200, 200, 200, 200);
+
     }
 
     private void startMusic() {
@@ -240,86 +294,5 @@ public class ScreenExample extends ScreenAdapter {
             }
             return false;
         }
-    }
-
-    private ImageButton addButton(float x, float y, float width, float height, String imagePath, String buildingName){
-        Texture iconTexture = new Texture(imagePath);
-        TextureRegion icon = new TextureRegion(iconTexture);
-
-        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(buildingName);
-        stage.addActor(button);
-        button.setPosition(x, y);
-        button.setSize(width, height);
-
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                selectedBuildingName = buildingName+EXTENSION;
-                System.out.println("Selected building: " + selectedBuildingName);
-            }
-        });
-        return button;
-    }
-
-   
-    public void create() {
-        stage = new Stage();
-        float buttonWidth = 100;
-        float buttonHeight = 100;
-        float buttonSpacing = 10;
-        float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
-        
-        
-        for (int i = 0; i < NUMBUTTONS; i++) {
-            //aggiunge i bottoni con delle immagini chiamate immagine1, immagine2, ecc
-            buttonList.add(addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/immagine"+i+".png", "button"+i));
-            buttonY += buttonHeight + buttonSpacing;
-        }
-
-        /*this.stage.addListener(new InputListener(){
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                switch(keycode){
-                    case Input.Keys.DOWN:
-                        index++;
-                        roundButtonList();
-                        selectButton(index);
-                        break;
-                    case Input.Keys.UP:
-                        index--;
-                        roundButtonList();
-                        selectButton(index);
-                        break;
-                    case Input.Keys.ENTER:
-                        System.out.println("Selected building: " + buttonList.get(index).getName());
-                        break;
-                }
-                return true;
-            }
-
-        });*/
-        //Gdx.input.setInputProcessor(stage);
-    }
-
-
-    private void roundButtonList(int param){
-        
-        index = param;
-        if(index < 0){
-            index = buttonList.size() - 1;
-        }
-        if(index > buttonList.size() - 1){
-            index = 0;
-        }
-        selectButton(index);
-    }
-
-    private void selectButton(int index){
-        for (ImageButton button : buttonList) {
-            button.setBounds(100, 100,0 , 0);
-        }
-        buttonList.get(index).setBounds(200, 200, 200, 200);
-
     }
 }
