@@ -106,8 +106,6 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         this.stage.addListener(new InputListener(){
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
-                //controllando di non uscire dai limiti della lista 
-                //TODO
                 switch(keycode){
                     case Input.Keys.UP:
                         if(index > 0){
