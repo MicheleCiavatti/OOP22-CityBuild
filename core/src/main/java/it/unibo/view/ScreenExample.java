@@ -15,13 +15,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -32,8 +29,8 @@ public class ScreenExample extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
-    private static final float BUTTON_WIDTH = 100;
-    private static final float BUTTON_HEIGHT = 100;
+    private static final float BUTTON_WIDTH = 300;
+    private static final float BUTTON_HEIGHT = 300;
     private static final float BUTTON_SPACING = 10;
 
 
@@ -48,10 +45,12 @@ public class ScreenExample extends ScreenAdapter {
 
 
     private int index = 0;
-    private final List<ImageButton> buttonList = new ArrayList<>();
+    private final String[] imageList = {"buildings1", "buildings2", "buildings3"};
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
-    private static final int NUMBUTTONS=3;
+    private static final int NUMBUTTONS = 3;
+
+    
 
 
     public ScreenExample() {
@@ -74,19 +73,24 @@ public class ScreenExample extends ScreenAdapter {
         this.stage.addActor(warning);
 
         
-        float buttonY = (Gdx.graphics.getHeight() - BUTTON_HEIGHT * 3 - BUTTON_SPACING * 2) / 2;
         
         
-        for (int i = 0; i < NUMBUTTONS; i++) {
-            //aggiunge i bottoni con delle immagini chiamate immagine1, immagine2, ecc
-            buttonList.add(addButton((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, buttonY, "button"+i));
-            buttonY += BUTTON_HEIGHT + BUTTON_SPACING;
-        }
+        
+        Texture iconTexture = new Texture("buildings1.png");
+        TextureRegion icon = new TextureRegion(iconTexture);
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName("buildings1");
+        stage.addActor(button);
+        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
+        
+        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+
     }
 
     /**{@inheritDoc} */
     @Override
     public void render(float delta) {
+
         ScreenUtils.clear(0, 0, 0, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
@@ -104,44 +108,38 @@ public class ScreenExample extends ScreenAdapter {
         this.stage.dispose();
     }
 
-    private ImageButton addButton(float x, float y, String buildingName){
-        Texture iconTexture = new Texture("images" + File.separator + "badlogic.jpg");
-        TextureRegion icon = new TextureRegion(iconTexture);
-
-        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(buildingName);
-        stage.addActor(button);
-        button.setPosition(x, y);
-        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                selectedBuildingName = buildingName+EXTENSION;
-                System.out.println("Selected building: " + selectedBuildingName);
-            }
-        });
-        return button;
-    }
-
     private void roundButtonList(int param){
+        if (param == 1){
+            index++;
+            if (index == NUMBUTTONS){
+                index = 0;
+            }
+        } else if (param == -1){
+            index--;
+            if (index == -1){
+                index = NUMBUTTONS-1;
+
+            }
+        }
         
-        index = param;
-        if(index < 0){
-            index = buttonList.size() - 1;
-        }
-        if(index > buttonList.size() - 1){
-            index = 0;
-        }
         selectButton(index);
+
     }
+
 
     private void selectButton(int index){
-        for (ImageButton button : buttonList) {
-            button.setBounds(100, 100,0 , 0);
-        }
-        buttonList.get(index).setBounds(200, 200, 200, 200);
-
+        stage.clear();
+        String buildingPath = imageList[index] + EXTENSION;
+        selectedBuildingName = imageList[index] + EXTENSION;
+        System.out.println("Selected building: " + selectedBuildingName);
+        Texture iconTexture = new Texture(buildingPath);
+        TextureRegion icon = new TextureRegion(iconTexture);
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName(imageList[index]);
+        stage.addActor(button);
+        button.setPosition(0, 0);
+        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
+        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
     }
 
     private void startMusic() {
@@ -202,8 +200,8 @@ public class ScreenExample extends ScreenAdapter {
                 case Input.Keys.Q -> this.selectingBuilding();
                 case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
                 case Input.Keys.CONTROL_LEFT -> this.pressingCtrl = true;
-                case Input.Keys.UP -> roundButtonList(index+1);
-                case Input.Keys.DOWN -> roundButtonList(index-1);
+                case Input.Keys.UP -> roundButtonList(1);
+                case Input.Keys.DOWN -> roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
             }
             return false;

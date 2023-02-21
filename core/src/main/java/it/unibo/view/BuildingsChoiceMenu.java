@@ -28,7 +28,6 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
     private int index = 0;
     private final List<ImageButton> buttonList = new ArrayList<>();
 
-
     private ImageButton addButton(float x, float y, float width, float height, String imagePath, String buildingName){
         Texture iconTexture = new Texture(imagePath);
         TextureRegion icon = new TextureRegion(iconTexture);
@@ -53,7 +52,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
     @Override
     public void dispose() {
         stage.dispose(); 
-    }
+    
 
  /*   @Override
     public void create() {
@@ -83,7 +82,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         Gdx.input.setInputProcessor(stage);
 }*/
 
-    @Override
+    /*@Override
     public void create() {
         stage = new Stage();
         float buttonWidth = 100;
@@ -238,6 +237,13 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
     public void render() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'render'");
+    }
+
+
+    @Override
+    public void create() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 }
 
