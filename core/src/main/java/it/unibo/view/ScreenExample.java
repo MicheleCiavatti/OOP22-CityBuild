@@ -31,6 +31,7 @@ public class ScreenExample extends ScreenAdapter {
     private final List<Rectangle> buildings;
     private final Dialog warning;
     private final Stage stage;
+    private final Rectangle border;
     private Optional<Rectangle> selected;
 
     public ScreenExample() {
@@ -40,6 +41,7 @@ public class ScreenExample extends ScreenAdapter {
         this.selected = Optional.empty();
         this.warning = new Dialog("Warning", new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json")));
         this.stage = new Stage(new ScreenViewport());
+        this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new GameProcessor());
     }
 
@@ -87,7 +89,7 @@ public class ScreenExample extends ScreenAdapter {
 
     private boolean isValidPosition(final Rectangle rectangle) {
         return buildings.stream().noneMatch(rect -> rect.overlaps(rectangle))
-            && new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()).contains(rectangle);
+            && this.border.contains(rectangle);
     }
 
     private class GameProcessor extends InputAdapter {
