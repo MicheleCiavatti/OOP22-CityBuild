@@ -48,9 +48,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selectedBuildingName = buildingName+EXTENSION;
-                /*only test*/
                 System.out.println("Selected building: " + selectedBuildingName);
-                /*end test */
             }
         });
         return button;
@@ -104,8 +102,9 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
             buttonY += buttonHeight + buttonSpacing;
         }
 
+        /*only test */
         System.out.println(buttonList.size());
-
+        /*only test*/
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -126,6 +125,8 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         this.stage.addListener(new InputListener(){
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
+                //controllando di non uscire dai limiti della lista 
+                //TODO
                 switch(keycode){
                     case Input.Keys.UP -> index++;
                     case Input.Keys.DOWN -> index--;
