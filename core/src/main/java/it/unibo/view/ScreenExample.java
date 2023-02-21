@@ -79,10 +79,15 @@ public class ScreenExample extends ScreenAdapter {
     }
 
     private void drawRectangle(final Rectangle rectangle) {
-        this.shapeRenderer.setColor(buildings.stream().anyMatch(rect -> rect.overlaps(rectangle))
-            ? Color.RED
-            : Color.GREEN);
+        this.shapeRenderer.setColor(this.isValidPosition(rectangle)
+            ? Color.GREEN
+            : Color.RED);
         this.shapeRenderer.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+
+    private boolean isValidPosition(final Rectangle rectangle) {
+        return buildings.stream().noneMatch(rect -> rect.overlaps(rectangle))
+            && new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()).contains(rectangle);
     }
 
     private class GameProcessor extends InputAdapter {
@@ -182,7 +187,7 @@ public class ScreenExample extends ScreenAdapter {
         /*When the user has selected a building from the icon menù, this method 
         is used to determine the consequences of a click of the mouse */
         private boolean handlePlacement() {
-            if (buildings.stream().allMatch(rect -> !rect.overlaps(selected.get()))) {
+            if (isValidPosition(selected.get())) {
                 this.construction.play();
                 buildings.add(selected.get());
             } else {
