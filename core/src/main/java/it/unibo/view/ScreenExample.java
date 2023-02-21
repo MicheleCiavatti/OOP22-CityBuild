@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -223,6 +224,15 @@ public class ScreenExample extends ScreenAdapter {
                 return true;
             }
             return false;
+        }
+
+        private void roundButtonList(final List<Button> buttonList, int index){
+            if(index < 0){
+                index = buttonList.size() - 1;
+            }
+            if(index > buttonList.size() - 1){
+                index = 0;
+            }
         }
     }
 }
