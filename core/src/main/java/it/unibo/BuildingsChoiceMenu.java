@@ -2,11 +2,15 @@ package it.unibo;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -18,8 +22,10 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
     private boolean isResizing;
+    private ImageButton[] buttons = new ImageButton[11];
+    private int selectIndexButton = 0;
 
-    private void addButton(float x, float y, float width, float height, String imagePath, String buildingName){
+    private ImageButton addButton(float x, float y, float width, float height, String imagePath, String buildingName){
         Texture iconTexture = new Texture(imagePath);
         TextureRegion icon = new TextureRegion(iconTexture);
 
@@ -36,7 +42,9 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
                 System.out.println("Selected building: " + selectedBuildingName);
             }
         });
+        return button;
     }
+
 
     @Override
     public void dispose() {
@@ -80,13 +88,43 @@ public void create() {
     float buttonY = (Gdx.graphics.getHeight() - buttonHeight * 3 - buttonSpacing * 2) / 2;
     
     
-    for (int i = 1; i <= 10; i++) {
-        addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button" + i);
+    for (int i = 0; i <= 10; i++) {
+        buttons[i]=addButton((Gdx.graphics.getWidth() - buttonWidth) / 2, buttonY, buttonWidth, buttonHeight, "./desktop/bin/main/badlogic.jpg", "button1");
         buttonY += buttonHeight + buttonSpacing;
+
+        buttons[i].addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.UP) {
+                    selectButton(selectIndexButton - 1);
+                } else if (keycode == Input.Keys.DOWN) {
+                    selectButton(selectIndexButton + 1);
+                } else if (keycode == Input.Keys.ENTER) {
+                    System.out.println("Selected building: " + buttons[selectIndexButton].getName());
+                }
+                return true;
+            }
+        });
+
+        stage.addActor(buttons[i]);
     }
 
-    Gdx.input.setInputProcessor(stage);
+    selectButton(0);
 }
+
+    private void selectButton(int index){
+        //imposta il colore di tutti i bottoni a bianco
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setColor(Color.RED);
+        }
+        selectIndexButton = MathUtils.clamp(index, 0, buttons.length - 1);
+        //only test
+        System.out.println(selectIndexButton);
+        //end test
+        buttons[selectIndexButton].setColor(Color.GREEN);
+
+    }
+
 
     @Override
     public void render() {
