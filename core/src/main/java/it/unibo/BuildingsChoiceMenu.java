@@ -1,4 +1,7 @@
 package it.unibo;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
@@ -15,8 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationListener {
+public class BuildingsChoiceMenu extends ScreenAdapter {
 
     private Stage stage;
     private String selectedBuildingName;
@@ -79,6 +83,7 @@ public class BuildingsChoiceMenu extends ScreenAdapter implements ApplicationLis
         Gdx.input.setInputProcessor(stage);
 }*/
 
+/*
 @Override
 public void create() {
     stage = new Stage();
@@ -95,6 +100,7 @@ public void create() {
         buttons[i].addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
+                System.out.println("Listener");
                 if (keycode == Input.Keys.UP) {
                     selectButton(selectIndexButton - 1);
                 } else if (keycode == Input.Keys.DOWN) {
@@ -126,9 +132,29 @@ public void create() {
 
     }
 
+    */
+    private final List<ImageButton> listButtons = new ArrayList<>();
+    private int index = 0;
 
     @Override
-    public void render() {
+    public void show() {
+        this.stage = new Stage(new ScreenViewport());
+        this.stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch(keycode) {
+                    case Input.Keys.UP -> index++;
+                    case Input.Keys.DOWN -> index--;
+                    case Input.Keys.ENTER -> System.out.println(index);
+                }
+                return true;
+            }
+        });
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    @Override
+    public void render(float delta) {
         if (!isResizing) {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             stage.act(Gdx.graphics.getDeltaTime());
@@ -162,9 +188,6 @@ public void create() {
         stage.draw();
     }
 
-
-
-    
 }
 
 

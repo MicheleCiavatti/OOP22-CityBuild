@@ -12,6 +12,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("CityBuild");
-		new Lwjgl3Application(new BuildingsChoiceMenu(), config);
+		new Lwjgl3Application(new Menu(), config);
 	}
 }
