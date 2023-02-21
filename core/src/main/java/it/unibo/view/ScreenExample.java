@@ -2,7 +2,10 @@ package it.unibo.view;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -15,31 +18,47 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import it.unibo.model.api.Resource;
 
 public class ScreenExample extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
 
+    private final Table table;
+    private final Map<Resource, Integer> resources;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final List<Rectangle> buildings;
+    private final Skin skin;
     private final Dialog warning;
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected;
 
     public ScreenExample() {
+        this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
+        this.table = new Table(skin);
+        this.resources = new HashMap<>(); //TODO, now empty filling
+        Arrays.stream(Resource.values()).forEach(res -> this.resources.put(res, 0));
+        this.resources.entrySet().forEach(entry -> {
+            final String s = entry.getKey() + ": " + entry.getValue();
+            this.table.add(new Label(s, skin));
+            this.table.row();
+        });
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
-        this.warning = new Dialog("Warning", new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json")));
+        this.warning = new Dialog("Warning", skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new GameProcessor());
@@ -52,6 +71,9 @@ public class ScreenExample extends ScreenAdapter {
         this.warning.hide();
         this.warning.text("You can't place a building on top of another building");
         this.stage.addActor(warning);
+        this.stage.addActor(this.table);
+        this.table.setFillParent(true);
+        this.table.top().right();
     }
 
     /**{@inheritDoc} */
