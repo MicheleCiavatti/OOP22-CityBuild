@@ -102,11 +102,12 @@ public void create() {
                 } else if (keycode == Input.Keys.ENTER) {
                     System.out.println("Selected building: " + buttons[selectIndexButton].getName());
                 }
-                return true;
+                return false;
             }
         });
 
         stage.addActor(buttons[i]);
+        Gdx.input.setInputProcessor(stage);
     }
 
     selectButton(0);
