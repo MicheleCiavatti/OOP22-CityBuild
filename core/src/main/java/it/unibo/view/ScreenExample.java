@@ -14,13 +14,20 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -32,6 +39,9 @@ public class ScreenExample extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
+    private static final float BUTTON_WIDTH = 100;
+    private static final float BUTTON_HEIGHT = 100;
+    private static final float BUTTON_SPACING = 10;
 
     private final Table table;
     private final Map<Resource, Integer> resources;
@@ -43,6 +53,15 @@ public class ScreenExample extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected;
+
+
+
+    private int index = 0;
+    private final List<ImageButton> buttonList = new ArrayList<>();
+    private String selectedBuildingName;
+    private static final String EXTENSION = ".png";
+    private static final int NUMBUTTONS=3;
+
 
     public ScreenExample() {
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
@@ -94,6 +113,46 @@ public class ScreenExample extends ScreenAdapter {
         this.shapeRenderer.dispose();
         this.theme.dispose();
         this.stage.dispose();
+    }
+
+    private ImageButton addButton(float x, float y, String buildingName){
+        Texture iconTexture = new Texture("images" + File.separator + "badlogic.jpg");
+        TextureRegion icon = new TextureRegion(iconTexture);
+
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName(buildingName);
+        stage.addActor(button);
+        button.setPosition(x, y);
+        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectedBuildingName = buildingName+EXTENSION;
+                System.out.println("Selected building: " + selectedBuildingName);
+            }
+        });
+        return button;
+    }
+
+    private void roundButtonList(int param){
+        
+        index = param;
+        if(index < 0){
+            index = buttonList.size() - 1;
+        }
+        if(index > buttonList.size() - 1){
+            index = 0;
+        }
+        selectButton(index);
+    }
+
+    private void selectButton(int index){
+        for (ImageButton button : buttonList) {
+            button.setBounds(100, 100,0 , 0);
+        }
+        buttonList.get(index).setBounds(200, 200, 200, 200);
+
     }
 
     private void startMusic() {
@@ -154,8 +213,8 @@ public class ScreenExample extends ScreenAdapter {
                 case Input.Keys.Q -> this.selectingBuilding();
                 case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
                 case Input.Keys.CONTROL_LEFT -> this.pressingCtrl = true;
-                case Input.Keys.UP -> this.scroll.play();
-                case Input.Keys.DOWN -> this.scroll.play();
+                case Input.Keys.UP -> roundButtonList(index+1);
+                case Input.Keys.DOWN -> roundButtonList(index-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
             }
             return false;

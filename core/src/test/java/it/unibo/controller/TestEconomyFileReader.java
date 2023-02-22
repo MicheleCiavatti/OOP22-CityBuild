@@ -18,12 +18,7 @@ public class TestEconomyFileReader {
     @Test
     public void testHouse() {
         var tables = economyFileReader.getSimpleEconomyTables(Resource.CITIZEN);
-<<<<<<< HEAD
-        assertEquals(Map.of(Resource.CITIZEN, 10), tables.get(0));
-        assertEquals(Map.of(Resource.METAL, 5, Resource.WOOD, 7), tables.get(1));
-=======
         assertNotNull(tables);
         assertEquals(tables.size(), 3);
->>>>>>> feature-building
     }
 }
