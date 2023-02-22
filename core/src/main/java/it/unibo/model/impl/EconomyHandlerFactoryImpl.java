@@ -7,7 +7,7 @@ public class EconomyHandlerFactoryImpl implements EconomyHandlerFactory {
 
     @Override
     public EconomyHandler createEconomyHandler() {
-        return null;
+        return new EconomyHandlerImpl();
     }
     
 }
