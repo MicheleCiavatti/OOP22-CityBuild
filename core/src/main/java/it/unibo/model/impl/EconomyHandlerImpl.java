@@ -2,10 +2,13 @@ package it.unibo.model.impl;
 
 import java.util.Map;
 
+import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.model.api.EconomyHandler;
 import it.unibo.model.api.Resource;
 
 public class EconomyHandlerImpl  implements EconomyHandler{
+
+    private final EconomyFileReader fileReader;
 
     @Override
     public Map<Resource, Integer> getSimpleCostTable(Resource resource) {
