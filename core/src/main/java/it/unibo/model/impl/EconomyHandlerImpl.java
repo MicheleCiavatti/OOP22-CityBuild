@@ -3,47 +3,46 @@ package it.unibo.model.impl;
 import java.util.Map;
 
 import it.unibo.controller.api.EconomyFileReader;
+import it.unibo.controller.impl.EconomyFileReaderImpl;
 import it.unibo.model.api.EconomyHandler;
 import it.unibo.model.api.Resource;
 
-public class EconomyHandlerImpl  implements EconomyHandler{
+public class EconomyHandlerImpl implements EconomyHandler{
 
     private final EconomyFileReader fileReader;
+    
+    public EconomyHandlerImpl() {
+        this.fileReader = new EconomyFileReaderImpl();
+    }
 
     @Override
     public Map<Resource, Integer> getSimpleCostTable(Resource resource) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSimpleCostTable'");
+        return this.fileReader.getSimpleEconomyTables(resource).get(1);
     }
 
     @Override
     public Map<Resource, Integer> getSimpleRevenueTable(Resource resource) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSimpleRevenueTable'");
+        return this.fileReader.getSimpleEconomyTables(resource).get(0);
     }
 
     @Override
     public Map<Resource, Integer> getSimpleUpgradeTable(Resource resource) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSimpleUpgradeTable'");
+        return this.fileReader.getSimpleEconomyTables(resource).get(2);
     }
 
     @Override
     public Map<Resource, Integer> getAdvancedCostTable(Resource resource) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAdvancedCostTable'");
+        return this.fileReader.getAdvancedEconomyTables(resource).get(1);
     }
 
     @Override
     public Map<Resource, Integer> getAdvancedRevenueTable(Resource resource) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAdvancedRevenueTable'");
+        return this.fileReader.getAdvancedEconomyTables(resource).get(0);
     }
 
     @Override
     public Map<Resource, Integer> getAdvancedUpgradeTable(Resource resource) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAdvancedUpgradeTable'");
+        return this.fileReader.getAdvancedEconomyTables(resource).get(2);
     }
     
 }
