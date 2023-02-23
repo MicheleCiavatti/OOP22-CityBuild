@@ -66,7 +66,7 @@ public class ScreenExample extends ScreenAdapter {
     public void show() {
         this.startMusic();
         this.warning.hide();
-        this.warning.text("You can't place a building on top of another building");
+        this.warning.text("Wrong position");
         this.stage.addActor(warning);
 
         Texture iconTexture = new Texture("buildings1.png");
@@ -138,6 +138,7 @@ public class ScreenExample extends ScreenAdapter {
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index]);
         table.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(10);
+        table.top().left();
         //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
