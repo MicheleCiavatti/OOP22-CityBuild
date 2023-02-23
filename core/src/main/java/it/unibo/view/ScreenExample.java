@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -32,7 +33,6 @@ public class ScreenExample extends ScreenAdapter {
 
     private static final float BUTTON_WIDTH = 300;
     private static final float BUTTON_HEIGHT = 300;
-    private static final float BUTTON_SPACING = 10;
 
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
@@ -47,6 +47,8 @@ public class ScreenExample extends ScreenAdapter {
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
     private static final int NUMBUTTONS = 3;
+    private Table table = new Table();
+
 
     public ScreenExample() {
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
@@ -70,10 +72,11 @@ public class ScreenExample extends ScreenAdapter {
         Texture iconTexture = new Texture("buildings1.png");
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        table.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT);
         button.setName("buildings1");
-        stage.addActor(button);
-        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
+        button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        //aggiunge bottone alla tabella
     }
 
     /**{@inheritDoc} */
@@ -95,8 +98,14 @@ public class ScreenExample extends ScreenAdapter {
         this.theme.dispose();
         this.stage.dispose();
     }
+ 
 
     private void roundButtonList(int param){
+
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/scroll.ogg"));
+        sound.play();
+
+
         if (param == 1){
             index++;
             if (index == NUMBUTTONS){
@@ -114,7 +123,13 @@ public class ScreenExample extends ScreenAdapter {
 
 
     private void selectButton(int index){
-        stage.clear();
+
+        //crea un pane con un bottone
+       
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.clear();
         String buildingPath = imageList[index] + EXTENSION;
         selectedBuildingName = imageList[index] + EXTENSION;
         System.out.println("Selected building: " + selectedBuildingName);
@@ -122,9 +137,8 @@ public class ScreenExample extends ScreenAdapter {
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index]);
-        stage.addActor(button);
-        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
-        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        table.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(10);
+        //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
     private void startMusic() {
@@ -239,6 +253,7 @@ public class ScreenExample extends ScreenAdapter {
             return false;
         }
 
+
         /*When the user has selected a building from the icon menù, this method 
         is used to determine the consequences of a click of the mouse */
         private boolean handlePlacement() {
@@ -278,4 +293,7 @@ public class ScreenExample extends ScreenAdapter {
             return false;
         }
     }
+
+    
+
 }
