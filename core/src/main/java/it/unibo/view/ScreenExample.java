@@ -13,12 +13,14 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter.GradientColorValue;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -48,6 +50,8 @@ public class ScreenExample extends ScreenAdapter {
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
     private static final int NUMBUTTONS = 3;
+    private Table table = new Table();
+
 
     
 
@@ -76,12 +80,14 @@ public class ScreenExample extends ScreenAdapter {
         Texture iconTexture = new Texture("buildings1.png");
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        table.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT);
 
         button.setName("buildings1");
-        stage.addActor(button);
-        //in alto a sinistra
         button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        //aggiunge bottone alla tabella
+        
+
 
     }
 
@@ -125,19 +131,18 @@ public class ScreenExample extends ScreenAdapter {
 
             }
         }
-        refreshButtonList();
-        
         selectButton(index);
-
-    }
-
-    private void refreshButtonList(){
-        stage.getActors().removeRange(0, stage.getActors().size-1);
     }
 
 
     private void selectButton(int index){
-        //stage.clear();
+
+        //crea un pane con un bottone
+       
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        table.clear();
         String buildingPath = imageList[index] + EXTENSION;
         selectedBuildingName = imageList[index] + EXTENSION;
         System.out.println("Selected building: " + selectedBuildingName);
@@ -145,15 +150,11 @@ public class ScreenExample extends ScreenAdapter {
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index]);
-        stage.addActor(button);
-        button.setPosition(0, 0);
 
-        //posizine in alto a sinistra
-        button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
 
-        /* posizione centro
-        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);*/
-        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        table.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(10);
+        //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
     private void startMusic() {
@@ -308,4 +309,7 @@ public class ScreenExample extends ScreenAdapter {
             return false;
         }
     }
+
+    
+
 }
