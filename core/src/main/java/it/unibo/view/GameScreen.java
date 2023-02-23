@@ -224,7 +224,7 @@ public class GameScreen extends ScreenAdapter {
         /**{@inheritDoc} */
         @Override
         public boolean scrolled(final float amountX, final float amountY) {
-            this.scroll.play();
+            this.roundButtonList((int) amountY);
             return true;
         }
 
