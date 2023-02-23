@@ -55,12 +55,11 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     }
 
     private String getPath(final boolean isSimpleBuilding, final Resource r) {
-        if (isSimpleBuilding) {
-            return PATH_RES + File.separator + SIMPLE_BUILDING_DIR 
-            + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION;
-        }
-        return PATH_RES + File.separator + ADVANCED_BUILDING_DIR
-            + File.separator + r.getAdvancedBuilding().toLowerCase() + FILE_EXTENSION;
+        return isSimpleBuilding 
+            ? PATH_RES + File.separator + SIMPLE_BUILDING_DIR 
+                + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION
+            : PATH_RES + File.separator + ADVANCED_BUILDING_DIR
+                + File.separator + r.getAdvancedBuilding().toLowerCase() + FILE_EXTENSION;
     }
 
     private Map<Resource, Integer> getTable(final String key) {

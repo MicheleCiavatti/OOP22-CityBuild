@@ -18,6 +18,7 @@ public class TestEconomyFileReader {
     @Test
     public void testHouse() {
         var tables = economyFileReader.getSimpleEconomyTables(Resource.CITIZEN);
+        System.out.println(tables);
         assertNotNull(tables);
         assertEquals(tables.size(), 3);
     }
