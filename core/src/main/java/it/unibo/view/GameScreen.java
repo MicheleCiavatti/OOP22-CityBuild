@@ -26,7 +26,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class ScreenExample extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
@@ -50,7 +50,7 @@ public class ScreenExample extends ScreenAdapter {
     private Table table = new Table();
 
 
-    public ScreenExample() {
+    public GameScreen() {
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
@@ -77,6 +77,7 @@ public class ScreenExample extends ScreenAdapter {
         button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         //aggiunge bottone alla tabella
+        this.stage.addActor(table);
     }
 
     /**{@inheritDoc} */
@@ -98,41 +99,14 @@ public class ScreenExample extends ScreenAdapter {
         this.theme.dispose();
         this.stage.dispose();
     }
- 
-
-    private void roundButtonList(int param){
-
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/scroll.ogg"));
-        sound.play();
-
-
-        if (param == 1){
-            index++;
-            if (index == NUMBUTTONS){
-                index = 0;
-            }
-        } else if (param == -1){
-            index--;
-            if (index == -1){
-                index = NUMBUTTONS-1;
-
-            }
-        }
-        selectButton(index);
-    }
-
 
     private void selectButton(int index){
 
         //crea un pane con un bottone
-       
         table.setFillParent(true);
-        stage.addActor(table);
-
         table.clear();
         String buildingPath = imageList[index] + EXTENSION;
         selectedBuildingName = imageList[index] + EXTENSION;
-        System.out.println("Selected building: " + selectedBuildingName);
         Texture iconTexture = new Texture(buildingPath);
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
@@ -200,8 +174,8 @@ public class ScreenExample extends ScreenAdapter {
                 case Input.Keys.Q -> this.selectingBuilding();
                 case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
                 case Input.Keys.CONTROL_LEFT -> this.pressingCtrl = true;
-                case Input.Keys.UP -> roundButtonList(1);
-                case Input.Keys.DOWN -> roundButtonList(-1);
+                case Input.Keys.UP -> this.roundButtonList(1);
+                case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
             }
             return false;
@@ -293,8 +267,22 @@ public class ScreenExample extends ScreenAdapter {
             }
             return false;
         }
-    }
 
+        private void roundButtonList(int param){
+            this.scroll.play();
+            if (param == 1){
+                index++;
+                if (index == NUMBUTTONS){
+                    index = 0;
+                }
+            } else if (param == -1){
+                index--;
+                if (index == -1){
+                    index = NUMBUTTONS-1;
     
-
+                }
+            }
+            selectButton(index);
+        }
+    }
 }

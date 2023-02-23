@@ -67,7 +67,7 @@ public class MainMenu extends ScreenAdapter {
 				public void changed(ChangeEvent event, Actor actor) {
 					buttonClick.play();
 					sleeping(DELAY_CLICK_BUTTON);
-					game.setScreen(new ScreenExample());
+					game.setScreen(new GameScreen());
 					//game.setScreen(new GameScreen());
 					dispose();
 				}
