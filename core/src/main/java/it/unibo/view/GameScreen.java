@@ -97,6 +97,7 @@ public class GameScreen extends ScreenAdapter {
         button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         //aggiunge bottone alla tabella
+        tableBuildings.setFillParent(true);
         tableBuildings.top().left();
         this.stage.addActor(tableBuildings);
     }
@@ -124,7 +125,6 @@ public class GameScreen extends ScreenAdapter {
     private void selectButton(int index){
 
         //crea un pane con un bottone
-        tableBuildings.setFillParent(true);
         tableBuildings.clear();
         String buildingPath = imageList[index] + EXTENSION;
         this.selectedBuildingName = imageList[index] + EXTENSION;
