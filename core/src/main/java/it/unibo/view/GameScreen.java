@@ -47,7 +47,7 @@ public class GameScreen extends ScreenAdapter {
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
     private static final int NUMBUTTONS = 3;
-    private Table table = new Table();
+    private Table tableBuildings = new Table();
 
 
     public GameScreen() {
@@ -72,12 +72,12 @@ public class GameScreen extends ScreenAdapter {
         Texture iconTexture = new Texture("buildings1.png");
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        table.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT);
+        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT);
         button.setName("buildings1");
         button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         //aggiunge bottone alla tabella
-        this.stage.addActor(table);
+        this.stage.addActor(tableBuildings);
     }
 
     /**{@inheritDoc} */
@@ -103,16 +103,16 @@ public class GameScreen extends ScreenAdapter {
     private void selectButton(int index){
 
         //crea un pane con un bottone
-        table.setFillParent(true);
-        table.clear();
+        tableBuildings.setFillParent(true);
+        tableBuildings.clear();
         String buildingPath = imageList[index] + EXTENSION;
         selectedBuildingName = imageList[index] + EXTENSION;
         Texture iconTexture = new Texture(buildingPath);
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index]);
-        table.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(10);
-        table.top().left();
+        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(10);
+        tableBuildings.top().left();
         //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
