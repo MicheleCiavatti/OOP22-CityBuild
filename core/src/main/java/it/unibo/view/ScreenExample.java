@@ -31,7 +31,6 @@ public class ScreenExample extends ScreenAdapter {
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final float BUTTON_WIDTH = 300;
     private static final float BUTTON_HEIGHT = 300;
-    private static final float BUTTON_SPACING = 10;
 
 
     private final Music theme;
@@ -106,8 +105,14 @@ public class ScreenExample extends ScreenAdapter {
         this.theme.dispose();
         this.stage.dispose();
     }
+ 
 
     private void roundButtonList(int param){
+
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/scroll.ogg"));
+        sound.play();
+
+
         if (param == 1){
             index++;
             if (index == NUMBUTTONS){
@@ -120,14 +125,19 @@ public class ScreenExample extends ScreenAdapter {
 
             }
         }
+        refreshButtonList();
         
         selectButton(index);
 
     }
 
+    private void refreshButtonList(){
+        stage.getActors().removeRange(0, stage.getActors().size-1);
+    }
+
 
     private void selectButton(int index){
-        stage.clear();
+        //stage.clear();
         String buildingPath = imageList[index] + EXTENSION;
         selectedBuildingName = imageList[index] + EXTENSION;
         System.out.println("Selected building: " + selectedBuildingName);
@@ -257,6 +267,7 @@ public class ScreenExample extends ScreenAdapter {
             }
             return false;
         }
+
 
         /*When the user has selected a building from the icon menù, this method 
         is used to determine the consequences of a click of the mouse */
