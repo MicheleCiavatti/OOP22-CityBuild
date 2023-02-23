@@ -38,7 +38,7 @@ public class MainMenu extends ScreenAdapter {
 
 	public MainMenu(final CityBuild game) {
 		this.game = game;
-		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "button.wav"));
+		this.buttonClick = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "button.ogg"));
 		this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "tlou_theme.mp3"));
 		this.stage = new Stage(new ScreenViewport());
 		this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));

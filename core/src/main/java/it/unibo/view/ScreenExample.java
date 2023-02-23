@@ -29,10 +29,10 @@ public class ScreenExample extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
+
     private static final float BUTTON_WIDTH = 300;
     private static final float BUTTON_HEIGHT = 300;
     private static final float BUTTON_SPACING = 10;
-
 
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
@@ -42,16 +42,11 @@ public class ScreenExample extends ScreenAdapter {
     private final Rectangle border;
     private Optional<Rectangle> selected;
 
-
-
     private int index = 0;
     private final String[] imageList = {"buildings1", "buildings2", "buildings3"};
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
     private static final int NUMBUTTONS = 3;
-
-    
-
 
     public ScreenExample() {
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
@@ -72,25 +67,18 @@ public class ScreenExample extends ScreenAdapter {
         this.warning.text("You can't place a building on top of another building");
         this.stage.addActor(warning);
 
-        
-        
-        
-        
         Texture iconTexture = new Texture("buildings1.png");
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName("buildings1");
         stage.addActor(button);
         button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
-        
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-
     }
 
     /**{@inheritDoc} */
     @Override
     public void render(float delta) {
-
         ScreenUtils.clear(0, 0, 0, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
@@ -121,9 +109,7 @@ public class ScreenExample extends ScreenAdapter {
 
             }
         }
-        
         selectButton(index);
-
     }
 
 
@@ -137,7 +123,6 @@ public class ScreenExample extends ScreenAdapter {
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index]);
         stage.addActor(button);
-        button.setPosition(0, 0);
         button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
     }
