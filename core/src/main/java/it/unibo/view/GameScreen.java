@@ -18,14 +18,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -38,12 +36,12 @@ public class GameScreen extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
-    private static final float BUTTON_WIDTH = 100;
-    private static final float BUTTON_HEIGHT = 100;
-    private static final float BUTTON_SPACING = 10;
 
     private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
+    private static final float BUTTON_WIDTH = 300;
+    private static final float BUTTON_HEIGHT = 300;
+
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final List<Rectangle> buildings;
@@ -54,10 +52,11 @@ public class GameScreen extends ScreenAdapter {
     private Optional<Rectangle> selected;
 
     private int index = 0;
-    private final List<ImageButton> buttonList = new ArrayList<>();
     private String selectedBuildingName;
+    private final String[] imageList = {"buildings1", "buildings2", "buildings3"};
     private static final String EXTENSION = ".png";
-    private static final int NUMBUTTONS=3;
+    private static final int NUMBUTTONS = 3;
+    private Table tableBuildings = new Table();
 
     public GameScreen() {
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
@@ -84,11 +83,22 @@ public class GameScreen extends ScreenAdapter {
     public void show() {
         this.startMusic();
         this.warning.hide();
-        this.warning.text("You can't place a building on top of another building");
+        this.warning.text("Wrong position");
         this.stage.addActor(warning);
         this.stage.addActor(this.tablePlayer);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
+
+        Texture iconTexture = new Texture("buildings1.png");
+        TextureRegion icon = new TextureRegion(iconTexture);
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT);
+        button.setName("buildings1");
+        button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
+        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        //aggiunge bottone alla tabella
+        tableBuildings.top().left();
+        this.stage.addActor(tableBuildings);
     }
 
     /**{@inheritDoc} */
@@ -111,44 +121,19 @@ public class GameScreen extends ScreenAdapter {
         this.stage.dispose();
     }
 
-    private ImageButton addButton(float x, float y, String buildingName){
-        Texture iconTexture = new Texture("images" + File.separator + "badlogic.jpg");
-        TextureRegion icon = new TextureRegion(iconTexture);
-
-        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(buildingName);
-        stage.addActor(button);
-        button.setPosition(x, y);
-        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                selectedBuildingName = buildingName+EXTENSION;
-                System.out.println("Selected building: " + selectedBuildingName);
-            }
-        });
-        return button;
-    }
-
-    private void roundButtonList(int param){
-        
-        index = param;
-        if(index < 0){
-            index = buttonList.size() - 1;
-        }
-        if(index > buttonList.size() - 1){
-            index = 0;
-        }
-        selectButton(index);
-    }
-
     private void selectButton(int index){
-        for (ImageButton button : buttonList) {
-            button.setBounds(100, 100,0 , 0);
-        }
-        buttonList.get(index).setBounds(200, 200, 200, 200);
 
+        //crea un pane con un bottone
+        tableBuildings.setFillParent(true);
+        tableBuildings.clear();
+        String buildingPath = imageList[index] + EXTENSION;
+        this.selectedBuildingName = imageList[index] + EXTENSION;
+        Texture iconTexture = new Texture(buildingPath);
+        TextureRegion icon = new TextureRegion(iconTexture);
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName(imageList[index]);
+        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(10);
+        //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
     private void startMusic() {
@@ -209,8 +194,8 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.Q -> this.selectingBuilding();
                 case Input.Keys.SHIFT_LEFT -> this.pressingShift = true;
                 case Input.Keys.CONTROL_LEFT -> this.pressingCtrl = true;
-                case Input.Keys.UP -> roundButtonList(index+1);
-                case Input.Keys.DOWN -> roundButtonList(index-1);
+                case Input.Keys.UP -> this.roundButtonList(1);
+                case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
             }
             return false;
@@ -263,6 +248,7 @@ public class GameScreen extends ScreenAdapter {
             return false;
         }
 
+
         /*When the user has selected a building from the icon menù, this method 
         is used to determine the consequences of a click of the mouse */
         private boolean handlePlacement() {
@@ -300,6 +286,23 @@ public class GameScreen extends ScreenAdapter {
                 return true;
             }
             return false;
+        }
+
+        private void roundButtonList(int param){
+            this.scroll.play();
+            if (param == 1){
+                index++;
+                if (index == NUMBUTTONS){
+                    index = 0;
+                }
+            } else if (param == -1){
+                index--;
+                if (index == -1){
+                    index = NUMBUTTONS-1;
+    
+                }
+            }
+            selectButton(index);
         }
     }
 }
