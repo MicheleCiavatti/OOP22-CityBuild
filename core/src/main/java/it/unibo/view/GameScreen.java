@@ -20,7 +20,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -35,7 +34,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import it.unibo.model.api.Resource;
 
-public class ScreenExample extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
@@ -43,7 +42,7 @@ public class ScreenExample extends ScreenAdapter {
     private static final float BUTTON_HEIGHT = 100;
     private static final float BUTTON_SPACING = 10;
 
-    private final Table table;
+    private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
@@ -54,24 +53,21 @@ public class ScreenExample extends ScreenAdapter {
     private final Rectangle border;
     private Optional<Rectangle> selected;
 
-
-
     private int index = 0;
     private final List<ImageButton> buttonList = new ArrayList<>();
     private String selectedBuildingName;
     private static final String EXTENSION = ".png";
     private static final int NUMBUTTONS=3;
 
-
-    public ScreenExample() {
+    public GameScreen() {
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
-        this.table = new Table(skin);
+        this.tablePlayer = new Table(skin);
         this.resources = new HashMap<>(); //TODO, now empty filling
         Arrays.stream(Resource.values()).forEach(res -> this.resources.put(res, 0));
         this.resources.entrySet().forEach(entry -> {
             final String s = entry.getKey() + ": " + entry.getValue();
-            this.table.add(new Label(s, skin));
-            this.table.row();
+            this.tablePlayer.add(new Label(s, skin));
+            this.tablePlayer.row();
         });
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new ArrayList<>();
@@ -90,9 +86,9 @@ public class ScreenExample extends ScreenAdapter {
         this.warning.hide();
         this.warning.text("You can't place a building on top of another building");
         this.stage.addActor(warning);
-        this.stage.addActor(this.table);
-        this.table.setFillParent(true);
-        this.table.top().right();
+        this.stage.addActor(this.tablePlayer);
+        this.tablePlayer.setFillParent(true);
+        this.tablePlayer.top().right();
     }
 
     /**{@inheritDoc} */
