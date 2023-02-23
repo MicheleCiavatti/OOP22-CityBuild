@@ -74,15 +74,14 @@ public class ScreenExample extends ScreenAdapter {
 
         
         
-        
-        
         Texture iconTexture = new Texture("buildings1.png");
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+
         button.setName("buildings1");
         stage.addActor(button);
-        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
-        
+        //in alto a sinistra
+        button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 
     }
@@ -138,7 +137,12 @@ public class ScreenExample extends ScreenAdapter {
         button.setName(imageList[index]);
         stage.addActor(button);
         button.setPosition(0, 0);
-        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);
+
+        //posizine in alto a sinistra
+        button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
+
+        /* posizione centro
+        button.setPosition((Gdx.graphics.getWidth() - BUTTON_WIDTH) / 2, (Gdx.graphics.getHeight() - BUTTON_HEIGHT) / 2);*/
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
     }
 
