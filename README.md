@@ -8,6 +8,7 @@ In the game view, follow these commands:
 - Place the building selected with a click of the mouse
 - You can destroy a placed building by holding LEFT_SHIFT and clicking on it
 - You can upgrade a placed building by holding LEFT_CTRL and clicking on it
+- You can see the upgrade cost of a placed building by hovering over it with the mouse while pressing LEFT_CTRL
 
 ### Credits
 #### Music
