@@ -14,12 +14,14 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -49,9 +51,10 @@ public class GameScreen extends ScreenAdapter {
     private final Skin skin;
     private final Dialog warning;
     private final Label costWindow;
+    private final Label costUpgrade;
     private final Stage stage;
     private final Rectangle border;
-    private Optional<Rectangle> selected;
+    private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
 
     private int index = 0;
     private final String[] imageList = {"icon1", "icon2", "icon3"};
@@ -61,6 +64,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen() {
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         this.tablePlayer = new Table(skin);
+        //Setting up the tablePlayer that contains the resources in possesion of the player
         this.resources = new HashMap<>(); //TODO, now empty filling
         Arrays.stream(Resource.values()).forEach(res -> this.resources.put(res, 0));
         this.resources.entrySet().forEach(entry -> {
@@ -68,12 +72,14 @@ public class GameScreen extends ScreenAdapter {
             this.tablePlayer.add(new Label(s, skin));
             this.tablePlayer.row();
         });
+
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new ArrayList<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
-        this.warning = new Dialog("Warning", skin);
-        this.costWindow = new Label("Building label", skin);
+        this.warning = new Dialog("Warning", this.skin);
+        this.costWindow = new Label("Building label", this.skin);
+        this.costUpgrade = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new GameProcessor());
@@ -88,8 +94,10 @@ public class GameScreen extends ScreenAdapter {
         this.stage.addActor(this.warning);
         this.stage.addActor(this.costWindow);
         this.stage.addActor(this.tablePlayer);
+        this.stage.addActor(this.costUpgrade);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
+        this.setColorLabel(this.costUpgrade, Color.DARK_GRAY);
 
         this.costWindow.setFontScale(1.2f);
         tableBuildings.setFillParent(true);
@@ -149,6 +157,14 @@ public class GameScreen extends ScreenAdapter {
     private boolean isValidPosition(final Rectangle rectangle) {
         return buildings.stream().noneMatch(rect -> rect.overlaps(rectangle))
             && this.border.contains(rectangle);
+    }
+
+    //A method for coloring the background of labels
+    private void setColorLabel(final Label l, final Color c) {
+        final Pixmap labelColor = new Pixmap((int) l.getWidth(), (int) l.getHeight(), Pixmap.Format.RGB888);
+        labelColor.setColor(c);
+        labelColor.fill();
+        l.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
     }
 
     private class GameProcessor extends InputAdapter {
@@ -211,9 +227,16 @@ public class GameScreen extends ScreenAdapter {
         /**{@inheritDoc} */
         @Override
         public boolean mouseMoved(final int screenX, final int screenY) {
-        if (selected.isPresent()) {
+            costUpgrade.setVisible(false);
+            if (selected.isPresent()) { //Verifies if the user has selected a building to place
                 selected.get().setPosition(this.computeX(screenX), this.computeY(screenY));
                 return true;
+            } else { //Allows to display a label containing info about upgrade costs when mouse is over buildings
+                var building = buildings.stream().filter(b -> b.contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
+                if (building.isPresent() && pressingCtrl) {
+                    costUpgrade.setVisible(true);
+                    costUpgrade.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
+                }
             }
             return false;
         }
@@ -250,7 +273,7 @@ public class GameScreen extends ScreenAdapter {
         private boolean handlePlacement() {
             if (isValidPosition(selected.get())) {
                 this.construction.play();
-                buildings.add(selected.get());
+                buildings.add(selected.get()); //TODO: need to add the building, not the rectangle
             } else {
                 warning.show(stage);
                 warning.setPosition(Gdx.graphics.getWidth() / 2 - warning.getWidth() / 2, 
