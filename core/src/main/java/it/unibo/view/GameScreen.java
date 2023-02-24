@@ -35,26 +35,26 @@ import it.unibo.model.api.Resource;
 public class GameScreen extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
+    private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
+    private static final String EXTENSION = ".png";
+    private static final float BUTTON_WIDTH = 64;
+    private static final float BUTTON_HEIGHT = 64;
 
     private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
-    private static final float BUTTON_WIDTH = 300;
-    private static final float BUTTON_HEIGHT = 300;
-
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final List<Rectangle> buildings;
     private final Skin skin;
     private final Dialog warning;
+    private final Label costWindow;
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected;
 
     private int index = 0;
-    private String selectedBuildingName;
-    private final String[] imageList = {"buildings1", "buildings2", "buildings3"};
-    private static final String EXTENSION = ".png";
+    private final String[] imageList = {"icon1", "icon2", "icon3"};
     private static final int NUMBUTTONS = 3;
     private Table tableBuildings = new Table();
 
@@ -73,6 +73,7 @@ public class GameScreen extends ScreenAdapter {
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
         this.warning = new Dialog("Warning", skin);
+        this.costWindow = new Label("Building label", skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new GameProcessor());
@@ -84,22 +85,17 @@ public class GameScreen extends ScreenAdapter {
         this.startMusic();
         this.warning.hide();
         this.warning.text("Wrong position");
-        this.stage.addActor(warning);
+        this.stage.addActor(this.warning);
+        this.stage.addActor(this.costWindow);
         this.stage.addActor(this.tablePlayer);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
 
-        Texture iconTexture = new Texture("buildings1.png");
-        TextureRegion icon = new TextureRegion(iconTexture);
-        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT);
-        button.setName("buildings1");
-        button.setPosition(0, Gdx.graphics.getHeight() - BUTTON_HEIGHT);
-        button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        //aggiunge bottone alla tabella
+        this.costWindow.setFontScale(1.2f);
         tableBuildings.setFillParent(true);
         tableBuildings.top().left();
         this.stage.addActor(tableBuildings);
+        this.selectButton(this.index);
     }
 
     /**{@inheritDoc} */
@@ -126,13 +122,14 @@ public class GameScreen extends ScreenAdapter {
 
         //crea un pane con un bottone
         tableBuildings.clear();
-        String buildingPath = imageList[index] + EXTENSION;
-        this.selectedBuildingName = imageList[index] + EXTENSION;
+        String buildingPath = IMAGE_FOLDER + imageList[index] + EXTENSION;
         Texture iconTexture = new Texture(buildingPath);
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index]);
-        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(10);
+        this.costWindow.setText(button.getName());
+        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
+        tableBuildings.add(this.costWindow);
         //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
@@ -247,7 +244,6 @@ public class GameScreen extends ScreenAdapter {
             }
             return false;
         }
-
 
         /*When the user has selected a building from the icon menù, this method 
         is used to determine the consequences of a click of the mouse */
