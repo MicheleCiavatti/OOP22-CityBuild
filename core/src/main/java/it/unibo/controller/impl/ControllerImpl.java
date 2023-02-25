@@ -28,17 +28,17 @@ public class ControllerImpl implements Controller {
 
     @Override
     public boolean checkResourcesAndBuild(String buildingName) {
-        return city.attemptBuild(this.fromNameToBuilding(buildingName));
+        return this.city.attemptBuild(this.fromNameToBuilding(buildingName));
     }
 
     @Override
     public void removeBuilding(String buildingName) {
-        // TODO Auto-generated method stub
+        this.city.removeBuilding(this.fromNameToBuilding(buildingName));
     }
 
     @Override
     public boolean upgradeBuilding(String buildingName) {
-        return false;
+        return this.city.upgradeBuilding(this.fromNameToBuilding(buildingName));
     }
 
     @Override
