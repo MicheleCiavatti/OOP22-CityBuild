@@ -75,7 +75,6 @@ public class MainMenu extends ScreenAdapter {
 					buttonClick.play();
 					sleeping(DELAY_CLICK_BUTTON);
 					game.setScreen(new GameScreen(controller));
-					//game.setScreen(new GameScreen());
 					dispose();
 				}
 			});
