@@ -313,7 +313,7 @@ public class GameScreen extends ScreenAdapter {
         * It allows to place the building selected only if not overlapping another building and if the player
         * has enough resources. */
         private boolean handlePlacement() {
-            if (isValidPosition(selected.get()) && controller.checkResourcesToBuild(this.selectedName)) {
+            if (isValidPosition(selected.get()) && controller.checkResourcesAndBuild(this.selectedName)) {
                 this.construction.play();
                 buildings.put(selected.get(), this.selectedName);
             } else {

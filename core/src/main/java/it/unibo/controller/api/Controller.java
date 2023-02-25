@@ -5,7 +5,7 @@ package it.unibo.controller.api;
  */
 public interface Controller {
     
-    public boolean checkResourcesToBuild(final String buildingName);
+    public boolean checkResourcesAndBuild(final String buildingName);
 
     public void removeBuilding(final String buildingName);
 
