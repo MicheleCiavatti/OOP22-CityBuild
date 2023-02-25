@@ -24,4 +24,14 @@ public interface City {
      * @return true if the building was succesfully upgraded, false otherwise
      */
     public boolean upgradeBuilding(final ProductionBuilding building);
+
+    /**Returns the number of citizens in the town, NOT the citizens capacity of the town.
+     * @return the number of citizens living in the city
+     */
+    public int getCitizensInTown();
+
+    /**Does a cycle of the game, by updating the resources (based on revenues and citizens requests)
+     * and increase/decrease the number of citizens living in the city based on the satisfaction of their requests.
+     */
+    public void doCycle();
 }

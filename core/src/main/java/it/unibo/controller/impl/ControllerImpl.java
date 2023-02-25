@@ -43,12 +43,12 @@ public class ControllerImpl implements Controller {
 
     @Override
     public int getCitizensInTown() {
-        return 0;
+        return this.city.getCitizensInTown();
     }
 
     @Override
     public void doCycle() {
-        
+        this.city.doCycle();
     }
 
     private ProductionBuilding fromNameToBuilding(final String name) {

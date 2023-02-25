@@ -26,5 +26,19 @@ public class CityImpl implements City {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'upgradeBuilding'");
     }
+
+    /**{@inheritDoc} */
+    @Override
+    public int getCitizensInTown() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCitizensInTown'");
+    }
+
+    /**{@inheritDoc} */
+    @Override
+    public void doCycle() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'doCycle'");
+    }
     
 }
