@@ -10,4 +10,8 @@ public interface Controller {
     public void removeBuilding(final String buildingName);
 
     public boolean upgradeBuilding(final String buildingName);
+
+    public int getCitizensInTown();
+
+    public void doCycle();
 }

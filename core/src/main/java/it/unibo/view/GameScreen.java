@@ -45,6 +45,8 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
+    //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
+    private static final float CYCLE_DURATION_SECONDS = 3f;
     private static final float BUTTON_WIDTH = 64;
     private static final float BUTTON_HEIGHT = 64;
 
@@ -62,6 +64,7 @@ public class GameScreen extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
+    private float cycleDuration;
 
     private int index = 0;
     private final String[] imageList = {"icon1", "icon2", "icon3"};
@@ -75,12 +78,7 @@ public class GameScreen extends ScreenAdapter {
         //Setting up the tablePlayer that contains the resources in possesion of the player
         this.resources = new HashMap<>(); //TODO, now empty filling
         Arrays.stream(Resource.values()).forEach(res -> this.resources.put(res, 0));
-        this.resources.entrySet().forEach(entry -> {
-            final String s = entry.getKey() + ": " + entry.getValue();
-            this.tablePlayer.add(new Label(s, skin));
-            this.tablePlayer.row();
-        });
-
+        this.updateTablePlayer();
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
@@ -92,6 +90,7 @@ public class GameScreen extends ScreenAdapter {
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new GameProcessor());
+        this.cycleDuration = 0;
     }
 
     /**{@inheritDoc} */
@@ -109,7 +108,7 @@ public class GameScreen extends ScreenAdapter {
         this.stage.addActor(this.costUpgrade);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
-        this.setColorLabel(this.costUpgrade, Color.DARK_GRAY);
+        this.setColorLabel(this.costUpgrade, Color.BROWN);
 
         this.costWindow.setFontScale(1.2f);
         tableBuildings.setFillParent(true);
@@ -122,10 +121,16 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
+        this.cycleDuration += delta;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
         this.buildings.keySet().forEach(this::drawRectangle);
         shapeRenderer.end();
+        if (this.cycleDuration >= CYCLE_DURATION_SECONDS) {
+            this.cycleDuration = 0;
+            this.controller.doCycle();
+            this.updateTablePlayer();
+        }
         this.stage.act(delta);
         this.stage.draw();
     }
@@ -138,19 +143,17 @@ public class GameScreen extends ScreenAdapter {
         this.stage.dispose();
     }
 
-    private void selectButton(int index){
-
-        //crea un pane con un bottone
-        tableBuildings.clear();
-        String buildingPath = IMAGE_FOLDER + imageList[index] + EXTENSION;
-        Texture iconTexture = new Texture(buildingPath);
-        TextureRegion icon = new TextureRegion(iconTexture);
-        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(imageList[index]);
-        this.costWindow.setText(button.getName());
-        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
-        tableBuildings.add(this.costWindow);
-        //posiziona la tabella in alto a sinistra rispetto allo schermo
+    /*This method is called at the end of every cycle of the game to update the resources and citizens in town. */
+    private void updateTablePlayer() {
+        System.out.println("Cycling");
+        this.tablePlayer.clear();
+        this.tablePlayer.add(new Label("Citizens in town: " + this.controller.getCitizensInTown(), this.skin));
+        this.tablePlayer.row();
+        this.resources.entrySet().forEach(entry -> {
+            final String s = entry.getKey() + ": " + entry.getValue();
+            this.tablePlayer.add(new Label(s, this.skin));
+            this.tablePlayer.row();
+        });
     }
 
     private void startMusic() {
@@ -166,6 +169,7 @@ public class GameScreen extends ScreenAdapter {
         this.shapeRenderer.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
+    /*A position is not valid when overlaps with another building or when out of the screen. */
     private boolean isValidPosition(final Rectangle rectangle) {
         return buildings.keySet().stream().noneMatch(rect -> rect.overlaps(rectangle))
             && this.border.contains(rectangle);
@@ -179,10 +183,26 @@ public class GameScreen extends ScreenAdapter {
         l.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
     }
 
+    private void selectButton(int index){
+        //crea un pane con un bottone
+        tableBuildings.clear();
+        String buildingPath = IMAGE_FOLDER + imageList[index] + EXTENSION;
+        Texture iconTexture = new Texture(buildingPath);
+        TextureRegion icon = new TextureRegion(iconTexture);
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName(imageList[index]);
+        this.costWindow.setText(button.getName());
+        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
+        tableBuildings.add(this.costWindow);
+        //posiziona la tabella in alto a sinistra rispetto allo schermo
+    }
+
+
     private class GameProcessor extends InputAdapter {
 
         private static final int RECT_WIDTH = 200;
         private static final int RECT_HEIGHT = 200;
+        private static final float DURATION_WARNINGS = 2f;
         private static final String ICON_SUFFIX = "icon";
 
         private final Sound selection;
@@ -353,7 +373,7 @@ public class GameScreen extends ScreenAdapter {
                 public void run() {
                     d.hide();
                 }
-            }, 2f);    
+            }, DURATION_WARNINGS);    
         }
 
         private void roundButtonList(int param){

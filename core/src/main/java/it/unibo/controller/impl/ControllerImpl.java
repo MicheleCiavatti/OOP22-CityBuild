@@ -26,4 +26,14 @@ public class ControllerImpl implements Controller {
     public boolean upgradeBuilding(String buildingName) {
         return false;
     }
+
+    @Override
+    public int getCitizensInTown() {
+        return 0;
+    }
+
+    @Override
+    public void doCycle() {
+        
+    }
 }
