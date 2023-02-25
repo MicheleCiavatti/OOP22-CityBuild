@@ -6,7 +6,9 @@ import it.unibo.model.api.ProductionBuilding;
 /**A basic implementation of {@link it.unibo.model.api.City}. */
 public class CityImpl implements City {
 
-    /*Usa Player per tenere traccia delle risorse in possesso al giocatore. */
+    /*Usa Player per tenere traccia delle risorse in possesso al giocatore. Dai al Player delle risorse
+     * iniziali di modo che possa costruire i primi edifici.
+    */
 
     /**{@inheritDoc} */
     @Override
