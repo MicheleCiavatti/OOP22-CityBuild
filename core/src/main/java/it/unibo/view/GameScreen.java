@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -52,9 +53,10 @@ public class GameScreen extends ScreenAdapter {
     private final Map<Resource, Integer> resources;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
-    private final List<Rectangle> buildings;
+    private final Map<Rectangle, String> buildings; //Saves the position of the building and a string containing name and upgrade cost.
     private final Skin skin;
-    private final Dialog warning;
+    private final Dialog constructionFailed;
+    private final Dialog upgradeFailed;
     private final Label costWindow;
     private final Label costUpgrade;
     private final Stage stage;
@@ -80,10 +82,11 @@ public class GameScreen extends ScreenAdapter {
         });
 
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
-        this.buildings = new ArrayList<>();
+        this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
-        this.warning = new Dialog("Warning", this.skin);
+        this.constructionFailed = new Dialog("Warning", this.skin);
+        this.upgradeFailed = new Dialog("Warning", this.skin);
         this.costWindow = new Label("Building label", this.skin);
         this.costUpgrade = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
@@ -95,9 +98,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.startMusic();
-        this.warning.hide();
-        this.warning.text("Wrong position");
-        this.stage.addActor(this.warning);
+        this.constructionFailed.hide();
+        this.constructionFailed.text("Wrong position");
+        this.upgradeFailed.hide();
+        this.upgradeFailed.text("Not enough resources or building already upgraded");
+        this.stage.addActor(this.constructionFailed);
+        this.stage.addActor(this.upgradeFailed);
         this.stage.addActor(this.costWindow);
         this.stage.addActor(this.tablePlayer);
         this.stage.addActor(this.costUpgrade);
@@ -118,7 +124,7 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(0, 0, 0, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
-        this.buildings.forEach(this::drawRectangle);
+        this.buildings.keySet().forEach(this::drawRectangle);
         shapeRenderer.end();
         this.stage.act(delta);
         this.stage.draw();
@@ -161,7 +167,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private boolean isValidPosition(final Rectangle rectangle) {
-        return buildings.stream().noneMatch(rect -> rect.overlaps(rectangle))
+        return buildings.keySet().stream().noneMatch(rect -> rect.overlaps(rectangle))
             && this.border.contains(rectangle);
     }
 
@@ -177,6 +183,7 @@ public class GameScreen extends ScreenAdapter {
 
         private static final int RECT_WIDTH = 200;
         private static final int RECT_HEIGHT = 200;
+        private static final String ICON_SUFFIX = "icon";
 
         private final Sound selection;
         private final Sound destruction;
@@ -184,6 +191,7 @@ public class GameScreen extends ScreenAdapter {
         private final Sound wrong;
         private final Sound scroll;
         private final Sound upgrading;
+        private String selectedName;
         private boolean pressingShift;
         private boolean pressingCtrl;
 
@@ -238,8 +246,12 @@ public class GameScreen extends ScreenAdapter {
                 selected.get().setPosition(this.computeX(screenX), this.computeY(screenY));
                 return true;
             } else { //Allows to display a label containing info about upgrade costs when mouse is over buildings
-                var building = buildings.stream().filter(b -> b.contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
+                var building = buildings.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY))
+                    .findFirst();
                 if (building.isPresent() && pressingCtrl) {
+                    costUpgrade.setText(building.get().getValue());
                     costUpgrade.setVisible(true);
                     costUpgrade.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
                 }
@@ -262,6 +274,7 @@ public class GameScreen extends ScreenAdapter {
             return Gdx.graphics.getHeight() - screenY - RECT_HEIGHT / 2;
         }
 
+        //Creates a square for placing the building and stores the name of the building selected, retrieving it from the icon.
         private boolean selectingBuilding() {
             if (selected.isEmpty()) {
                 this.selection.play();
@@ -269,48 +282,78 @@ public class GameScreen extends ScreenAdapter {
                     computeX(Gdx.input.getX()), 
                     computeY(Gdx.input.getY()),
                     RECT_WIDTH, RECT_HEIGHT));
-                    return true;
+                this.selectedName = tableBuildings.getChild(0).getName().replace(ICON_SUFFIX, "");
+                return true;
             }
             return false;
         }
 
         /*When the user has selected a building from the icon menù, this method 
-        is used to determine the consequences of a click of the mouse */
+        * is used to determine the consequences of a click of the mouse.
+        * It allows to place the building selected only if not overlapping another building and if the player
+        * has enough resources. */
         private boolean handlePlacement() {
-            if (isValidPosition(selected.get())) {
+            if (isValidPosition(selected.get()) && controller.checkResourcesToBuild(this.selectedName)) {
                 this.construction.play();
-                buildings.add(selected.get()); //TODO: need to add the building, not the rectangle
+                buildings.put(selected.get(), this.selectedName);
             } else {
-                warning.show(stage);
-                warning.setPosition(Gdx.graphics.getWidth() / 2 - warning.getWidth() / 2, 
-                    Gdx.graphics.getHeight() - warning.getHeight() - Gdx.graphics.getHeight() / 12);
-                Timer.schedule(new Task() {
-                    @Override
-                    public void run() {
-                        warning.hide();
-                    }
-                }, 2f);
-                this.wrong.play();
+                this.displayWarning(constructionFailed);
             }
             selected = Optional.empty();
             return true;
         }
 
-        /*This method is used to determine the consequences of a click of the mouse without carrying a building for placement. */
+        /*This method is used to determine the consequences of a click of the mouse when not carrying a building for placement.
+         * It allows for upgrading and destroying buildings already placed.
+         */
         private boolean handleTouch(final int screenX, final int screenY) {
-            final var touched = buildings.stream()
-                .filter(rect -> rect.contains(screenX, Gdx.graphics.getHeight() - screenY))
+            final var touched = buildings.entrySet().stream()
+                .filter(entry -> entry.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY))
                 .findFirst();
             if (touched.isPresent()) {
                 if (this.pressingShift) {
                     this.destruction.play();
-                    buildings.remove(touched.get());
+                    controller.removeBuilding(this.fromLabelToName(touched.get().getValue()));
+                    buildings.remove(touched.get().getKey());
                 } else if (this.pressingCtrl) {
-                    this.upgrading.play();
+                    this.upgrade(controller.upgradeBuilding(this.fromLabelToName(touched.get().getValue())));
+                    
                 }
                 return true;
             }
             return false;
+        }
+
+        /*The buildings are memorized with a String containing the name and the upgrade costs:
+         * this method extracts the name of the building from such String.
+         */
+        private String fromLabelToName(final String label) {
+            var tokens = label.split("\n");
+            return tokens[0];
+        }
+
+        private void upgrade(final boolean success) {
+            if (success) {
+                this.upgrading.play();
+            } else {
+                this.displayWarning(upgradeFailed);
+            }
+        }
+
+        /*Used to display warning regarding wrong inputs from the user. */
+        private void displayWarning(final Dialog d) {
+            this.wrong.play();
+            upgradeFailed.hide(); //Hides other warnings that may be active
+            constructionFailed.hide();
+            d.show(stage);
+            d.setPosition(Gdx.graphics.getWidth() / 2 - d.getWidth() / 2, 
+                Gdx.graphics.getHeight() - d.getHeight() - Gdx.graphics.getHeight() / 14);
+            Timer.schedule(new Task() {
+                @Override
+                public void run() {
+                    d.hide();
+                }
+            }, 2f);    
         }
 
         private void roundButtonList(int param){

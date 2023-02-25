@@ -11,4 +11,19 @@ public class ControllerImpl implements Controller {
     public ControllerImpl(final City city) {
         this.city = city;
     }
+
+    @Override
+    public boolean checkResourcesToBuild(String buildingName) {
+        return true;
+    }
+
+    @Override
+    public void removeBuilding(String buildingName) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public boolean upgradeBuilding(String buildingName) {
+        return false;
+    }
 }
