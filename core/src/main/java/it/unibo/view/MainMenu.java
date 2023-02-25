@@ -19,6 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import it.unibo.CityBuild;
+import it.unibo.controller.api.Controller;
+import it.unibo.controller.impl.ControllerImpl;
+import it.unibo.model.api.City;
+import it.unibo.model.impl.CityImpl;
 
 /**This class is responsible for the main menù of the game. */
 public class MainMenu extends ScreenAdapter {
@@ -30,6 +34,7 @@ public class MainMenu extends ScreenAdapter {
 	private static final float BUTTON_WIDTH = 300f;
 	private static final float BUTTON_HEIGHT = 150f;
 
+	private final Controller controller;
 	private final CityBuild game;
 	private final Skin skin;
 	private final Stage stage;
@@ -42,6 +47,8 @@ public class MainMenu extends ScreenAdapter {
 		this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "tlou_theme.mp3"));
 		this.stage = new Stage(new ScreenViewport());
 		this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
+		final City city = new CityImpl();
+		this.controller = new ControllerImpl(city);
 	}
 
 	/**{@inheritDoc} */
@@ -67,7 +74,7 @@ public class MainMenu extends ScreenAdapter {
 				public void changed(ChangeEvent event, Actor actor) {
 					buttonClick.play();
 					sleeping(DELAY_CLICK_BUTTON);
-					game.setScreen(new GameScreen());
+					game.setScreen(new GameScreen(controller));
 					//game.setScreen(new GameScreen());
 					dispose();
 				}

@@ -31,6 +31,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
 
 /**This class is responsible for all the graphics regarding the application.
@@ -45,6 +47,7 @@ public class GameScreen extends ScreenAdapter {
     private static final float BUTTON_WIDTH = 64;
     private static final float BUTTON_HEIGHT = 64;
 
+    private final Controller controller;
     private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
     private final Music theme;
@@ -63,7 +66,8 @@ public class GameScreen extends ScreenAdapter {
     private static final int NUMBUTTONS = 3;
     private Table tableBuildings = new Table();
 
-    public GameScreen() {
+    public GameScreen(final Controller controller) {
+        this.controller = controller;
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         this.tablePlayer = new Table(skin);
         //Setting up the tablePlayer that contains the resources in possesion of the player
