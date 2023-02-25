@@ -1,7 +1,5 @@
 package it.unibo.model.api;
 
-import java.util.Map;
-
 /**This interface models the city of the player.
  * In the MVC, this is the Model.
  */

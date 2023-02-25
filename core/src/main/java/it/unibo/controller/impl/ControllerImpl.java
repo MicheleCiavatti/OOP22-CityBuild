@@ -1,6 +1,5 @@
 package it.unibo.controller.impl;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import it.unibo.controller.api.Controller;
@@ -15,8 +14,6 @@ public class ControllerImpl implements Controller {
 
     private static final Set<String> SIMPLE_BUILDINGS = 
         Set.of("depurator", "foundry", "house", "mine", "power_plant", "woodcutter");
-    private static final Set<String> ADVANCED_BUILDINGS =
-        Set.of("ultrafiltration_complex", "forge", "lumber_refinary", "mineral_station", "quantum_reactor", "skyscraper");
     
     private final City city;
     private final BuildingFactory factory;
