@@ -36,6 +36,20 @@ public class CityImpl implements City {
         throw new UnsupportedOperationException("Unimplemented method 'getCitizensInTown'");
     }
 
+    /*Il metodo doCycle() viene chiamato nella classe grafica (passando per il controller) ogni n secondi.
+     * L'idea è che in questo metodo avvengono le modifiche del gioco in seguito agli edifici presenti e 
+     * al numero di cittadini attualmente in città.
+     * Ad esempio, se nella città ho un depurator e 10 cittadini, allora dovrò aggiornare le risorse del
+     * player aggiungendo la revenue del depurator e togliendo le risorse richieste dai 10 cittadini; le
+     * revenue degli edifici sono già implementate, ma puoi scegliere le risorse utilizzate da ogni cittadino
+     * ad ogni ciclo in questa classe (magari creando una costante Map<Resource, Integer> RESOURCES_FOR_CITIZENS).
+     * Inoltre, ad ogni ciclo il numero dei cittadini dovrebbe incrementare se gli è concesso (aka la città può 
+     * ospitare altri cittadini, si vede dalla risorsa CITIZEN del player) o diminuire altrimenti (perchè non bastano 
+     * le risorse oppure la città non ha capacità sufficiente per tutti i cittadini): nel caso in cui diminuiscano,
+     * non possono mai andare in negativo e se diminuiscono per mancanza di capacità, dovrebbero diminuire di un numero
+     * pari alla differenza dei cittadini presenti e la capacità della città.
+     */
+
     /**{@inheritDoc} */
     @Override
     public void doCycle() {
