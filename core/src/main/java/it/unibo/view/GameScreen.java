@@ -31,9 +31,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import it.unibo.model.api.Resource;
 
+/**This class is responsible for all the graphics regarding the application.
+ * In the MVC, this is the View.
+ */
 public class GameScreen extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
