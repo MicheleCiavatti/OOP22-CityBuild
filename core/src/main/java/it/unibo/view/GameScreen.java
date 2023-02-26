@@ -318,7 +318,6 @@ public class GameScreen extends ScreenAdapter {
                 index--;
                 if (index == -1){
                     index = NUMBUTTONS-1;
-    
                 }
             }
             selectButton(index);
