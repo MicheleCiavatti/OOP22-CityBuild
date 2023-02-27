@@ -316,6 +316,7 @@ public class GameScreen extends ScreenAdapter {
             if (isValidPosition(selected.get()) && controller.checkResourcesAndBuild(this.selectedName)) {
                 this.construction.play();
                 buildings.put(selected.get(), this.selectedName);
+                updateTablePlayer();
             } else {
                 this.displayWarning(constructionFailed);
             }
@@ -337,6 +338,7 @@ public class GameScreen extends ScreenAdapter {
                     buildings.remove(touched.get().getKey());
                 } else if (this.pressingCtrl) {
                     this.upgrade(controller.upgradeBuilding(this.fromLabelToName(touched.get().getValue())));
+                    updateTablePlayer();
                     
                 }
                 return true;
