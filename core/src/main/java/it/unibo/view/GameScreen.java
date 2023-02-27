@@ -97,7 +97,7 @@ public class GameScreen extends ScreenAdapter {
         this.stage.addActor(this.costUpgrade);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
-        this.setColorLabel(this.costUpgrade, Color.DARK_GRAY);
+        this.setColorLabel(this.costUpgrade, Color.BROWN);
 
         this.costWindow.setFontScale(1.2f);
         tableBuildings.setFillParent(true);
