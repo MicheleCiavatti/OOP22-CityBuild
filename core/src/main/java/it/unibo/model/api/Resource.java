@@ -2,12 +2,12 @@ package it.unibo.model.api;
 
 /**Enumerates all possible resources of the game. */
 public enum Resource {
-    WATER("Water", "Depurator", ""),
-    WOOD("Wood", "Woodcutter", ""),
-    ENERGY("Energy", "Power_Plant", ""),
-    METAL("Metal", "Foundry", ""),
+    WATER("Water", "Depurator", "Ultrafiltration_complex"),
+    WOOD("Wood", "Woodcutter", "Lumber_refinary"),
+    ENERGY("Energy", "Power_Plant", "Quantum_reactor"),
+    METAL("Metal", "Foundry", "Forge"),
     CITIZEN("Citizen", "House", "Skyscraper"),
-    GOLD("Gold", "Mine", "");
+    GOLD("Gold", "Mine", "Mineral_station");
 
     private final String name;
     private final String simpleBuilding;
