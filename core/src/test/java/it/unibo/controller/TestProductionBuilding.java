@@ -43,4 +43,15 @@ public class TestProductionBuilding {
         assertEquals(economyTables.get(2), mineralStation.getCostUpgrade());
         assertFalse(mineralStation.upgrade(EMPTY_RESOURCES));
     }
+
+    @Test
+    public void testUltrafiltrationComplex() {
+        final ProductionBuilding ultrafiltrationComplex = factory.createAdvancedProductionBuilding(Resource.WATER);
+        final List<Map<Resource, Integer>> economyTables = fileReader.getAdvancedEconomyTables(Resource.WATER);
+        assertEquals("Ultrafiltration complex", ultrafiltrationComplex.getName());
+        assertEquals(economyTables.get(0), ultrafiltrationComplex.getRevenue());
+        assertEquals(economyTables.get(1), ultrafiltrationComplex.getCostConstruction());
+        assertEquals(economyTables.get(2), ultrafiltrationComplex.getCostUpgrade());
+        assertFalse(ultrafiltrationComplex.upgrade(EMPTY_RESOURCES));
+    }
 }
