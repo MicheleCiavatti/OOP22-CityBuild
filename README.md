@@ -12,8 +12,8 @@ In the game view, follow these commands:
 - You can see the upgrade cost (and name) of a placed building by hovering over it with the mouse while pressing LEFT_CTRL
 
 ### Credits
-#### Music
-[The Last of Us - Menu' theme](https://www.youtube.com/watch?v=gcnLYrxLlhU)
-[Lakey Inspired - Chill Day](https://www.youtube.com/watch?v=23IiqeIw38w)
+#### Music and sounds
+[The Last of Us - Menu' theme](https://www.youtube.com/watch?v=gcnLYrxLlhU)<br>
+[Lakey Inspired - Chill Day](https://www.youtube.com/watch?v=23IiqeIw38w)<br>
 All the sounds have been taken from [freesound.org](https://freesound.org/)
 
