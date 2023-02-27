@@ -29,4 +29,14 @@ public class TestProductionBuilding {
         assertEquals(economyTables.get(1), house.getCostConstruction());
         assertEquals(economyTables.get(2), house.getCostUpgrade());
     }
+
+    @Test
+    public void testMineralStation() {
+        final ProductionBuilding mineralStation = factory.createAdvancedProductionBuilding(Resource.GOLD);
+        final List<Map<Resource, Integer>> economyTables = fileReader.getAdvancedEconomyTables(Resource.GOLD);
+        assertEquals("Mineral station", mineralStation.getName());
+        assertEquals(economyTables.get(0), mineralStation.getRevenue());
+        assertEquals(economyTables.get(1), mineralStation.getCostConstruction());
+        assertEquals(economyTables.get(2), mineralStation.getCostUpgrade());
+    }
 }

@@ -26,12 +26,12 @@ public class ProductionBuildingImpl implements ProductionBuilding {
             this.revenue = this.removeEmptyResources(tables.getSimpleRevenueTable(r));
             this.constructionCost = this.removeEmptyResources(tables.getSimpleCostTable(r));
             this.upgradeCost = this.removeEmptyResources(tables.getSimpleUpgradeTable(r));
-            this.name = r.getSimpleBuilding();
+            this.name = r.getSimpleBuilding().replace("_", " ");
         } else {
             this.revenue = this.removeEmptyResources(tables.getAdvancedRevenueTable(r));
             this.constructionCost = this.removeEmptyResources(tables.getAdvancedCostTable(r));
             this.upgradeCost = this.removeEmptyResources(tables.getAdvancedUpgradeTable(r));
-            this.name = r.getAdvancedBuilding();
+            this.name = r.getAdvancedBuilding().replace("_", " ");
         }
         this.upgradable = true;
     }
