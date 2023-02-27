@@ -1,7 +1,12 @@
 #advanced building of mine
 revenue:
-  
+  GOLD: 25
 construction: 
-
+  CITIZEN: 20
+  WOOD: 15
+  METAL: 10
 upgrade:
+  CITIZEN: 20
+  WOOD: 40
+  METAL: 25
   

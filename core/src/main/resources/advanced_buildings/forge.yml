@@ -1,7 +1,9 @@
 #advanced building of foundry
 revenue:
-  
+  METAL: 10
 construction: 
-
+  WOOD: 25
+  CITIZEN: 10
 upgrade:
-  
+  ENERGY: 15
+  CITIZEN: 10
