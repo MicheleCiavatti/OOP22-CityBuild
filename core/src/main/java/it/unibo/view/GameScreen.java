@@ -194,7 +194,9 @@ public class GameScreen extends ScreenAdapter {
         final var buildingName = button.getName().replace("icon" + EXTENSION, "");
         final var costTable = this.controller.getCostForBuilding(buildingName);
         final StringBuilder stringBuilder = new StringBuilder(buildingName + "\n");
-        costTable.entrySet().stream().map(Map.Entry::toString).forEach(e -> stringBuilder.append(e + "\n"));
+        costTable.entrySet().stream()
+            .map(entry -> entry.getKey() +": " + entry.getValue() + "\n")
+            .forEach(stringBuilder::append);
         this.costWindow.setText(stringBuilder.toString());
         tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
         tableBuildings.add(this.costWindow);
