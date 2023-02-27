@@ -1,7 +1,10 @@
 package it.unibo.model.impl;
 
+import java.util.Map;
+
 import it.unibo.model.api.City;
 import it.unibo.model.api.ProductionBuilding;
+import it.unibo.model.api.Resource;
 
 /**A basic implementation of {@link it.unibo.model.api.City}. */
 public class CityImpl implements City {
