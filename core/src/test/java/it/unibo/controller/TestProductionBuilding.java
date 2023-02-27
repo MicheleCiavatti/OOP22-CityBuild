@@ -1,13 +1,11 @@
 package it.unibo.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 import java.util.Map;
-
 import org.junit.jupiter.api.Test;
-
 import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.controller.impl.EconomyFileReaderImpl;
 import it.unibo.model.api.BuildingFactory;
@@ -17,6 +15,10 @@ import it.unibo.model.impl.BuildingFactoryImpl;
 
 public class TestProductionBuilding {
     
+    private static final Map<Resource, Integer> EMPTY_RESOURCES = Map.of(
+        Resource.WATER, 0, Resource.WOOD, 0, Resource.ENERGY, 0,
+        Resource.METAL, 0, Resource.CITIZEN, 0, Resource.GOLD, 0
+    );
     private final BuildingFactory factory = new BuildingFactoryImpl();
     private final EconomyFileReader fileReader = new EconomyFileReaderImpl();
 
@@ -28,6 +30,7 @@ public class TestProductionBuilding {
         assertEquals(economyTables.get(0), house.getRevenue());
         assertEquals(economyTables.get(1), house.getCostConstruction());
         assertEquals(economyTables.get(2), house.getCostUpgrade());
+        assertFalse(house.upgrade(EMPTY_RESOURCES));
     }
 
     @Test
@@ -38,5 +41,6 @@ public class TestProductionBuilding {
         assertEquals(economyTables.get(0), mineralStation.getRevenue());
         assertEquals(economyTables.get(1), mineralStation.getCostConstruction());
         assertEquals(economyTables.get(2), mineralStation.getCostUpgrade());
+        assertFalse(mineralStation.upgrade(EMPTY_RESOURCES));
     }
 }

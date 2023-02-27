@@ -50,11 +50,13 @@ public class ProductionBuildingImpl implements ProductionBuilding {
 
     /**{@inheritDoc} */
     @Override
-    public void upgrade(Map<Resource, Integer> resourcesForUpgrade) {
+    public boolean upgrade(Map<Resource, Integer> resourcesForUpgrade) {
         if (this.upgradable && this.upgradeCost.equals(this.removeEmptyResources(resourcesForUpgrade)) ) {
             this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
             this.upgradable = false;
+            return true;
         }
+        return false;
     }
 
     /**{@inheritDoc} */
