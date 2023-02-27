@@ -9,12 +9,9 @@ import java.util.stream.Stream;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.BuildingFactory;
 import it.unibo.model.api.City;
-import it.unibo.model.api.EconomyHandler;
-import it.unibo.model.api.EconomyHandlerFactory;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.BuildingFactoryImpl;
-import it.unibo.model.impl.EconomyHandlerFactoryImpl;
 
 /**A basic implementation of {@link it.unibo.controller.api.Controller}. */
 public class ControllerImpl implements Controller {
