@@ -52,7 +52,7 @@ public class GameScreen extends ScreenAdapter {
 
     private final Controller controller;
     private final Table tablePlayer;
-    private final Map<Resource, Integer> resources;
+    private Map<Resource, Integer> resources;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final Map<Rectangle, String> buildings; //Saves the position of the building and a string containing name and upgrade cost.
@@ -75,9 +75,6 @@ public class GameScreen extends ScreenAdapter {
         this.controller = controller;
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         this.tablePlayer = new Table(skin);
-        //Setting up the tablePlayer that contains the resources in possesion of the player
-        this.resources = new HashMap<>(); //TODO, now empty filling
-        Arrays.stream(Resource.values()).forEach(res -> this.resources.put(res, 0));
         this.updateTablePlayer();
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new HashMap<>();
@@ -143,9 +140,12 @@ public class GameScreen extends ScreenAdapter {
         this.stage.dispose();
     }
 
-    /*This method is called at the end of every cycle of the game to update the resources and citizens in town. */
+    /*This method is called at the end of every cycle of the game to update the resources and citizens in town.
+     * It is also called when the player spends resources to create or upgrade buildings.
+     */
     private void updateTablePlayer() {
         System.out.println("Cycling");
+        this.resources = this.controller.getPlayerResources();
         this.tablePlayer.clear();
         this.tablePlayer.add(new Label("Citizens in town: " + this.controller.getCitizensInTown(), this.skin));
         this.tablePlayer.row();

@@ -39,6 +39,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public Map<Resource, Integer> getPlayerResources() {
+        return this.city.getPlayerResources();
+    }
+
+    @Override
     public int getCitizensInTown() {
         return this.city.getCitizensInTown();
     }

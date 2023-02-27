@@ -11,6 +11,8 @@ public interface Controller {
 
     public boolean upgradeBuilding(final String buildingName);
 
+    public Map<Resource, Integer> getPlayerResources();
+
     public int getCitizensInTown();
 
     public void doCycle();

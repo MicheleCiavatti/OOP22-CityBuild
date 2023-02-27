@@ -23,6 +23,8 @@ public interface City {
      */
     public boolean upgradeBuilding(final ProductionBuilding building);
 
+    public Map<Resource, Integer> getPlayerResources();
+
     /**Returns the number of citizens in the town, NOT the citizens capacity of the town.
      * @return the number of citizens living in the city
      */
