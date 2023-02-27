@@ -23,6 +23,10 @@ public interface City {
      */
     public boolean upgradeBuilding(final ProductionBuilding building);
 
+    /**Returns the resources in possession of the player.
+     * @return a map containing all possible values of {@link it.unibo.model.api.Resource} rapresenting the amount of each resource
+     * in possesion of the player.
+     */
     public Map<Resource, Integer> getPlayerResources();
 
     /**Returns the number of citizens in the town, NOT the citizens capacity of the town.

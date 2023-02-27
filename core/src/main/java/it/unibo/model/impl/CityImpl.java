@@ -31,6 +31,12 @@ public class CityImpl implements City {
         throw new UnsupportedOperationException("Unimplemented method 'upgradeBuilding'");
     }
 
+    @Override
+    public Map<Resource, Integer> getPlayerResources() {
+        //TODO
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayerResources'");
+    }
+
     /**{@inheritDoc} */
     @Override
     public int getCitizensInTown() {
