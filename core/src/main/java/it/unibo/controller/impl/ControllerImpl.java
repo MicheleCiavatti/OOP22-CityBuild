@@ -3,9 +3,9 @@ package it.unibo.controller.impl;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.BuildingFactory;
 import it.unibo.model.api.City;
@@ -54,11 +54,31 @@ public class ControllerImpl implements Controller {
 
     @Override
     public Map<Resource, Integer> getCost(final String buildingName) {
-        final var building = this.allBuildings.stream().filter(b -> b.getName().equals(buildingName)).findFirst();
+        return this.getTable(buildingName, 1);
+    }
+
+    @Override
+    public Map<Resource, Integer> getUpgrade(String buildingName) {
+        return this.getTable(buildingName, 2);
+    }
+
+    @Override
+    public Map<Resource, Integer> getRevenue(String buildingName) {
+        return this.getTable(buildingName, 0);
+    }
+
+    //idTable = 0 means revenue, idTable = 1 means construction, idTable = 2 means upgrade.
+    private Map<Resource, Integer> getTable(final String name, final int idTable) {
+        final Optional<ProductionBuilding> building = this.allBuildings.stream().filter(b -> b.getName().equals(name)).findFirst();
         if (building.isEmpty()) {
-            throw new IllegalArgumentException("Wrong parameter in 'getCostForBuilding' in class ControllerImpl");
+            throw new IllegalArgumentException("Wrong parameter in 'getTable' in class ControllerImpl");
         }
-        return building.get().getCostConstruction();
+        return switch(idTable) {
+            case 0 -> building.get().getRevenue();
+            case 1 -> building.get().getCostConstruction();
+            case 2 -> building.get().getCostUpgrade();
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     @Override
