@@ -29,7 +29,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import it.unibo.model.api.Resource;
 
 public class GameScreen extends ScreenAdapter {
@@ -38,8 +37,6 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
-    private static final float BUTTON_WIDTH = 64;
-    private static final float BUTTON_HEIGHT = 64;
 
     private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
@@ -48,8 +45,8 @@ public class GameScreen extends ScreenAdapter {
     private final Map<Rectangle, Image> buildings;
     private final Skin skin;
     private final Dialog warning;
-    private final Label costWindow;
-    private final Label costUpgrade;
+    private final Label constructionLabel;
+    private final Label upgradeLabel;
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
@@ -57,11 +54,12 @@ public class GameScreen extends ScreenAdapter {
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
         "Mineral_stationicon", "Power_planticon", "Quantum_reactoricon", "Skyscrapericon", "Ultrafiltration_complexicon", "Woodcuttericon"};
-    private Table tableBuildings = new Table();
+    private final Table tableBuildings;
 
     public GameScreen() {
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
-        this.tablePlayer = new Table(skin);
+        this.tablePlayer = new Table(this.skin);
+        this.tableBuildings = new Table(this.skin);
         //Setting up the tablePlayer that contains the resources in possesion of the player
         this.resources = new HashMap<>(); //TODO, now empty filling
         Arrays.stream(Resource.values()).forEach(res -> this.resources.put(res, 0));
@@ -70,14 +68,13 @@ public class GameScreen extends ScreenAdapter {
             this.tablePlayer.add(new Label(s, skin));
             this.tablePlayer.row();
         });
-
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
         this.warning = new Dialog("Warning", this.skin);
-        this.costWindow = new Label("Building label", this.skin);
-        this.costUpgrade = new Label("Upgrade label", this.skin);
+        this.constructionLabel = new Label("Building label", this.skin);
+        this.upgradeLabel = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new GameProcessor());
@@ -90,14 +87,14 @@ public class GameScreen extends ScreenAdapter {
         this.warning.hide();
         this.warning.text("Wrong position");
         this.stage.addActor(this.warning);
-        this.stage.addActor(this.costWindow);
+        this.stage.addActor(this.constructionLabel);
         this.stage.addActor(this.tablePlayer);
-        this.stage.addActor(this.costUpgrade);
+        this.stage.addActor(this.upgradeLabel);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
-        this.setColorLabel(this.costUpgrade, Color.BROWN);
+        this.setColorLabel(this.upgradeLabel, Color.BROWN);
 
-        this.costWindow.setFontScale(1.2f);
+        this.constructionLabel.setFontScale(1.2f);
         tableBuildings.setFillParent(true);
         tableBuildings.top().left();
         this.stage.addActor(tableBuildings);
@@ -108,11 +105,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
+        this.stage.act(delta);
+        this.stage.draw();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
         shapeRenderer.end();
-        this.stage.act(delta);
-        this.stage.draw();
+        
     }
 
     /**{@inheritDoc} */
@@ -132,9 +130,9 @@ public class GameScreen extends ScreenAdapter {
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index].replace("icon", "").replace("_", " "));
-        this.costWindow.setText(button.getName());
-        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
-        tableBuildings.add(this.costWindow);
+        this.constructionLabel.setText(button.getName());
+        tableBuildings.add(button).pad(5);
+        tableBuildings.add(this.constructionLabel);
         //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
@@ -224,7 +222,7 @@ public class GameScreen extends ScreenAdapter {
         /**{@inheritDoc} */
         @Override
         public boolean mouseMoved(final int screenX, final int screenY) {
-            costUpgrade.setVisible(false);
+            upgradeLabel.setVisible(false);
             if (selected.isPresent()) { //Verifies if the user has selected a building to place
                 selected.get().setPosition(this.computeX(screenX), this.computeY(screenY));
                 return true;
@@ -232,8 +230,8 @@ public class GameScreen extends ScreenAdapter {
                 var building = buildings.entrySet().stream()
                     .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
-                    costUpgrade.setVisible(true);
-                    costUpgrade.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
+                    upgradeLabel.setVisible(true);
+                    upgradeLabel.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
                 }
             }
             return false;
@@ -271,9 +269,10 @@ public class GameScreen extends ScreenAdapter {
         private boolean handlePlacement() {
             if (isValidPosition(selected.get())) {
                 this.construction.play();
-                final var im = new Image(new Texture(Gdx.files.internal("images" + File.separator + imageList[index].replace("icon", EXTENSION))));
+                final var im = new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + imageList[index].replace("icon", EXTENSION))));
                 im.setPosition(selected.get().x, selected.get().y);
                 stage.addActor(im);
+                im.setZIndex(0);
                 buildings.put(selected.get(), im);
             } else {
                 warning.show(stage);
