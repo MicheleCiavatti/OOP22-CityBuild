@@ -20,11 +20,24 @@ public class Description {
         this.descriptions = new HashMap<>();
         Arrays.stream(Resource.values())
             .flatMap(r -> Stream.of(r.getSimpleBuilding(), r.getAdvancedBuilding()))
+            .map(name -> name.replace("_", " "))
             .forEach(name -> descriptions.put(name, List.of(
                 tableToDescription(controller.getRevenue(name), name),
                 tableToDescription(controller.getCost(name), name),
                 tableToDescription(controller.getUpgrade(name), name)
             )));
+    }
+
+    public String revenueText(final String name) {
+        return this.descriptions.get(name.replace("_", " ")).get(0);
+    }
+
+    public String constructiontext(final String name) {
+        return this.descriptions.get(name.replace("_", " ")).get(1);
+    }
+
+    public String upgradeText(final String name) {
+        return this.descriptions.get(name.replace("_", " ")).get(2);
     }
 
     private String tableToDescription(final Map<Resource, Integer> table, final String name) {
