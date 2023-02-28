@@ -47,7 +47,7 @@ public class GameScreen extends ScreenAdapter {
     private final Map<Resource, Integer> resources;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
-    private final List<Rectangle> buildings;
+    private final Map<Rectangle, Image> buildings;
     private final Skin skin;
     private final Dialog warning;
     private final Label costWindow;
@@ -74,7 +74,7 @@ public class GameScreen extends ScreenAdapter {
         });
 
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
-        this.buildings = new ArrayList<>();
+        this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
         this.warning = new Dialog("Warning", this.skin);
@@ -112,7 +112,6 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(0, 0, 0, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
-        this.buildings.forEach(this::drawRectangle);
         shapeRenderer.end();
         this.stage.act(delta);
         this.stage.draw();
@@ -155,7 +154,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private boolean isValidPosition(final Rectangle rectangle) {
-        return buildings.stream().noneMatch(rect -> rect.overlaps(rectangle))
+        return buildings.keySet().stream().noneMatch(rect -> rect.overlaps(rectangle))
             && this.border.contains(rectangle);
     }
 
@@ -232,7 +231,8 @@ public class GameScreen extends ScreenAdapter {
                 selected.get().setPosition(this.computeX(screenX), this.computeY(screenY));
                 return true;
             } else { //Allows to display a label containing info about upgrade costs when mouse is over buildings
-                var building = buildings.stream().filter(b -> b.contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
+                var building = buildings.entrySet().stream()
+                    .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
                     costUpgrade.setVisible(true);
                     costUpgrade.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
@@ -273,7 +273,10 @@ public class GameScreen extends ScreenAdapter {
         private boolean handlePlacement() {
             if (isValidPosition(selected.get())) {
                 this.construction.play();
-                buildings.add(selected.get()); //TODO: need to add the building, not the rectangle
+                final var im = new Image(new Texture(Gdx.files.internal("images" + File.separator + imageList[index].replace("icon", EXTENSION))));
+                im.setPosition(selected.get().x, selected.get().y);
+                stage.addActor(im);
+                buildings.put(selected.get(), im);
             } else {
                 warning.show(stage);
                 warning.setPosition(Gdx.graphics.getWidth() / 2 - warning.getWidth() / 2, 
@@ -292,13 +295,14 @@ public class GameScreen extends ScreenAdapter {
 
         /*This method is used to determine the consequences of a click of the mouse without carrying a building for placement. */
         private boolean handleTouch(final int screenX, final int screenY) {
-            final var touched = buildings.stream()
-                .filter(rect -> rect.contains(screenX, Gdx.graphics.getHeight() - screenY))
+            final var touched = buildings.entrySet().stream()
+                .filter(entry -> entry.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY))
                 .findFirst();
             if (touched.isPresent()) {
                 if (this.pressingShift) {
                     this.destruction.play();
-                    buildings.remove(touched.get());
+                    buildings.remove(touched.get().getKey());
+                    touched.get().getValue().remove();
                 } else if (this.pressingCtrl) {
                     this.upgrading.play();
                 }
