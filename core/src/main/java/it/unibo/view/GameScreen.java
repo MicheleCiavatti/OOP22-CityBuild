@@ -141,6 +141,7 @@ public class GameScreen extends ScreenAdapter {
         //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
+    //A method to set the labels dimensions based on the string they contain
     private void setLabelDimensions(final Label l) {
         this.layout.setText(l.getStyle().font, l.getText());
         l.setWidth(this.layout.width);
@@ -241,7 +242,7 @@ public class GameScreen extends ScreenAdapter {
                 var building = buildings.entrySet().stream()
                     .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
-                    upgradeLabel.setText(building.get().getValue().getName());
+                    upgradeLabel.setText(building.get().getValue().getName()); //TODO: info about upgrade costs
                     setLabelDimensions(upgradeLabel);
                     upgradeLabel.setVisible(true);
                     upgradeLabel.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
