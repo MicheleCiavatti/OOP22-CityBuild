@@ -1,10 +1,8 @@
 package it.unibo.view;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import com.badlogic.gdx.Gdx;
@@ -312,19 +310,21 @@ public class GameScreen extends ScreenAdapter {
         }
 
         private void roundButtonList(int param){
-            this.scroll.play();
-            if (param == 1){
-                index++;
-                if (index == imageList.length){
-                    index = 0;
+            if (selected.isEmpty()) {
+                this.scroll.play();
+                if (param == 1){
+                    index++;
+                    if (index == imageList.length){
+                        index = 0;
+                    }
+                } else if (param == -1){
+                    index--;
+                    if (index == -1){
+                        index = imageList.length-1;
+                    }
                 }
-            } else if (param == -1){
-                index--;
-                if (index == -1){
-                    index = imageList.length-1;
-                }
+                selectButton(index);
             }
-            selectButton(index);
         }
     }
 }
