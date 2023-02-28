@@ -15,7 +15,11 @@ public interface Controller {
 
     public boolean upgradeBuilding(final String buildingName);
 
-    public Map<Resource, Integer> getCostForBuilding(final String buildingName);
+    public Map<Resource, Integer> getCost(final String buildingName);
+
+    public Map<Resource, Integer> getUpgrade(final String buildingName);
+
+    public Map<Resource, Integer> getRevenue(final String buildingName);
 
     public Map<Resource, Integer> getPlayerResources();
 

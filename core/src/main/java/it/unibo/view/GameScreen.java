@@ -190,7 +190,7 @@ public class GameScreen extends ScreenAdapter {
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index].replace("icon" + EXTENSION, ""));
-        this.setTextForLabel(button.getName() + "\n", this.controller.getCostForBuilding(button.getName()), this.costWindow);
+        this.setTextForLabel(button.getName() + "\n", this.controller.getCost(button.getName()), this.costWindow);
         tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
         tableBuildings.add(this.costWindow);
         //posiziona la tabella in alto a sinistra rispetto allo schermo

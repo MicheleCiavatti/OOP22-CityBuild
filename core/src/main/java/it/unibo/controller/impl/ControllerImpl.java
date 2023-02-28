@@ -53,7 +53,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public Map<Resource, Integer> getCostForBuilding(final String buildingName) {
+    public Map<Resource, Integer> getCost(final String buildingName) {
         final var building = this.allBuildings.stream().filter(b -> b.getName().equals(buildingName)).findFirst();
         if (building.isEmpty()) {
             throw new IllegalArgumentException("Wrong parameter in 'getCostForBuilding' in class ControllerImpl");
