@@ -57,8 +57,8 @@ public class GameScreen extends ScreenAdapter {
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
 
     private int index = 0;
-    private final String[] imageList = {"icon1", "icon2", "icon3"};
-    private static final int NUMBUTTONS = 3;
+    private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
+        "Mineral_stationicon", "Power_planticon", "Quantum_reactoricon", "Skyscrapericon", "Ultrafiltration_complexicon", "Woodcuttericon"};
     private Table tableBuildings = new Table();
 
     public GameScreen() {
@@ -134,7 +134,7 @@ public class GameScreen extends ScreenAdapter {
         Texture iconTexture = new Texture(buildingPath);
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(imageList[index]);
+        button.setName(imageList[index].replace("icon", "").replace("_", " "));
         this.costWindow.setText(button.getName());
         tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
         tableBuildings.add(this.costWindow);
@@ -311,13 +311,13 @@ public class GameScreen extends ScreenAdapter {
             this.scroll.play();
             if (param == 1){
                 index++;
-                if (index == NUMBUTTONS){
+                if (index == imageList.length){
                     index = 0;
                 }
             } else if (param == -1){
                 index--;
                 if (index == -1){
-                    index = NUMBUTTONS-1;
+                    index = imageList.length-1;
                 }
             }
             selectButton(index);
