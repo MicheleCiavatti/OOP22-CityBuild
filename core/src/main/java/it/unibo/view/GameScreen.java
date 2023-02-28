@@ -14,6 +14,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -47,6 +48,7 @@ public class GameScreen extends ScreenAdapter {
     private final Dialog warning;
     private final Label constructionLabel;
     private final Label upgradeLabel;
+    private final GlyphLayout layout;
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
@@ -68,6 +70,7 @@ public class GameScreen extends ScreenAdapter {
             this.tablePlayer.add(new Label(s, skin));
             this.tablePlayer.row();
         });
+        this.layout = new GlyphLayout();
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
@@ -119,6 +122,7 @@ public class GameScreen extends ScreenAdapter {
         this.shapeRenderer.dispose();
         this.theme.dispose();
         this.stage.dispose();
+        this.skin.dispose();
     }
 
     private void selectButton(int index){
@@ -131,9 +135,16 @@ public class GameScreen extends ScreenAdapter {
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index].replace("icon", "").replace("_", " "));
         this.constructionLabel.setText(button.getName());
+        this.setLabelDimensions(this.constructionLabel);
         tableBuildings.add(button).pad(5);
         tableBuildings.add(this.constructionLabel);
         //posiziona la tabella in alto a sinistra rispetto allo schermo
+    }
+
+    private void setLabelDimensions(final Label l) {
+        this.layout.setText(l.getStyle().font, l.getText());
+        l.setWidth(this.layout.width);
+        l.setHeight(this.layout.height);
     }
 
     private void startMusic() {
@@ -230,6 +241,8 @@ public class GameScreen extends ScreenAdapter {
                 var building = buildings.entrySet().stream()
                     .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
+                    upgradeLabel.setText(building.get().getValue().getName());
+                    setLabelDimensions(upgradeLabel);
                     upgradeLabel.setVisible(true);
                     upgradeLabel.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
                 }
@@ -271,6 +284,7 @@ public class GameScreen extends ScreenAdapter {
                 this.construction.play();
                 final var im = new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + imageList[index].replace("icon", EXTENSION))));
                 im.setPosition(selected.get().x, selected.get().y);
+                im.setName(imageList[index].replace("icon", "").replace("_", " "));
                 stage.addActor(im);
                 im.setZIndex(0);
                 buildings.put(selected.get(), im);
