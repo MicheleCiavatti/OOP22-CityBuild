@@ -60,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
     private final Label costUpgrade;
     private final Stage stage;
     private final Rectangle border;
+    private final StringBuilder strBuilder;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
     private float cycleDuration;
 
@@ -83,6 +84,7 @@ public class GameScreen extends ScreenAdapter {
         this.costUpgrade = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.strBuilder = new StringBuilder();
         Gdx.input.setInputProcessor(new GameProcessor());
         this.cycleDuration = 0;
     }
@@ -187,19 +189,22 @@ public class GameScreen extends ScreenAdapter {
         Texture iconTexture = new Texture(buildingPath);
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(imageList[index]);
-        final var buildingName = button.getName().replace("icon" + EXTENSION, "");
-        final var costTable = this.controller.getCostForBuilding(buildingName);
-        final StringBuilder stringBuilder = new StringBuilder(buildingName + "\n");
-        costTable.entrySet().stream()
-            .map(entry -> entry.getKey() +": " + entry.getValue() + "\n")
-            .forEach(stringBuilder::append);
-        this.costWindow.setText(stringBuilder.toString());
+        button.setName(imageList[index].replace("icon" + EXTENSION, ""));
+        this.setTextForLabel(button.getName() + "\n", this.controller.getCostForBuilding(button.getName()), this.costWindow);
         tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
         tableBuildings.add(this.costWindow);
         //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
+    private void setTextForLabel(final String firstLine, final Map<Resource, Integer> table, final Label label) {
+        strBuilder.setLength(0); //Clears the string builder
+        strBuilder.trimToSize();
+        strBuilder.append(firstLine);
+        table.entrySet().stream()
+            .map(entry -> "\n" + entry.getKey() +": " + entry.getValue())
+            .forEach(strBuilder::append);
+        label.setText(strBuilder.toString());
+    }
 
     private class GameProcessor extends InputAdapter {
 
