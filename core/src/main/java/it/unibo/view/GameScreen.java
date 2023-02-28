@@ -58,7 +58,6 @@ public class GameScreen extends ScreenAdapter {
     private final Dialog upgradeFailed;
     private final Label costWindow;
     private final Label costUpgrade;
-    private final Description description;
     private final Stage stage;
     private final Rectangle border;
     private final StringBuilder strBuilder;
@@ -83,7 +82,6 @@ public class GameScreen extends ScreenAdapter {
         this.upgradeFailed = new Dialog("Warning", this.skin);
         this.costWindow = new Label("Building label", this.skin);
         this.costUpgrade = new Label("Upgrade label", this.skin);
-        this.description = new Description(this.controller);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.strBuilder = new StringBuilder();
@@ -192,10 +190,20 @@ public class GameScreen extends ScreenAdapter {
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index].replace("icon" + EXTENSION, ""));
-        this.costWindow.setText(this.description.constructiontext(button.getName()));
+        this.setTextForLabel(button.getName() + "\n", this.controller.getCost(button.getName()), this.costWindow);
         tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
         tableBuildings.add(this.costWindow);
         //posiziona la tabella in alto a sinistra rispetto allo schermo
+    }
+
+    private void setTextForLabel(final String firstLine, final Map<Resource, Integer> table, final Label label) {
+        strBuilder.setLength(0); //Clears the string builder
+        strBuilder.trimToSize();
+        strBuilder.append(firstLine);
+        table.entrySet().stream()
+            .map(entry -> "\n" + entry.getKey() +": " + entry.getValue())
+            .forEach(strBuilder::append);
+        label.setText(strBuilder.toString());
     }
 
     private class GameProcessor extends InputAdapter {
