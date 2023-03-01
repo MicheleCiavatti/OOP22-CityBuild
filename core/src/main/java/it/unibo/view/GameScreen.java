@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -29,7 +30,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
 
@@ -44,47 +44,46 @@ public class GameScreen extends ScreenAdapter {
     private static final String EXTENSION = ".png";
     //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
     private static final float CYCLE_DURATION_SECONDS = 3f;
-    private static final float BUTTON_WIDTH = 64;
-    private static final float BUTTON_HEIGHT = 64;
 
     private final Controller controller;
     private final Table tablePlayer;
     private Map<Resource, Integer> resources;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
-    private final Map<Rectangle, String> buildings; //Saves the position of the building and a string containing name and upgrade cost.
-    private final Skin skin;
     private final Dialog constructionFailed;
     private final Dialog upgradeFailed;
-    private final Label costWindow;
-    private final Label costUpgrade;
+    private final Map<Rectangle, Image> buildings;
+    private final Skin skin;
+    private final Label constructionLabel;
+    private final Label upgradeLabel;
+    private final GlyphLayout layout;
     private final Stage stage;
     private final Rectangle border;
-    private final StringBuilder strBuilder;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
     private float cycleDuration;
 
     private int index = 0;
-    private final String[] imageList = {"icon1", "icon2", "icon3"};
-    private static final int NUMBUTTONS = 3;
-    private Table tableBuildings = new Table();
+    private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
+        "Mineral_stationicon", "Power_planticon", "Quantum_reactoricon", "Skyscrapericon", "Ultrafiltration_complexicon", "Woodcuttericon"};
+    private final Table tableBuildings;
 
     public GameScreen(final Controller controller) {
         this.controller = controller;
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
-        this.tablePlayer = new Table(skin);
+        this.tablePlayer = new Table(this.skin);
+        this.tableBuildings = new Table(this.skin);
         this.updateTablePlayer();
+        this.layout = new GlyphLayout();
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
         this.constructionFailed = new Dialog("Warning", this.skin);
         this.upgradeFailed = new Dialog("Warning", this.skin);
-        this.costWindow = new Label("Building label", this.skin);
-        this.costUpgrade = new Label("Upgrade label", this.skin);
+        this.constructionLabel = new Label("Building label", this.skin);
+        this.upgradeLabel = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.strBuilder = new StringBuilder();
         Gdx.input.setInputProcessor(new GameProcessor());
         this.cycleDuration = 0;
     }
@@ -99,14 +98,14 @@ public class GameScreen extends ScreenAdapter {
         this.upgradeFailed.text("Not enough resources or building already upgraded");
         this.stage.addActor(this.constructionFailed);
         this.stage.addActor(this.upgradeFailed);
-        this.stage.addActor(this.costWindow);
+        this.stage.addActor(this.constructionLabel);
         this.stage.addActor(this.tablePlayer);
-        this.stage.addActor(this.costUpgrade);
+        this.stage.addActor(this.upgradeLabel);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
-        this.setColorLabel(this.costUpgrade, Color.BROWN);
+        this.setColorLabel(this.upgradeLabel, Color.BROWN);
 
-        this.costWindow.setFontScale(1.2f);
+        this.constructionLabel.setFontScale(1.2f);
         tableBuildings.setFillParent(true);
         tableBuildings.top().left();
         this.stage.addActor(tableBuildings);
@@ -120,7 +119,6 @@ public class GameScreen extends ScreenAdapter {
         this.cycleDuration += delta;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
-        this.buildings.keySet().forEach(this::drawRectangle);
         shapeRenderer.end();
         if (this.cycleDuration >= CYCLE_DURATION_SECONDS) {
             this.cycleDuration = 0;
@@ -128,7 +126,7 @@ public class GameScreen extends ScreenAdapter {
             this.updateTablePlayer();
         }
         this.stage.act(delta);
-        this.stage.draw();
+        this.stage.draw();        
     }
 
     /**{@inheritDoc} */
@@ -137,6 +135,7 @@ public class GameScreen extends ScreenAdapter {
         this.shapeRenderer.dispose();
         this.theme.dispose();
         this.stage.dispose();
+        this.skin.dispose();
     }
 
     /*This method is called at the end of every cycle of the game to update the resources and citizens in town.
@@ -147,12 +146,16 @@ public class GameScreen extends ScreenAdapter {
         this.resources = this.controller.getPlayerResources();
         this.tablePlayer.clear();
         this.tablePlayer.add(new Label("Citizens in town: " + this.controller.getCitizensInTown(), this.skin));
-        this.tablePlayer.row();
-        this.resources.entrySet().forEach(entry -> {
-            final String s = entry.getKey() + ": " + entry.getValue();
-            this.tablePlayer.add(new Label(s, this.skin));
-            this.tablePlayer.row();
-        });
+        this.tablePlayer.add(new Label(this.resources.entrySet().stream()
+            .map(entry -> "\n" + entry.getKey() + ": " + entry.getValue())
+            .collect(Collectors.joining()), this.skin));
+    }
+
+    //A method to set the labels dimensions based on the string they contain
+    private void setLabelDimensions(final Label l) {
+        this.layout.setText(l.getStyle().font, l.getText());
+        l.setWidth(this.layout.width);
+        l.setHeight(this.layout.height);
     }
 
     private void startMusic() {
@@ -183,27 +186,19 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void selectButton(int index){
+
         //crea un pane con un bottone
         tableBuildings.clear();
         String buildingPath = IMAGE_FOLDER + imageList[index] + EXTENSION;
         Texture iconTexture = new Texture(buildingPath);
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(imageList[index].replace("icon" + EXTENSION, ""));
-        this.setTextForLabel(button.getName() + "\n", this.controller.getCost(button.getName()), this.costWindow);
-        tableBuildings.add(button).size(BUTTON_WIDTH, BUTTON_HEIGHT).pad(5);
-        tableBuildings.add(this.costWindow);
+        button.setName(imageList[index].replace("icon", "").replace("_", " "));
+        this.constructionLabel.setText(button.getName());
+        this.setLabelDimensions(this.constructionLabel);
+        tableBuildings.add(button).pad(5);
+        tableBuildings.add(this.constructionLabel);
         //posiziona la tabella in alto a sinistra rispetto allo schermo
-    }
-
-    private void setTextForLabel(final String firstLine, final Map<Resource, Integer> table, final Label label) {
-        strBuilder.setLength(0); //Clears the string builder
-        strBuilder.trimToSize();
-        strBuilder.append(firstLine);
-        table.entrySet().stream()
-            .map(entry -> "\n" + entry.getKey() +": " + entry.getValue())
-            .forEach(strBuilder::append);
-        label.setText(strBuilder.toString());
     }
 
     private class GameProcessor extends InputAdapter {
@@ -269,19 +264,18 @@ public class GameScreen extends ScreenAdapter {
         /**{@inheritDoc} */
         @Override
         public boolean mouseMoved(final int screenX, final int screenY) {
-            costUpgrade.setVisible(false);
+            upgradeLabel.setVisible(false);
             if (selected.isPresent()) { //Verifies if the user has selected a building to place
                 selected.get().setPosition(this.computeX(screenX), this.computeY(screenY));
                 return true;
             } else { //Allows to display a label containing info about upgrade costs when mouse is over buildings
-                var building = buildings.entrySet()
-                    .stream()
-                    .filter(entry -> entry.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY))
-                    .findFirst();
+                var building = buildings.entrySet().stream()
+                    .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
-                    costUpgrade.setText(building.get().getValue());
-                    costUpgrade.setVisible(true);
-                    costUpgrade.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
+                    upgradeLabel.setText(building.get().getValue().getName()); //TODO: info about upgrade costs
+                    setLabelDimensions(upgradeLabel);
+                    upgradeLabel.setVisible(true);
+                    upgradeLabel.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
                 }
             }
             return false;
@@ -323,7 +317,12 @@ public class GameScreen extends ScreenAdapter {
         private boolean handlePlacement() {
             if (isValidPosition(selected.get()) && controller.checkResourcesAndBuild(this.selectedName)) {
                 this.construction.play();
-                buildings.put(selected.get(), this.selectedName);
+                final var im = new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + imageList[index].replace("icon", EXTENSION))));
+                im.setPosition(selected.get().x, selected.get().y);
+                im.setName(imageList[index].replace("icon", "").replace("_", " "));
+                stage.addActor(im);
+                im.setZIndex(0);
+                buildings.put(selected.get(), im);
                 updateTablePlayer();
             } else {
                 this.displayWarning(constructionFailed);
@@ -342,24 +341,17 @@ public class GameScreen extends ScreenAdapter {
             if (touched.isPresent()) {
                 if (this.pressingShift) {
                     this.destruction.play();
-                    controller.removeBuilding(this.fromLabelToName(touched.get().getValue()));
+                    controller.removeBuilding(touched.get().getValue().getName());
                     buildings.remove(touched.get().getKey());
+                    touched.get().getValue().remove();
                 } else if (this.pressingCtrl) {
-                    this.upgrade(controller.upgradeBuilding(this.fromLabelToName(touched.get().getValue())));
+                    this.upgrade(controller.upgradeBuilding(touched.get().getValue().getName()));
                     updateTablePlayer();
                     
                 }
                 return true;
             }
             return false;
-        }
-
-        /*The buildings are memorized with a String containing the name and the upgrade costs:
-         * this method extracts the name of the building from such String.
-         */
-        private String fromLabelToName(final String label) {
-            var tokens = label.split("\n");
-            return tokens[0];
         }
 
         private void upgrade(final boolean success) {
@@ -387,20 +379,21 @@ public class GameScreen extends ScreenAdapter {
         }
 
         private void roundButtonList(int param){
-            this.scroll.play();
-            if (param == 1){
-                index++;
-                if (index == NUMBUTTONS){
-                    index = 0;
+            if (selected.isEmpty()) {
+                this.scroll.play();
+                if (param == 1){
+                    index++;
+                    if (index == imageList.length){
+                        index = 0;
+                    }
+                } else if (param == -1){
+                    index--;
+                    if (index == -1){
+                        index = imageList.length-1;
+                    }
                 }
-            } else if (param == -1){
-                index--;
-                if (index == -1){
-                    index = NUMBUTTONS-1;
-    
-                }
+                selectButton(index);
             }
-            selectButton(index);
         }
     }
 }

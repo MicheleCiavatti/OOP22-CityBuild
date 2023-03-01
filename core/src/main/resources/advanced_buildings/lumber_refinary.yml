@@ -1,0 +1,11 @@
+#Advanced building of woodcutter
+revenue:
+  WOOD: 25
+construction: 
+  METAL: 10
+  CITIZEN: 5
+  GOLD: 25
+upgrade:
+  METAL: 10
+  CITIZEN: 6
+  ENERGY: 10

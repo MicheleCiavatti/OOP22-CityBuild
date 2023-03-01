@@ -98,17 +98,17 @@ public class ControllerImpl implements Controller {
                 case "foundry" -> Resource.METAL;
                 case "house" -> Resource.CITIZEN;
                 case "mine" -> Resource.GOLD;
-                case "power_plant" -> Resource.ENERGY;
+                case "power plant" -> Resource.ENERGY;
                 case "woodcutter" -> Resource.WOOD;
                 default -> throw new IllegalStateException();
             });
         }
         return this.factory.createAdvancedProductionBuilding(switch(name.toLowerCase()) {
-            case "ultrafiltration_complex" -> Resource.WATER;
+            case "ultrafiltration complex" -> Resource.WATER;
             case "forge" -> Resource.METAL;
-            case "lumber_refinary" -> Resource.WOOD;
-            case "mineral_station" -> Resource.GOLD;
-            case "quantum_reactor" -> Resource.ENERGY;
+            case "lumber refinary" -> Resource.WOOD;
+            case "mineral station" -> Resource.GOLD;
+            case "quantum reactor" -> Resource.ENERGY;
             case "skyscraper" -> Resource.CITIZEN;
             default -> throw new IllegalStateException();
         });

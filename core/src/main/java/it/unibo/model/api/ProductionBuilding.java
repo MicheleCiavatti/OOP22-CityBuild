@@ -32,6 +32,6 @@ public interface ProductionBuilding {
      * @param resourcesForUpgrade the method makes a check to verify that the resources passed are appropriate 
      * for upgrading the building
      */
-    public void upgrade(final Map<Resource, Integer> resourcesForUpgrade);
+    public boolean upgrade(final Map<Resource, Integer> resourcesForUpgrade);
 
 }
