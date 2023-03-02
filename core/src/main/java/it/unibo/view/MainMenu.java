@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -35,6 +37,7 @@ public class MainMenu extends ScreenAdapter {
 	private final Stage stage;
 	private final Sound buttonClick;
 	private final Music theme;
+	private Pixmap pixmap;
 
 	public MainMenu(final CityBuild game) {
 		this.game = game;
@@ -42,6 +45,7 @@ public class MainMenu extends ScreenAdapter {
 		this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "tlou_theme.mp3"));
 		this.stage = new Stage(new ScreenViewport());
 		this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
+		this.setCursorImage();
 	}
 
 	/**{@inheritDoc} */
@@ -52,8 +56,16 @@ public class MainMenu extends ScreenAdapter {
 		this.buttonClick.dispose();
 		this.skin.dispose();
 		this.stage.dispose();
-	}
+		this.pixmap.dispose();
 
+	}
+	private void setCursorImage(){
+		this.pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
+        int xHotspot = pixmap.getWidth() / 2;
+        int yHotspot = pixmap.getHeight() / 2;
+        Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+        Gdx.graphics.setCursor(cursor);
+	}	
 	/**{@inheritDoc} */
 	@Override
 	public void show() {	

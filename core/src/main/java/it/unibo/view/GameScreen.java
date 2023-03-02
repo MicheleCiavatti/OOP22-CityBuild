@@ -12,6 +12,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -52,6 +53,7 @@ public class GameScreen extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
+    
 
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
@@ -59,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
     private final Table tableBuildings;
 
     public GameScreen() {
+
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         this.tablePlayer = new Table(this.skin);
         this.tableBuildings = new Table(this.skin);
@@ -80,6 +83,7 @@ public class GameScreen extends ScreenAdapter {
         this.upgradeLabel = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        
         Gdx.input.setInputProcessor(new GameProcessor());
     }
 
@@ -107,7 +111,7 @@ public class GameScreen extends ScreenAdapter {
     /**{@inheritDoc} */
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
+        ScreenUtils.clear(1, 0, 0, 1);
         this.stage.act(delta);
         this.stage.draw();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -174,6 +178,9 @@ public class GameScreen extends ScreenAdapter {
         l.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
     }
 
+
+    
+
     private class GameProcessor extends InputAdapter {
 
         private static final int RECT_WIDTH = 200;
@@ -197,6 +204,7 @@ public class GameScreen extends ScreenAdapter {
             this.upgrading = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "upgrade.ogg"));
             this.pressingShift = false;
             this.pressingCtrl = false;
+            //this.changeCursorImage("HammerCursor.png");
         }
 
         /**{@inheritDoc} */
@@ -269,15 +277,17 @@ public class GameScreen extends ScreenAdapter {
         private boolean selectingBuilding() {
             if (selected.isEmpty()) {
                 this.selection.play();
+                this.setCursorHummer();
                 selected = Optional.of(new Rectangle(
                     computeX(Gdx.input.getX()), 
                     computeY(Gdx.input.getY()),
                     RECT_WIDTH, RECT_HEIGHT));
                     return true;
-            }
+                }
             return false;
         }
 
+        
         /*When the user has selected a building from the icon menù, this method 
         is used to determine the consequences of a click of the mouse */
         private boolean handlePlacement() {
@@ -302,6 +312,7 @@ public class GameScreen extends ScreenAdapter {
                 this.wrong.play();
             }
             selected = Optional.empty();
+            this.setCursorDefault();
             return true;
         }
 
@@ -339,6 +350,21 @@ public class GameScreen extends ScreenAdapter {
                 }
                 selectButton(index);
             }
+        }
+        private void setCursorDefault(){
+            Pixmap pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
+            int xHotspot = pixmap.getWidth() / 4;   
+            int yHotspot = pixmap.getHeight() / 4;
+            Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+            Gdx.graphics.setCursor(cursor);
+        }
+        
+        private void setCursorHummer(){
+            Pixmap pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "hummer.png"));
+            int xHotspot = pixmap.getWidth() / 2;
+            int yHotspot = pixmap.getHeight() / 2;
+            Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+            Gdx.graphics.setCursor(cursor);
         }
     }
 }
