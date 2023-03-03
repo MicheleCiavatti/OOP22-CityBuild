@@ -194,8 +194,6 @@ public class GameScreen extends ScreenAdapter {
         private final Sound upgrading;
         private boolean pressingShift;
         private boolean pressingCtrl;
-        private boolean cursor;
-
         public GameProcessor() {
             this.selection = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "select_building.ogg"));
             this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction.ogg"));
@@ -205,7 +203,6 @@ public class GameScreen extends ScreenAdapter {
             this.upgrading = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "upgrade.ogg"));
             this.pressingShift = false;
             this.pressingCtrl = false;
-            //this.changeCursorImage("HammerCursor.png");
         }
 
         /**{@inheritDoc} */
@@ -277,8 +274,8 @@ public class GameScreen extends ScreenAdapter {
 
         private boolean selectingBuilding() {
             if (selected.isEmpty()) {
+                this.setCursor(true);
                 this.selection.play();
-                this.setCursor(this.cursor = true);
                 selected = Optional.of(new Rectangle(
                     computeX(Gdx.input.getX()), 
                     computeY(Gdx.input.getY()),
@@ -313,7 +310,7 @@ public class GameScreen extends ScreenAdapter {
                 this.wrong.play();
             }
             selected = Optional.empty();
-            this.setCursor(this.cursor=false);
+            this.setCursor(false);
             return true;
         }
 
