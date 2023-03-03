@@ -194,6 +194,7 @@ public class GameScreen extends ScreenAdapter {
         private final Sound upgrading;
         private boolean pressingShift;
         private boolean pressingCtrl;
+        private boolean cursor;
 
         public GameProcessor() {
             this.selection = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "select_building.ogg"));
@@ -277,7 +278,7 @@ public class GameScreen extends ScreenAdapter {
         private boolean selectingBuilding() {
             if (selected.isEmpty()) {
                 this.selection.play();
-                this.setCursorHummer();
+                this.setCursor(this.cursor = true);
                 selected = Optional.of(new Rectangle(
                     computeX(Gdx.input.getX()), 
                     computeY(Gdx.input.getY()),
@@ -312,7 +313,7 @@ public class GameScreen extends ScreenAdapter {
                 this.wrong.play();
             }
             selected = Optional.empty();
-            this.setCursorDefault();
+            this.setCursor(this.cursor=false);
             return true;
         }
 
@@ -351,20 +352,22 @@ public class GameScreen extends ScreenAdapter {
                 selectButton(index);
             }
         }
-        private void setCursorDefault(){
-            Pixmap pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
-            int xHotspot = pixmap.getWidth() / 4;   
-            int yHotspot = pixmap.getHeight() / 4;
-            Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
-            Gdx.graphics.setCursor(cursor);
-        }
-        
-        private void setCursorHummer(){
-            Pixmap pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "hummer.png"));
-            int xHotspot = pixmap.getWidth() / 2;
-            int yHotspot = pixmap.getHeight() / 2;
-            Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
-            Gdx.graphics.setCursor(cursor);
+
+        private void setCursor(Boolean b){
+            Pixmap pmDefault = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
+            Pixmap pmHummer = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "hummer.png"));
+            if(!b){
+                int xHotspot = pmDefault.getWidth() / 4;   
+                int yHotspot = pmDefault.getHeight() / 4;
+                Cursor cursor = Gdx.graphics.newCursor(pmDefault, xHotspot, yHotspot);
+                Gdx.graphics.setCursor(cursor);
+            }
+            else{
+                int xHotspot = pmHummer.getWidth() / 2;
+                int yHotspot = pmHummer.getHeight() / 2;
+                Cursor cursor = Gdx.graphics.newCursor(pmHummer, xHotspot, yHotspot);
+                Gdx.graphics.setCursor(cursor);
+            }
         }
     }
 }
