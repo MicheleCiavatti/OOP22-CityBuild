@@ -3,6 +3,8 @@ package it.unibo.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
 import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.ProductionBuilding;
@@ -43,30 +45,22 @@ public class CityImpl implements City {
         return false;
     }
 
-    /*The Resource.CITIZEN is special because it holds the capacity of the city: therefore, the revenue regarding CITIZEN
-     * must be added immediately in the player resources when the building is built, and if the building providing that revenue 
-     * is destroyed than it must be subtracted immediately in the player resources.
-     */
-    private void operations(final boolean adding, final ProductionBuilding b) {
-        if (adding) {
-            this.buildings.add(b);
-            this.player.addResources(this.checkForCitizens(b.getRevenue()));
-        } else {
-            this.buildings.remove(b);
-            this.player.spendResources(this.checkForCitizens(b.getRevenue()));
+    /**{@inheritDoc} */
+    @Override
+    public void demolish(ProductionBuilding building) {
+        final var toDel1 = this.firstSatisfying(building, Predicate.not(ProductionBuilding::isUpgradable));
+        final var toDel2 = this.firstSatisfying(building, b -> true);
+        if (toDel1.isPresent()) {
+            this.operations(false, toDel1.get());
+        } else if (toDel2.isPresent()) {
+            this.operations(false, toDel2.get());
         }
     }
 
-    private Map<Resource, Integer> checkForCitizens(final Map<Resource, Integer> revenue) {
-        return revenue.containsKey(Resource.CITIZEN)
-            ? Map.of(Resource.CITIZEN, revenue.get(Resource.CITIZEN))
-            : NULL_MAP;
-    }
-
-    @Override
-    public void demolish(ProductionBuilding building) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'demolish'");
+    private Optional<ProductionBuilding> firstSatisfying(final ProductionBuilding building, final Predicate<ProductionBuilding> condition) {
+        return this.buildings.stream()
+            .filter(b -> condition.test(b) && b.getName().equals(building.getName()))
+            .findFirst();
     }
 
     @Override
@@ -99,4 +93,23 @@ public class CityImpl implements City {
         throw new UnsupportedOperationException("Unimplemented method 'doCycle'");
     }
     
+    /*The Resource.CITIZEN is special because it holds the capacity of the city: therefore, the revenue regarding CITIZEN
+     * must be added immediately in the player resources when the building is built, and if the building providing that revenue 
+     * is destroyed than it must be subtracted immediately in the player resources.
+     */
+    private void operations(final boolean adding, final ProductionBuilding b) {
+        if (adding) {
+            this.buildings.add(b);
+            this.player.addResources(this.checkForCitizens(b.getRevenue()));
+        } else {
+            this.buildings.remove(b);
+            this.player.spendResources(this.checkForCitizens(b.getRevenue()));
+        }
+    }
+
+    private Map<Resource, Integer> checkForCitizens(final Map<Resource, Integer> revenue) {
+        return revenue.containsKey(Resource.CITIZEN)
+            ? Map.of(Resource.CITIZEN, revenue.get(Resource.CITIZEN))
+            : NULL_MAP;
+    }
 }
