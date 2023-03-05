@@ -58,6 +58,18 @@ public class TestCity {
         assertTrue(this.city.getBuildings().stream().filter(b -> b.getName().equals(buildingNotRemoved.getName())).findFirst().isPresent());
     }
 
+    @Test
+    public void testUpgrade() {
+        this.p.spendResources(CityImpl.START_RESOURCES); //Empties the resources of the player
+        this.addBuilding(FIRST_RES);
+        final var toUp = factory.createSimpleProductionBuilding(FIRST_RES);
+        final var toUpButFail = factory.createAdvancedProductionBuilding(FIRST_RES);
+        //The second will fail because there isn't enough resources for the upgrade
+        this.p.addResources(toUp.getCostUpgrade());
+        assertTrue(this.city.upgrade(toUp));
+        assertFalse(this.city.upgrade(toUpButFail));
+    }
+
     private void addBuilding(final Resource r) {
         final var simple = this.factory.createSimpleProductionBuilding(r);
         final var advanced = this.factory.createAdvancedProductionBuilding(r);
