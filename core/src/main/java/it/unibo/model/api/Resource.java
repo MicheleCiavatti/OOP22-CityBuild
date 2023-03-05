@@ -4,7 +4,7 @@ package it.unibo.model.api;
 public enum Resource {
     WATER("Water", "Depurator", "Ultrafiltration_complex"),
     WOOD("Wood", "Woodcutter", "Lumber_refinary"),
-    ENERGY("Energy", "Power_Plant", "Quantum_reactor"),
+    ENERGY("Energy", "Power_plant", "Quantum_reactor"),
     METAL("Metal", "Foundry", "Forge"),
     CITIZEN("Citizen", "House", "Skyscraper"),
     GOLD("Gold", "Mine", "Mineral_station");
