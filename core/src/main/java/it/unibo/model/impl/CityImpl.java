@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.ProductionBuilding;
@@ -88,8 +91,26 @@ public class CityImpl implements City {
 
     @Override
     public void doCycle() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'doCycle'");
+        //Adding the revenue of every building built to the player resources
+        this.buildings.forEach(b -> this.player.addResources(b.getRevenue().entrySet().stream()
+            .filter(entry -> entry.getKey() != Resource.CITIZEN)
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))));
+        //The line above doesn't allow to add Resources regarding Citizen multiple times.
+        if (this.player.spendResources(this.citizensCost())) {
+            this.citizens = this.citizens + CITIZENS_TO_ADD > this.player.getResource(Resource.CITIZEN)
+                ? this.player.getResource(Resource.CITIZEN)
+                : this.citizens + CITIZENS_TO_ADD;
+        } else {
+            //Spends all the resources it can for the citizens cost, then loses citizens.
+            this.player.spendResources(this.citizensCost().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> Math.min(e.getValue(), this.player.getResource(e.getKey())))));
+            this.citizens = Math.max(0, this.citizens - CITIZENS_TO_LOSE);
+        }
+    }
+
+    private final Map<Resource, Integer> citizensCost() {
+        return COST_PER_CITIZEN.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() * this.citizens));
     }
     
     /*The Resource.CITIZEN is special because it holds the capacity of the city: therefore, the revenue regarding CITIZEN
