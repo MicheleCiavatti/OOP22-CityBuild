@@ -1,6 +1,9 @@
 package it.unibo.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,5 +38,32 @@ public class TestCity {
         assertEquals(0, this.city.getBuildings().size());
         assertEquals(CityImpl.START_RESOURCES, this.city.getPlayerResources());
         assertEquals(0, this.city.getCitizens());
+    }
+
+    @Test
+    public void testBuild() {
+        assertTrue(this.p.spendResources(CityImpl.START_RESOURCES)); //Removing all resources from the city
+        this.addBuilding(FIRST_RES);
+        this.addBuilding(Resource.GOLD);
+    }
+
+    @Test
+    public void testDemolish() {
+        this.addBuilding(FIRST_RES);
+        final var buildingRemoved = factory.createSimpleProductionBuilding(FIRST_RES);
+        final var buildingNotRemoved = factory.createAdvancedProductionBuilding(FIRST_RES);
+        this.city.demolish(buildingRemoved);
+        assertEquals(1, this.city.getBuildings().size());
+        assertTrue(this.city.getBuildings().stream().filter(b -> b.getName().equals(buildingRemoved.getName())).findFirst().isEmpty());
+        assertTrue(this.city.getBuildings().stream().filter(b -> b.getName().equals(buildingNotRemoved.getName())).findFirst().isPresent());
+    }
+
+    private void addBuilding(final Resource r) {
+        final var simple = this.factory.createSimpleProductionBuilding(r);
+        final var advanced = this.factory.createAdvancedProductionBuilding(r);
+        this.p.addResources(simple.getCostConstruction());
+        this.p.addResources(advanced.getCostConstruction());
+        assertTrue(this.city.build(simple));
+        assertTrue(this.city.build(advanced));
     }
 }
