@@ -1,5 +1,6 @@
 package it.unibo.model.impl;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import it.unibo.model.api.EconomyHandler;
@@ -23,14 +24,14 @@ public class ProductionBuildingImpl implements ProductionBuilding {
         EconomyHandlerFactory economyHandlerFactory = new EconomyHandlerFactoryImpl();
         EconomyHandler tables = economyHandlerFactory.createEconomyHandler();
         if (isSimpleBuilding) {
-            this.revenue = this.removeEmptyResources(tables.getSimpleRevenueTable(r));
-            this.constructionCost = this.removeEmptyResources(tables.getSimpleCostTable(r));
-            this.upgradeCost = this.removeEmptyResources(tables.getSimpleUpgradeTable(r));
+            this.revenue = this.equalizeMap(tables.getSimpleRevenueTable(r));
+            this.constructionCost = this.equalizeMap(tables.getSimpleCostTable(r));
+            this.upgradeCost = this.equalizeMap(tables.getSimpleUpgradeTable(r));
             this.name = r.getSimpleBuilding().replace("_", " ");
         } else {
-            this.revenue = this.removeEmptyResources(tables.getAdvancedRevenueTable(r));
-            this.constructionCost = this.removeEmptyResources(tables.getAdvancedCostTable(r));
-            this.upgradeCost = this.removeEmptyResources(tables.getAdvancedUpgradeTable(r));
+            this.revenue = this.equalizeMap(tables.getAdvancedRevenueTable(r));
+            this.constructionCost = this.equalizeMap(tables.getAdvancedCostTable(r));
+            this.upgradeCost = this.equalizeMap(tables.getAdvancedUpgradeTable(r));
             this.name = r.getAdvancedBuilding().replace("_", " ");
         }
         this.upgradable = true;
@@ -51,12 +52,16 @@ public class ProductionBuildingImpl implements ProductionBuilding {
     /**{@inheritDoc} */
     @Override
     public boolean upgrade(Map<Resource, Integer> resourcesForUpgrade) {
-        if (this.upgradable && this.upgradeCost.equals(this.removeEmptyResources(resourcesForUpgrade)) ) {
+        if (this.upgradable && this.enoughResources(resourcesForUpgrade, this.upgradeCost)) {
             this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
             this.upgradable = false;
             return true;
         }
         return false;
+    }
+
+    private boolean enoughResources(final Map<Resource, Integer> resources, final Map<Resource, Integer> cost) {
+        return resources.entrySet().stream().allMatch(e -> e.getValue() >= cost.get(e.getKey()));
     }
 
     /**{@inheritDoc} */
@@ -71,12 +76,16 @@ public class ProductionBuildingImpl implements ProductionBuilding {
         return Map.copyOf(this.constructionCost);
     }
 
-    //A transformation so that keys with value = 0 are removed, allowing for a safe comparison between maps.
-    private Map<Resource, Integer> removeEmptyResources(final Map<Resource, Integer> m) {
-        return m.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() > 0)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    //A transformation to map so that if a Resource is not present, is added with value 0.
+    private Map<Resource, Integer> equalizeMap(final Map<Resource, Integer> m) {
+        return Arrays.stream(Resource.values())
+            .collect(Collectors.toMap(r -> r, r -> m.containsKey(r) ? m.get(r) : 0));
+    }
+
+    @Override
+    public boolean isUpgradable() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isUpgradable'");
     }
 
     
