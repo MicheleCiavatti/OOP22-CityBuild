@@ -2,8 +2,10 @@ package it.unibo.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.controller.impl.EconomyFileReaderImpl;
@@ -26,9 +28,7 @@ public class TestProductionBuilding {
         final ProductionBuilding house = factory.createSimpleProductionBuilding(Resource.CITIZEN);
         final List<Map<Resource, Integer>> economyTables = fileReader.getSimpleEconomyTables(Resource.CITIZEN);
         assertEquals("House", house.getName());
-        assertEquals(economyTables.get(0), house.getRevenue());
-        assertEquals(economyTables.get(1), house.getCostConstruction());
-        assertEquals(economyTables.get(2), house.getCostUpgrade());
+        this.checkWithTables(economyTables, house);
         assertFalse(house.upgrade(EMPTY_RESOURCES));
     }
 
@@ -37,9 +37,7 @@ public class TestProductionBuilding {
         final ProductionBuilding mineralStation = factory.createAdvancedProductionBuilding(Resource.GOLD);
         final List<Map<Resource, Integer>> economyTables = fileReader.getAdvancedEconomyTables(Resource.GOLD);
         assertEquals("Mineral station", mineralStation.getName());
-        assertEquals(economyTables.get(0), mineralStation.getRevenue());
-        assertEquals(economyTables.get(1), mineralStation.getCostConstruction());
-        assertEquals(economyTables.get(2), mineralStation.getCostUpgrade());
+        this.checkWithTables(economyTables, mineralStation);
         assertFalse(mineralStation.upgrade(EMPTY_RESOURCES));
     }
 
@@ -48,9 +46,18 @@ public class TestProductionBuilding {
         final ProductionBuilding ultrafiltrationComplex = factory.createAdvancedProductionBuilding(Resource.WATER);
         final List<Map<Resource, Integer>> economyTables = fileReader.getAdvancedEconomyTables(Resource.WATER);
         assertEquals("Ultrafiltration complex", ultrafiltrationComplex.getName());
-        assertEquals(economyTables.get(0), ultrafiltrationComplex.getRevenue());
-        assertEquals(economyTables.get(1), ultrafiltrationComplex.getCostConstruction());
-        assertEquals(economyTables.get(2), ultrafiltrationComplex.getCostUpgrade());
+        this.checkWithTables(economyTables, ultrafiltrationComplex);
         assertFalse(ultrafiltrationComplex.upgrade(EMPTY_RESOURCES));
+    }
+
+    private void checkWithTables(final List<Map<Resource, Integer>> tables, final ProductionBuilding building) {
+        assertEquals(equalizeMap(tables.get(0)), building.getRevenue());
+        assertEquals(equalizeMap(tables.get(1)), building.getCostConstruction());
+        assertEquals(equalizeMap(tables.get(2)), building.getCostUpgrade());
+    }
+
+    private Map<Resource, Integer> equalizeMap(final Map<Resource, Integer> m) {
+        return Arrays.stream(Resource.values())
+            .collect(Collectors.toMap(r -> r, r -> m.containsKey(r) ? m.get(r) : 0));
     }
 }
