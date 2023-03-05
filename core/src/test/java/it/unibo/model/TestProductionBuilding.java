@@ -14,6 +14,7 @@ import it.unibo.model.api.BuildingFactory;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.BuildingFactoryImpl;
+import it.unibo.model.impl.ProductionBuildingImpl;
 
 public class TestProductionBuilding {
     
@@ -50,6 +51,15 @@ public class TestProductionBuilding {
         assertEquals("Ultrafiltration complex", ultrafiltrationComplex.getName());
         this.checkWithTables(economyTables, ultrafiltrationComplex);
         assertFalse(ultrafiltrationComplex.upgrade(EMPTY_RESOURCES));
+    }
+
+    @Test
+    public void testUpgrade() {
+        final ProductionBuilding building = factory.createSimpleProductionBuilding(Resource.ENERGY);
+        assertTrue(building.isUpgradable());
+        final var revenue = building.getRevenue().get(Resource.ENERGY);
+        assertTrue(building.upgrade(building.getCostUpgrade()));
+        assertEquals(revenue * ProductionBuildingImpl.MULTIPLIER, building.getRevenue().get(Resource.ENERGY));
     }
 
     private void checkWithTables(final List<Map<Resource, Integer>> tables, final ProductionBuilding building) {

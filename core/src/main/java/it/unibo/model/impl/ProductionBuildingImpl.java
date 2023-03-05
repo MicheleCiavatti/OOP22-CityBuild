@@ -13,7 +13,7 @@ import it.unibo.model.api.Resource;
  */
 public class ProductionBuildingImpl implements ProductionBuilding {
 
-    private static final int MULTIPLIER = 2;
+    public static final int MULTIPLIER = 2;
     private final Map<Resource, Integer> upgradeCost;
     private final Map<Resource, Integer> revenue;
     private final Map<Resource, Integer> constructionCost;
@@ -86,6 +86,4 @@ public class ProductionBuildingImpl implements ProductionBuilding {
     public boolean isUpgradable() {
         return this.upgradable;
     }
-
-    
 }
