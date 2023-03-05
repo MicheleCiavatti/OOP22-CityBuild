@@ -57,16 +57,14 @@ public class CityImpl implements City {
         }
     }
 
-    private Optional<ProductionBuilding> firstSatisfying(final ProductionBuilding building, final Predicate<ProductionBuilding> condition) {
-        return this.buildings.stream()
-            .filter(b -> condition.test(b) && b.getName().equals(building.getName()))
-            .findFirst();
-    }
-
     @Override
     public boolean upgrade(ProductionBuilding building) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'upgrade'");
+        final var toUp = this.firstSatisfying(building, ProductionBuilding::isUpgradable);
+        if (toUp.isPresent()) {
+            return toUp.get().upgrade(this.player.getAllResources()) && 
+                this.player.spendResources(building.getCostUpgrade());
+        }
+        return false;
     }
 
     @Override
@@ -111,5 +109,11 @@ public class CityImpl implements City {
         return revenue.containsKey(Resource.CITIZEN)
             ? Map.of(Resource.CITIZEN, revenue.get(Resource.CITIZEN))
             : NULL_MAP;
+    }
+
+    private Optional<ProductionBuilding> firstSatisfying(final ProductionBuilding building, final Predicate<ProductionBuilding> condition) {
+        return this.buildings.stream()
+            .filter(b -> condition.test(b) && b.getName().equals(building.getName()))
+            .findFirst();
     }
 }
