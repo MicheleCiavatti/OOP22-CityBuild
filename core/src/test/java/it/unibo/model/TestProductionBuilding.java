@@ -2,6 +2,7 @@ package it.unibo.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class TestProductionBuilding {
         final ProductionBuilding house = factory.createSimpleProductionBuilding(Resource.CITIZEN);
         final List<Map<Resource, Integer>> economyTables = fileReader.getSimpleEconomyTables(Resource.CITIZEN);
         assertEquals("House", house.getName());
+        assertTrue(house.isUpgradable());
         this.checkWithTables(economyTables, house);
         assertFalse(house.upgrade(EMPTY_RESOURCES));
     }
