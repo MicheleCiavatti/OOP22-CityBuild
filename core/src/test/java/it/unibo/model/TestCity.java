@@ -5,12 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.model.api.BuildingFactory;
 import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
+import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.BuildingFactoryImpl;
 import it.unibo.model.impl.CityImpl;
@@ -68,6 +71,18 @@ public class TestCity {
         this.p.addResources(toUp.getCostUpgrade());
         assertTrue(this.city.upgrade(toUp));
         assertFalse(this.city.upgrade(toUpButFail));
+    }
+
+    /**The test creates some buildings, upgrades half of them and destroys half + 1 of them. If implemented correctly, all the
+     * buildings not demolished should be upgraded.*/
+    @Test
+    public void testRemoveNotUpgraded() {
+        this.p.addResources(MANY_RESOURCES);
+        final int iterations = 10;
+        Stream.iterate(0, i -> i < iterations, i -> i + 1).forEach(i -> this.city.build(factory.createSimpleProductionBuilding(FIRST_RES)));
+        Stream.iterate(0, i -> i < iterations / 2, i -> i + 1).forEach(i -> this.city.upgrade(factory.createSimpleProductionBuilding(FIRST_RES)));
+        Stream.iterate(0, i -> i < iterations / 2 + 1, i -> i + 1).forEach(i -> this.city.demolish(factory.createSimpleProductionBuilding(FIRST_RES)));
+        assertTrue(this.city.getBuildings().stream().allMatch(ProductionBuilding::isUpgradable));
     }
 
     private void addBuilding(final Resource r) {
