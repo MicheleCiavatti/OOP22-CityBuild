@@ -57,6 +57,7 @@ public class CityImpl implements City {
         }
     }
 
+    /**{@inheritDoc} */
     @Override
     public boolean upgrade(ProductionBuilding building) {
         final var toUp = this.firstSatisfying(building, ProductionBuilding::isUpgradable);
@@ -67,22 +68,22 @@ public class CityImpl implements City {
         return false;
     }
 
+    /**{@inheritDoc} */
     @Override
     public Map<Resource, Integer> getPlayerResources() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayerResources'");
+        return Map.copyOf(this.player.getAllResources());
     }
 
+    /**{@inheritDoc} */
     @Override
     public int getCitizens() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCitizens'");
+        return this.citizens;
     }
 
+    /**{@inheritDoc} */
     @Override
     public List<ProductionBuilding> getBuildings() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBuildings'");
+        return List.copyOf(this.buildings);
     }
 
     @Override
