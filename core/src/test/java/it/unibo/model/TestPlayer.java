@@ -26,7 +26,7 @@ public class TestPlayer {
     public void testRetrieveResources() {
         assertEquals(Map.of(Resource.WOOD, 0, Resource.WATER, 10,
             Resource.ENERGY, 5, Resource.METAL, 0,
-            Resource.CITIZEN, 0), player.getAllResources());
+            Resource.CITIZEN, 0, Resource.GOLD, 0), player.getAllResources());
         assertEquals(10, player.getResource(Resource.WATER));
         assertEquals(0, player.getResource(Resource.CITIZEN));
     }
