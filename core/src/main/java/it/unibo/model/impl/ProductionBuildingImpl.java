@@ -84,8 +84,7 @@ public class ProductionBuildingImpl implements ProductionBuilding {
 
     @Override
     public boolean isUpgradable() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isUpgradable'");
+        return this.upgradable;
     }
 
     
