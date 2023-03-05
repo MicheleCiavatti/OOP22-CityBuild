@@ -51,17 +51,8 @@ public class ProductionBuildingImpl implements ProductionBuilding {
 
     /**{@inheritDoc} */
     @Override
-    public boolean upgrade(Map<Resource, Integer> resourcesForUpgrade) {
-        if (this.upgradable && this.enoughResources(resourcesForUpgrade, this.upgradeCost)) {
-            this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
-            this.upgradable = false;
-            return true;
-        }
-        return false;
-    }
-
-    private boolean enoughResources(final Map<Resource, Integer> resources, final Map<Resource, Integer> cost) {
-        return resources.entrySet().stream().allMatch(e -> e.getValue() >= cost.get(e.getKey()));
+    public Map<Resource, Integer> getCostConstruction() {
+        return Map.copyOf(this.constructionCost);
     }
 
     /**{@inheritDoc} */
@@ -72,18 +63,28 @@ public class ProductionBuildingImpl implements ProductionBuilding {
 
     /**{@inheritDoc} */
     @Override
-    public Map<Resource, Integer> getCostConstruction() {
-        return Map.copyOf(this.constructionCost);
+    public boolean upgrade(Map<Resource, Integer> resourcesForUpgrade) {
+        if (this.upgradable && this.enoughResources(resourcesForUpgrade, this.upgradeCost)) {
+            this.revenue.replaceAll((key, value) -> value * MULTIPLIER);
+            this.upgradable = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**{@inheritDoc} */
+    @Override
+    public boolean isUpgradable() {
+        return this.upgradable;
+    }
+
+    private boolean enoughResources(final Map<Resource, Integer> resources, final Map<Resource, Integer> cost) {
+        return resources.entrySet().stream().allMatch(e -> e.getValue() >= cost.get(e.getKey()));
     }
 
     //A transformation to map so that if a Resource is not present, is added with value 0.
     private Map<Resource, Integer> equalizeMap(final Map<Resource, Integer> m) {
         return Arrays.stream(Resource.values())
             .collect(Collectors.toMap(r -> r, r -> m.containsKey(r) ? m.get(r) : 0));
-    }
-
-    @Override
-    public boolean isUpgradable() {
-        return this.upgradable;
     }
 }
