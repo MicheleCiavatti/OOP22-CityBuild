@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -95,6 +96,32 @@ public class TestCity {
         assertEquals(houseRevenue + skyscraperRevenue,this.city.getPlayerResources().get(Resource.CITIZEN));
         this.city.demolish(factory.createSimpleProductionBuilding(Resource.CITIZEN));
         assertEquals(skyscraperRevenue, this.city.getPlayerResources().get(Resource.CITIZEN));
+    }
+
+    @Test
+    public void testCycle() {
+        this.p.spendResources(CityImpl.START_RESOURCES);
+        this.addBuilding(Resource.CITIZEN);
+        this.addBuilding(FIRST_RES);
+        final var simpleRevenue = factory.createSimpleProductionBuilding(FIRST_RES).getRevenue().get(FIRST_RES);
+        final var advancedRevenue = factory.createAdvancedProductionBuilding(FIRST_RES).getRevenue().get(FIRST_RES);
+        assertTrue(this.removeCitizen(this.city.getPlayerResources()).values().stream().allMatch(value -> value == 0));
+        this.city.doCycle();
+        assertEquals(1, this.city.getCitizens());
+        assertEquals(simpleRevenue + advancedRevenue, this.city.getPlayerResources().get(FIRST_RES));
+        this.city.doCycle();
+        assertEquals(0, this.city.getCitizens());
+        assertEquals((simpleRevenue + advancedRevenue) * 2 - CityImpl.COST_PER_CITIZEN.get(FIRST_RES), 
+            this.city.getPlayerResources().get(FIRST_RES));
+    }
+
+    //Removes the CITIZEN key and value from a Map if present
+    private Map<Resource, Integer> removeCitizen(final Map<Resource, Integer> map) {
+        return map.containsKey(Resource.CITIZEN)
+            ? map.entrySet().stream()
+                .filter(e -> e.getKey() != Resource.CITIZEN)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+            : map;
     }
 
     private void addBuilding(final Resource r) {
