@@ -149,9 +149,9 @@ public class MainMenu extends ScreenAdapter {
 	}
 
 	private void setCursorImage(){
-        int xHotspot = this.pixmap.getWidth() / 2;
-        int yHotspot = this.pixmap.getHeight() / 2;
-        Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
-        Gdx.graphics.setCursor(cursor);
+		int xHotspot = this.pixmap.getWidth() / 2;
+		int yHotspot = this.pixmap.getHeight() / 2;
+		Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+		Gdx.graphics.setCursor(cursor);
 	}
 }
