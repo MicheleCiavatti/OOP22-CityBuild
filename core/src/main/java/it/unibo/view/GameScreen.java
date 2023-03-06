@@ -93,6 +93,7 @@ public class GameScreen extends ScreenAdapter {
         this.startMusic();
         this.warning.hide();
         this.warning.text("Wrong position");
+        this.stage.addActor(new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + "background" + EXTENSION))));
         this.stage.addActor(this.warning);
         this.stage.addActor(this.constructionLabel);
         this.stage.addActor(this.tablePlayer);
@@ -296,7 +297,7 @@ public class GameScreen extends ScreenAdapter {
                 im.setPosition(selected.get().x, selected.get().y);
                 im.setName(imageList[index].replace("icon", "").replace("_", " "));
                 stage.addActor(im);
-                im.setZIndex(0);
+                im.setZIndex(1);
                 buildings.put(selected.get(), im);
             } else {
                 warning.show(stage);
