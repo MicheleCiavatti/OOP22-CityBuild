@@ -85,6 +85,18 @@ public class TestCity {
         assertTrue(this.city.getBuildings().stream().allMatch(ProductionBuilding::isUpgradable));
     }
 
+    /**The CITIZEN is a special resource: this method tests if it is treated as such. */
+    @Test
+    public void testCitizens() {
+        this.p.spendResources(CityImpl.START_RESOURCES);
+        this.addBuilding(Resource.CITIZEN);
+        final var houseRevenue = factory.createSimpleProductionBuilding(Resource.CITIZEN).getRevenue().get(Resource.CITIZEN);
+        final var skyscraperRevenue = factory.createAdvancedProductionBuilding(Resource.CITIZEN).getRevenue().get(Resource.CITIZEN);
+        assertEquals(houseRevenue + skyscraperRevenue,this.city.getPlayerResources().get(Resource.CITIZEN));
+        this.city.demolish(factory.createSimpleProductionBuilding(Resource.CITIZEN));
+        assertEquals(skyscraperRevenue, this.city.getPlayerResources().get(Resource.CITIZEN));
+    }
+
     private void addBuilding(final Resource r) {
         final var simple = this.factory.createSimpleProductionBuilding(r);
         final var advanced = this.factory.createAdvancedProductionBuilding(r);
