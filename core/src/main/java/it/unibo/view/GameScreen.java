@@ -356,13 +356,13 @@ public class GameScreen extends ScreenAdapter {
             Pixmap pmHummer = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "hummer.png"));
             if(!b){
                 int xHotspot = pmDefault.getWidth() / 4;   
-                int yHotspot = pmDefault.getHeight() / 4;
+                int yHotspot = pmDefault.getHeight() / 10;
                 Cursor cursor = Gdx.graphics.newCursor(pmDefault, xHotspot, yHotspot);
                 Gdx.graphics.setCursor(cursor);
             }
             else{
                 int xHotspot = pmHummer.getWidth() / 2;
-                int yHotspot = pmHummer.getHeight() / 2;
+                int yHotspot = pmHummer.getHeight() / 8;
                 Cursor cursor = Gdx.graphics.newCursor(pmHummer, xHotspot, yHotspot);
                 Gdx.graphics.setCursor(cursor);
             }
