@@ -194,6 +194,7 @@ public class GameScreen extends ScreenAdapter {
         private final Sound upgrading;
         private boolean pressingShift;
         private boolean pressingCtrl;
+        
         public GameProcessor() {
             this.selection = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "select_building.ogg"));
             this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction.ogg"));
