@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Blending;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -354,18 +355,17 @@ public class GameScreen extends ScreenAdapter {
         private void setCursor(Boolean b){
             Pixmap pmDefault = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
             Pixmap pmHummer = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "hummer.png"));
+            Cursor cursor;
+
             if(!b){
-                int xHotspot = pmDefault.getWidth() / 4;   
-                int yHotspot = pmDefault.getHeight() / 10;
-                Cursor cursor = Gdx.graphics.newCursor(pmDefault, xHotspot, yHotspot);
-                Gdx.graphics.setCursor(cursor);
+                int xHotSpot = pmDefault.getWidth() / 3;
+                cursor = Gdx.graphics.newCursor(pmDefault, xHotSpot, 0);
             }
             else{
-                int xHotspot = pmHummer.getWidth() / 2;
-                int yHotspot = pmHummer.getHeight() / 8;
-                Cursor cursor = Gdx.graphics.newCursor(pmHummer, xHotspot, yHotspot);
-                Gdx.graphics.setCursor(cursor);
+                int xHotSpot = pmDefault.getWidth() /2 + 10;
+                cursor = Gdx.graphics.newCursor(pmHummer, xHotSpot, 0);
             }
+            Gdx.graphics.setCursor(cursor);
         }
     }
 }
