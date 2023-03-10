@@ -60,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
+    private float cycle;
 
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
@@ -90,6 +91,7 @@ public class GameScreen extends ScreenAdapter {
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(new GameProcessor());
+        this.cycle = 0;
     }
 
     /**{@inheritDoc} */
@@ -117,11 +119,17 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
-        this.stage.act(delta);
-        this.stage.draw();
+        this.cycle += delta;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
         shapeRenderer.end();
+        if (this.cycle >= CYCLE_DURATION_SECONDS) {
+            this.cycle = 0;
+            
+        }
+        this.stage.act(delta);
+        this.stage.draw();
+        
         
     }
 
