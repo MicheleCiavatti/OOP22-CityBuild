@@ -83,5 +83,37 @@ public class ControllerImpl implements Controller {
     private boolean simpleOrAdvanced(final String name) {
         return SIMPLE_BUILDINGS.contains(name.toLowerCase());
     }
+
+
+
+
+    @Override
+    public Map<Resource, Integer> getCost(String buildingName) {
+        return this.getTable(buildingName, 1);
+    }
+
+
+
+
+    @Override
+    public Map<Resource, Integer> getUpgrade(String buildingName) {
+        return this.getTable(buildingName, 2);
+    }
+
+
+
+
+    @Override
+    public Map<Resource, Integer> getRevenue(String buildingName) {
+        return this.getTable(buildingName, 0);
+    }
+
+
+
+
+    @Override
+    public Map<Resource, Integer> getPlayerResources() {
+        return this.city.getPlayerResources();
+    }
     
 }
