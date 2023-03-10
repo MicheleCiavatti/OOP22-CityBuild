@@ -2,8 +2,10 @@ package it.unibo.controller.impl;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-
+import java.util.stream.Stream;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.BuildingFactory;
 import it.unibo.model.api.City;
@@ -52,6 +54,36 @@ public class ControllerImpl implements Controller {
     public int getCitizensInTown() {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+
+
+    private ProductionBuilding fromNameToBuilding(final String name) {
+        if (this.simpleOrAdvanced(name)) {
+            return this.factory.createSimpleProductionBuilding(switch(name.toLowerCase()) {
+                case "depurator" -> Resource.WATER;
+                case "foundry" -> Resource.METAL;
+                case "house" -> Resource.CITIZEN;
+                case "mine" -> Resource.GOLD;
+                case "power plant" -> Resource.ENERGY;
+                case "woodcutter" -> Resource.WOOD;
+                default -> throw new IllegalStateException();
+            });
+        }
+        return this.factory.createAdvancedProductionBuilding(switch(name.toLowerCase()) {
+            case "ultrafiltration complex" -> Resource.WATER;
+            case "forge" -> Resource.METAL;
+            case "lumber refinary" -> Resource.WOOD;
+            case "mineral station" -> Resource.GOLD;
+            case "quantum reactor" -> Resource.ENERGY;
+            case "skyscraper" -> Resource.CITIZEN;
+            default -> throw new IllegalStateException();
+        });
+    }
+
+    //True if the name is from a simple building, false otherwise.
+    private boolean simpleOrAdvanced(final String name) {
+        return SIMPLE_BUILDINGS.contains(name.toLowerCase());
     }
     
 }
