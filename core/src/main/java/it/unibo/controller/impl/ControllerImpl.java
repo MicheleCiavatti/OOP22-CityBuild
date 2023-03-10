@@ -35,23 +35,23 @@ public class ControllerImpl implements Controller {
 
     @Override
     public boolean checkResourcesAndBuild(String buildingName) {
-        return this.city.attemptBuild(this.fromNameToBuilding(buildingName));
+        return this.city.build(this.fromNameToBuilding(buildingName));
     }
 
     @Override
     public void removeBuilding(String buildingName) {
-        this.city.removeBuilding(this.fromNameToBuilding(buildingName));
+        this.city.demolish(this.fromNameToBuilding(buildingName));
         
     }
 
     @Override
     public boolean upgradeBuilding(String buildingName) {
-        return this.city.upgradeBuilding(this.fromNameToBuilding(buildingName));
+        return this.city.upgrade(this.fromNameToBuilding(buildingName));
     }
 
     @Override
     public int getCitizensInTown() {
-        return this.city.getCitizensInTown();
+        return this.city.getCitizens();
     }
 
 
