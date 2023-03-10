@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -48,7 +50,7 @@ public class GameScreen extends ScreenAdapter {
 
     private final Controller controller;
     private final Table tablePlayer;
-    private final Map<Resource, Integer> resources;
+    private Map<Resource, Integer> resources;
     private final Music theme;
     private final ShapeRenderer shapeRenderer;
     private final Map<Rectangle, Image> buildings;
@@ -73,13 +75,7 @@ public class GameScreen extends ScreenAdapter {
         this.tablePlayer = new Table(this.skin);
         this.tableBuildings = new Table(this.skin);
         //Setting up the tablePlayer that contains the resources in possesion of the player
-        this.resources = new HashMap<>(); //TODO, now empty filling
-        Arrays.stream(Resource.values()).forEach(res -> this.resources.put(res, 0));
-        this.resources.entrySet().forEach(entry -> {
-            final String s = entry.getKey() + ": " + entry.getValue();
-            this.tablePlayer.add(new Label(s, skin));
-            this.tablePlayer.row();
-        });
+        this.updateTablePlayer();
         this.layout = new GlyphLayout();
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
         this.buildings = new HashMap<>();
@@ -125,7 +121,8 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.end();
         if (this.cycle >= CYCLE_DURATION_SECONDS) {
             this.cycle = 0;
-            
+            this.controller.doCycle();
+            this.updateTablePlayer();
         }
         this.stage.act(delta);
         this.stage.draw();
@@ -140,6 +137,19 @@ public class GameScreen extends ScreenAdapter {
         this.theme.dispose();
         this.stage.dispose();
         this.skin.dispose();
+    }
+
+    /*This method is called at the end of every cycle of the game to update the resources and citizens in town.
+     * It is also called when the player spends resources to create or upgrade buildings.
+     */
+    private void updateTablePlayer() {
+        System.out.println("Cycling");
+        this.resources = this.controller.getPlayerResources();
+        this.tablePlayer.clear();
+        this.tablePlayer.add(new Label("Citizens in town: " + this.controller.getCitizensInTown(), this.skin));
+        this.tablePlayer.add(new Label(this.resources.entrySet().stream()
+            .map(entry -> "\n" + entry.getKey() + ": " + entry.getValue())
+            .collect(Collectors.joining()), this.skin));
     }
 
     private void selectButton(int index){
