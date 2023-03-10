@@ -19,6 +19,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import it.unibo.CityBuild;
+import it.unibo.controller.api.Controller;
+import it.unibo.controller.impl.ControllerImpl;
+import it.unibo.model.api.City;
+import it.unibo.model.api.Player;
+import it.unibo.model.impl.CityImpl;
+import it.unibo.model.impl.PlayerImpl;
 
 /**This class is responsible for the main menù of the game. */
 public class MainMenu extends ScreenAdapter {
@@ -67,7 +73,10 @@ public class MainMenu extends ScreenAdapter {
 				public void changed(ChangeEvent event, Actor actor) {
 					buttonClick.play();
 					sleeping(DELAY_CLICK_BUTTON);
-					game.setScreen(new GameScreen());
+					final Player p = new PlayerImpl();
+					final City city = new CityImpl(p);
+					final Controller controller = new ControllerImpl(city);
+					game.setScreen(new GameScreen(controller));
 					//game.setScreen(new GameScreen());
 					dispose();
 				}
