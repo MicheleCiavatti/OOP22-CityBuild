@@ -77,6 +77,7 @@ public class GameScreen extends ScreenAdapter {
         this.tableBuildings = new Table(this.skin);
         this.labelResources = new Label("", this.skin);
         //Setting up the tablePlayer that contains the resources in possesion of the player
+        this.tablePlayer.add(this.labelResources);
         this.updateTablePlayer();
         this.layout = new GlyphLayout();
         this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "Chill_Day.mp3"));
@@ -147,9 +148,7 @@ public class GameScreen extends ScreenAdapter {
     private void updateTablePlayer() {
         System.out.println("Cycling");
         this.resources = this.controller.getPlayerResources();
-        this.tablePlayer.clear();
         this.labelResources.setText(this.computeTextResources());
-        this.tablePlayer.add(this.labelResources);
     }
 
     private String computeTextResources() {
