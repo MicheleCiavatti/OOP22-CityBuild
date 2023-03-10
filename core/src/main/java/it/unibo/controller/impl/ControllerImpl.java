@@ -16,6 +16,7 @@ public class ControllerImpl implements Controller {
     private final Set<ProductionBuilding> allBuildings;
     private final City city;
     private final BuildingFactory factory;
+    private static final Set<String> SIMPLE_BUILDINGS = Set.of("depurator", "foundry", "house", "mine", "power_plant", "woodcutter");
 
     public ControllerImpl(final City city) {
         this.allBuildings = new HashSet<>();
