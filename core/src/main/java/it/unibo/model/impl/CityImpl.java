@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
 import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.ProductionBuilding;
