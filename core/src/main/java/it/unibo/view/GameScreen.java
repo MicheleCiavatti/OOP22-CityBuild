@@ -52,6 +52,7 @@ public class GameScreen extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
+    private ShopScreen shopScreen;
 
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
@@ -217,6 +218,7 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.UP -> this.roundButtonList(1);
                 case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
+                case Input.Keys.S -> shopScreen.show();
             }
             return false;
         }
