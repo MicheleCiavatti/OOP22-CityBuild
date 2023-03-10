@@ -30,7 +30,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import it.unibo.controller.api.Controller;
+import it.unibo.controller.impl.ControllerImpl;
 import it.unibo.model.api.Resource;
+import it.unibo.model.impl.CityImpl;
+import it.unibo.model.impl.PlayerImpl;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -38,7 +43,10 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
+    //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
+    private static final float CYCLE_DURATION_SECONDS = 3; 
 
+    private final Controller controller;
     private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
     private final Music theme;
@@ -58,7 +66,8 @@ public class GameScreen extends ScreenAdapter {
         "Mineral_stationicon", "Power_planticon", "Quantum_reactoricon", "Skyscrapericon", "Ultrafiltration_complexicon", "Woodcuttericon"};
     private final Table tableBuildings;
 
-    public GameScreen() {
+    public GameScreen(final Controller controller) {
+        this.controller = controller;
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         this.tablePlayer = new Table(this.skin);
         this.tableBuildings = new Table(this.skin);
