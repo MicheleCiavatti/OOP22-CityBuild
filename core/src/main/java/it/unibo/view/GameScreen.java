@@ -61,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
     private final GlyphLayout layout;
     private final Stage stage;
     private final Rectangle border;
+    private final Label labelResources;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
     private float cycle;
 
@@ -74,6 +75,7 @@ public class GameScreen extends ScreenAdapter {
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         this.tablePlayer = new Table(this.skin);
         this.tableBuildings = new Table(this.skin);
+        this.labelResources = new Label("", this.skin);
         //Setting up the tablePlayer that contains the resources in possesion of the player
         this.updateTablePlayer();
         this.layout = new GlyphLayout();
@@ -146,10 +148,17 @@ public class GameScreen extends ScreenAdapter {
         System.out.println("Cycling");
         this.resources = this.controller.getPlayerResources();
         this.tablePlayer.clear();
-        this.tablePlayer.add(new Label("Citizens in town: " + this.controller.getCitizensInTown(), this.skin));
-        this.tablePlayer.add(new Label(this.resources.entrySet().stream()
-            .map(entry -> "\n" + entry.getKey() + ": " + entry.getValue())
-            .collect(Collectors.joining()), this.skin));
+        this.labelResources.setText(this.computeTextResources());
+        this.tablePlayer.add(this.labelResources);
+    }
+
+    private String computeTextResources() {
+        final StringBuilder str = new StringBuilder();
+        this.resources.entrySet().stream()
+            .filter(entry -> entry.getKey() != Resource.CITIZEN)
+            .forEach(entry -> str.append(entry.getKey() + ": " + entry.getValue() + "\n"));
+        str.append("CITIZEN: " + this.controller.getCitizensInTown() + "/" + this.resources.get(Resource.CITIZEN));
+        return str.toString();
     }
 
     private void selectButton(int index){
