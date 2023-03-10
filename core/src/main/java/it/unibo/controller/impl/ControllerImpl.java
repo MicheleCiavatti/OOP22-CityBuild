@@ -85,6 +85,19 @@ public class ControllerImpl implements Controller {
     }
 
 
+    //idTable = 0 means revenue, idTable = 1 means construction, idTable = 2 means upgrade.
+    private Map<Resource, Integer> getTable(final String name, final int idTable) {
+        final Optional<ProductionBuilding> building = this.allBuildings.stream().filter(b -> b.getName().equals(name)).findFirst();
+        if (building.isEmpty()) {
+            throw new IllegalArgumentException("Wrong parameter in 'getTable' in class ControllerImpl");
+        }
+        return switch(idTable) {
+            case 0 -> building.get().getRevenue();
+            case 1 -> building.get().getCostConstruction();
+            case 2 -> building.get().getCostUpgrade();
+            default -> throw new IllegalArgumentException();
+        };
+    }
 
 
     @Override
