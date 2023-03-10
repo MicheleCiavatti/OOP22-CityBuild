@@ -35,6 +35,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import it.unibo.controller.api.Controller;
 import it.unibo.controller.impl.ControllerImpl;
+import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.CityImpl;
 import it.unibo.model.impl.PlayerImpl;
@@ -129,8 +130,6 @@ public class GameScreen extends ScreenAdapter {
         }
         this.stage.act(delta);
         this.stage.draw();
-        
-        
     }
 
     /**{@inheritDoc} */
@@ -148,32 +147,16 @@ public class GameScreen extends ScreenAdapter {
     private void updateTablePlayer() {
         System.out.println("Cycling");
         this.resources = this.controller.getPlayerResources();
-        this.labelResources.setText(this.computeTextResources());
+        this.labelResources.setText(this.computeTextResources(this.resources, this.controller.getCitizensInTown()));
     }
 
-    private String computeTextResources() {
+    private String computeTextResources(final Map<Resource, Integer> map, Integer citizensRequired) {
         final StringBuilder str = new StringBuilder();
-        this.resources.entrySet().stream()
+        map.entrySet().stream()
             .filter(entry -> entry.getKey() != Resource.CITIZEN)
             .forEach(entry -> str.append(entry.getKey() + ": " + entry.getValue() + "\n"));
-        str.append("CITIZEN: " + this.controller.getCitizensInTown() + "/" + this.resources.get(Resource.CITIZEN));
+        str.append("CITIZEN: " + citizensRequired + "/" + this.resources.get(Resource.CITIZEN));
         return str.toString();
-    }
-
-    private void selectButton(int index){
-
-        //crea un pane con un bottone
-        tableBuildings.clear();
-        String buildingPath = IMAGE_FOLDER + imageList[index] + EXTENSION;
-        Texture iconTexture = new Texture(buildingPath);
-        TextureRegion icon = new TextureRegion(iconTexture);
-        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
-        button.setName(imageList[index].replace("icon", "").replace("_", " "));
-        this.constructionLabel.setText(button.getName());
-        this.setLabelDimensions(this.constructionLabel);
-        tableBuildings.add(button).pad(5);
-        tableBuildings.add(this.constructionLabel);
-        //posiziona la tabella in alto a sinistra rispetto allo schermo
     }
 
     //A method to set the labels dimensions based on the string they contain
@@ -196,6 +179,7 @@ public class GameScreen extends ScreenAdapter {
         this.shapeRenderer.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
+    /*A position is not valid when overlaps with another building or when out of the screen. */
     private boolean isValidPosition(final Rectangle rectangle) {
         return buildings.keySet().stream().noneMatch(rect -> rect.overlaps(rectangle))
             && this.border.contains(rectangle);
@@ -209,10 +193,28 @@ public class GameScreen extends ScreenAdapter {
         l.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
     }
 
+    private void selectButton(int index){
+
+        //crea un pane con un bottone
+        tableBuildings.clear();
+        String buildingPath = IMAGE_FOLDER + imageList[index] + EXTENSION;
+        Texture iconTexture = new Texture(buildingPath);
+        TextureRegion icon = new TextureRegion(iconTexture);
+        ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
+        button.setName(imageList[index].replace("icon", "").replace("_", " "));
+        this.constructionLabel.setText(button.getName());
+        this.setLabelDimensions(this.constructionLabel);
+        tableBuildings.add(button).pad(5);
+        tableBuildings.add(this.constructionLabel);
+        //posiziona la tabella in alto a sinistra rispetto allo schermo
+    }
+
     private class GameProcessor extends InputAdapter {
 
         private static final int RECT_WIDTH = 200;
         private static final int RECT_HEIGHT = 200;
+        private final float DURATION_WARNINGS = 2f;
+        private final String ICON_SUFFIX = "icon";
 
         private final Sound selection;
         private final Sound destruction;
@@ -220,6 +222,7 @@ public class GameScreen extends ScreenAdapter {
         private final Sound wrong;
         private final Sound scroll;
         private final Sound upgrading;
+        private String selectedName;
         private boolean pressingShift;
         private boolean pressingCtrl;
 
@@ -277,7 +280,9 @@ public class GameScreen extends ScreenAdapter {
                 var building = buildings.entrySet().stream()
                     .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
-                    upgradeLabel.setText(building.get().getValue().getName()); //TODO: info about upgrade costs
+                    upgradeLabel.setText(building.get().getValue().getName() + "\n" +
+                        computeTextResources(controller.getUpgrade(building.get().getValue().getName()),
+                        controller.getUpgrade(building.get().getValue().getName()).get(Resource.CITIZEN)));
                     setLabelDimensions(upgradeLabel);
                     upgradeLabel.setVisible(true);
                     upgradeLabel.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
