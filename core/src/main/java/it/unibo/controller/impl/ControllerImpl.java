@@ -128,5 +128,10 @@ public class ControllerImpl implements Controller {
     public Map<Resource, Integer> getPlayerResources() {
         return this.city.getPlayerResources();
     }
+
+    @Override
+    public void doCycle() {
+        this.city.doCycle();
+    }
     
 }
