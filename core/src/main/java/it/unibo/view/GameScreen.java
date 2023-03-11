@@ -130,7 +130,7 @@ public class GameScreen extends ScreenAdapter {
         this.skin.dispose();
     }
 
-    private void selectButton(int index){
+    private void selectButton(int index) {
 
         //crea un pane con un bottone
         tableBuildings.clear();
@@ -248,12 +248,12 @@ public class GameScreen extends ScreenAdapter {
                 return true;
             } else { //Allows to display a label containing info about upgrade costs when mouse is over buildings
                 var building = buildings.entrySet().stream()
-                    .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
+                    .filter(b -> b.getKey().contains(screenX , Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
                     upgradeLabel.setText(building.get().getValue().getName()); //TODO: info about upgrade costs
                     setLabelDimensions(upgradeLabel);
+                    this.isLabelValidPosition(screenX, screenY);
                     upgradeLabel.setVisible(true);
-                    upgradeLabel.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
                 }
             }
             return false;
@@ -334,7 +334,7 @@ public class GameScreen extends ScreenAdapter {
             return false;
         }
 
-        private void roundButtonList(int param){
+        private void roundButtonList(int param) {
             if (selected.isEmpty()) {
                 this.scroll.play();
                 if (param == 1){
@@ -352,20 +352,34 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        private void setCursor(Boolean b){
+        private void setCursor(Boolean b) {
             Pixmap pmDefault = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
             Pixmap pmHummer = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "hummer.png"));
-            if(!b){
-                int xHotspot = pmDefault.getWidth() / 4;   
-                int yHotspot = pmDefault.getHeight() / 4;
-                Cursor cursor = Gdx.graphics.newCursor(pmDefault, xHotspot, yHotspot);
-                Gdx.graphics.setCursor(cursor);
+            Cursor cursor;
+
+            if (!b) {
+                int xHotSpot = pmDefault.getWidth() / 3;
+                cursor = Gdx.graphics.newCursor(pmDefault, xHotSpot, 0);
+            } else {
+                int xHotSpot = pmDefault.getWidth() /2 + 10;
+                cursor = Gdx.graphics.newCursor(pmHummer, xHotSpot, 0);
             }
-            else{
-                int xHotspot = pmHummer.getWidth() / 2;
-                int yHotspot = pmHummer.getHeight() / 2;
-                Cursor cursor = Gdx.graphics.newCursor(pmHummer, xHotspot, yHotspot);
-                Gdx.graphics.setCursor(cursor);
+            Gdx.graphics.setCursor(cursor);
+        }
+        
+        private void isLabelValidPosition(final int screenX, final int screenY){
+            if (screenY < Gdx.graphics.getHeight() / 3) {
+                if (screenX < Gdx.graphics.getWidth() / 3) {
+                    upgradeLabel.setPosition(screenX + (RECT_WIDTH / 2), Gdx.graphics.getHeight() - screenY - 25 );
+                } else {
+                    upgradeLabel.setPosition(screenX - (RECT_WIDTH / 2), Gdx.graphics.getHeight() - screenY - 50 );
+                }
+            } else {
+                if (screenX < Gdx.graphics.getWidth() / 3) {
+                    upgradeLabel.setPosition(screenX + (RECT_WIDTH / 2), Gdx.graphics.getHeight() - screenY);
+                } else { 
+                    upgradeLabel.setPosition(screenX - (RECT_WIDTH / 2), Gdx.graphics.getHeight() - screenY);
+                }
             }
         }
     }

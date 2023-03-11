@@ -45,7 +45,7 @@ public class MainMenu extends ScreenAdapter {
 		this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "tlou_theme.mp3"));
 		this.stage = new Stage(new ScreenViewport());
 		this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
-		this.pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
+		this.pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "Cursor.png"));
 		this.setCursorImage();
 		
 	}
@@ -149,9 +149,8 @@ public class MainMenu extends ScreenAdapter {
 	}
 
 	private void setCursorImage(){
-		int xHotspot = this.pixmap.getWidth() / 2;
-		int yHotspot = this.pixmap.getHeight() / 2;
-		Cursor cursor = Gdx.graphics.newCursor(pixmap, xHotspot, yHotspot);
+		int xHotSpot = this.pixmap.getWidth() / 3;
+		Cursor cursor = Gdx.graphics.newCursor(this.pixmap, xHotSpot, 0);
 		Gdx.graphics.setCursor(cursor);
 	}
 }
