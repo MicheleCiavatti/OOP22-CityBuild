@@ -36,7 +36,7 @@ public class PlayerImpl implements Player {
         Map<Resource, Integer> input = new HashMap<>(toSpend);
         input.replaceAll(this.func(false));
         if (this.checkResourcesToSpend(input)) {
-            this.setResources(input, false);
+            this.setResources(input, toSpend.size() == 1 && toSpend.containsKey(Resource.CITIZEN) ? true : false);
             return true;
         }
         return false;
