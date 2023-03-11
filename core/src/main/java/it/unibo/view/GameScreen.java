@@ -52,7 +52,7 @@ public class GameScreen extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
-    private ShopScreen shopScreen;
+    //private ShopScreen shopScreen;
 
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
@@ -175,6 +175,18 @@ public class GameScreen extends ScreenAdapter {
         l.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
     }
 
+    private void Shop(){
+        //crea una finestra di dialogo dove chiede se si vuole acquistare ferro per 10 monete
+        Dialog shop = new Dialog("Shop", this.skin);
+        shop.text("Do you want to buy 10 iron for 10 coins?");
+        shop.button("Yes", true);
+        shop.button("No", false);
+        shop.key(Input.Keys.ENTER, true);
+        shop.key(Input.Keys.ESCAPE, false);
+        shop.show(stage);
+        
+    }
+
     private class GameProcessor extends InputAdapter {
 
         private static final int RECT_WIDTH = 200;
@@ -218,7 +230,7 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.UP -> this.roundButtonList(1);
                 case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
-                case Input.Keys.S -> shopScreen.show();
+                //case Input.Keys.S -> shopScreen.show();
             }
             return false;
         }
