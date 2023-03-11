@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -25,6 +26,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -38,6 +41,7 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
+    
 
     private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
@@ -175,17 +179,7 @@ public class GameScreen extends ScreenAdapter {
         l.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
     }
 
-    private void Shop(){
-        //crea una finestra di dialogo dove chiede se si vuole acquistare ferro per 10 monete
-        Dialog shop = new Dialog("Shop", this.skin);
-        shop.text("Do you want to buy 10 iron for 10 coins?");
-        shop.button("Yes", true);
-        shop.button("No", false);
-        shop.key(Input.Keys.ENTER, true);
-        shop.key(Input.Keys.ESCAPE, false);
-        shop.show(stage);
-        
-    }
+    
 
     private class GameProcessor extends InputAdapter {
 
@@ -230,7 +224,7 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.UP -> this.roundButtonList(1);
                 case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
-                //case Input.Keys.S -> shopScreen.show();
+                case Input.Keys.S -> this.Shop();
             }
             return false;
         }
@@ -353,6 +347,24 @@ public class GameScreen extends ScreenAdapter {
                 }
                 selectButton(index);
             }
+        }
+
+        private void Shop(){
+            Dialog dialog = new Dialog("Shop", skin);
+            dialog.text("This is a shop");
+            TextButton button = new TextButton("OK", skin);
+        
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    dialog.hide();
+                }
+            });
+            dialog.button(button);
+            dialog.show(stage);
+            stage.addActor(dialog);
+            stage.setKeyboardFocus(dialog);
+
         }
     }
 }
