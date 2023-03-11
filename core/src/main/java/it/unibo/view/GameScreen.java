@@ -119,9 +119,6 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         this.cycle += delta;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        drawRectangle(this.selected.orElse(NULL_RECTANGLE));
-        shapeRenderer.end();
         if (this.cycle >= CYCLE_DURATION_SECONDS) {
             this.cycle = 0;
             this.controller.doCycle();
@@ -129,6 +126,9 @@ public class GameScreen extends ScreenAdapter {
         }
         this.stage.act(delta);
         this.stage.draw();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        drawRectangle(this.selected.orElse(NULL_RECTANGLE));
+        shapeRenderer.end();
     }
 
     /**{@inheritDoc} */
