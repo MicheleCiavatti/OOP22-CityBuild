@@ -147,15 +147,16 @@ public class GameScreen extends ScreenAdapter {
     private void updateTablePlayer() {
         System.out.println("Cycling");
         this.resources = this.controller.getPlayerResources();
-        this.labelResources.setText(this.computeTextResources(this.resources, this.controller.getCitizensInTown()));
+        this.labelResources.setText(this.computeTextResources(this.resources) + 
+            Resource.CITIZEN + ": " + this.controller.getCitizensInTown() + "/" + this.resources.get(Resource.CITIZEN));
     }
 
-    private String computeTextResources(final Map<Resource, Integer> map, Integer citizensRequired) {
+    //Given a map of resources, returns a string containing the resources with the respective value (except for CITIZEN)
+    private String computeTextResources(final Map<Resource, Integer> map) {
         final StringBuilder str = new StringBuilder();
         map.entrySet().stream()
             .filter(entry -> entry.getKey() != Resource.CITIZEN)
             .forEach(entry -> str.append(entry.getKey() + ": " + entry.getValue() + "\n"));
-        str.append("CITIZEN: " + citizensRequired + "/" + this.resources.get(Resource.CITIZEN));
         return str.toString();
     }
 
@@ -280,9 +281,9 @@ public class GameScreen extends ScreenAdapter {
                 var building = buildings.entrySet().stream()
                     .filter(b -> b.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY)).findFirst();
                 if (building.isPresent() && pressingCtrl) {
-                    upgradeLabel.setText(building.get().getValue().getName() + "\n" +
-                        computeTextResources(controller.getUpgrade(building.get().getValue().getName()),
-                        controller.getUpgrade(building.get().getValue().getName()).get(Resource.CITIZEN)));
+                    final var name = building.get().getValue().getName();
+                    upgradeLabel.setText(name + "\n" + computeTextResources(controller.getUpgrade(name))
+                        + Resource.CITIZEN + ": " + controller.getUpgrade(name).get(Resource.CITIZEN));
                     setLabelDimensions(upgradeLabel);
                     upgradeLabel.setVisible(true);
                     upgradeLabel.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
@@ -306,6 +307,7 @@ public class GameScreen extends ScreenAdapter {
             return Gdx.graphics.getHeight() - screenY - RECT_HEIGHT / 2;
         }
 
+        //Creates a square for placing the building and stores the name of the building selected, retrieving it from the icon.
         private boolean selectingBuilding() {
             if (selected.isEmpty()) {
                 this.selection.play();
