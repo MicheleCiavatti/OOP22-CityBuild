@@ -41,7 +41,7 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
-    
+
 
     private final Table tablePlayer;
     private final Map<Resource, Integer> resources;
@@ -350,6 +350,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         private void Shop(){
+
             Dialog dialog = new Dialog("Shop", skin);
             dialog.text("This is a shop");
             TextButton button = new TextButton("OK", skin);
@@ -357,14 +358,10 @@ public class GameScreen extends ScreenAdapter {
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    System.out.println("ciao");
                     dialog.hide();
                 }
             });
-            dialog.button(button);
-            dialog.show(stage);
-            stage.addActor(dialog);
-            stage.setKeyboardFocus(dialog);
-
         }
     }
 }
