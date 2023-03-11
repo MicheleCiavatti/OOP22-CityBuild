@@ -66,6 +66,7 @@ public class CityImpl implements City {
             final var out = toUp.get().upgrade(this.player.getAllResources()) && 
                 this.player.spendResources(building.getCostUpgrade());
             if (out && building.getName().equals("House") || building.getName().equals("Skyscraper")) {
+                System.out.println("It's a Citizen building");
                 this.player.spendResources(building.getRevenue());
                 this.player.addResources(toUp.get().getRevenue());
             }

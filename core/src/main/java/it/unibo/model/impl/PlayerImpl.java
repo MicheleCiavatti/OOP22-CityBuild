@@ -36,7 +36,7 @@ public class PlayerImpl implements Player {
         Map<Resource, Integer> input = new HashMap<>(toSpend);
         input.replaceAll(this.func(false));
         if (this.checkResourcesToSpend(input)) {
-            this.setResources(input);
+            this.setResources(input, false);
             return true;
         }
         return false;
@@ -47,11 +47,11 @@ public class PlayerImpl implements Player {
     public void addResources(final Map<Resource, Integer> toAdd) {
         Map<Resource, Integer> input = new HashMap<>(toAdd);
         input.replaceAll(this.func(true));
-        this.setResources(input);
+        this.setResources(input, true);
     }
 
-    private void setResources(final Map<Resource, Integer> map) {
-        map.entrySet()
+    private void setResources(final Map<Resource, Integer> map, final boolean addCitizens) {
+        map.entrySet().stream().filter(entry -> addCitizens ? true : entry.getKey() != Resource.CITIZEN)
             .forEach(entry -> this.resources.replace(entry.getKey(), this.resources.get(entry.getKey()) + entry.getValue()));
     }
 
