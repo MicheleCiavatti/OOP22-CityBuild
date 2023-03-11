@@ -105,7 +105,6 @@ public class GameScreen extends ScreenAdapter {
         this.tablePlayer.top().right();
         this.setColorLabel(this.upgradeLabel, Color.BROWN);
 
-        this.constructionLabel.setFontScale(1.2f);
         tableBuildings.setFillParent(true);
         tableBuildings.top().left();
         this.stage.addActor(tableBuildings);
@@ -200,7 +199,8 @@ public class GameScreen extends ScreenAdapter {
         TextureRegion icon = new TextureRegion(iconTexture);
         ImageButton button = new ImageButton(new TextureRegionDrawable(icon));
         button.setName(imageList[index].replace("icon", "").replace("_", " "));
-        this.constructionLabel.setText(button.getName());
+        this.constructionLabel.setText(button.getName() + "\n" + this.computeTextResources(this.controller.getCost(button.getName()))
+            + Resource.CITIZEN + ": "+ this.controller.getCost(button.getName()).get(Resource.CITIZEN));
         this.setLabelDimensions(this.constructionLabel);
         tableBuildings.add(button).pad(5);
         tableBuildings.add(this.constructionLabel);
@@ -331,6 +331,7 @@ public class GameScreen extends ScreenAdapter {
                 stage.addActor(im);
                 im.setZIndex(0);
                 buildings.put(selected.get(), im);
+                updateTablePlayer();
             } else {
                 this.displayWarning(constructionFailed);
             }
