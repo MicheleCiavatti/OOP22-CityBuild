@@ -315,19 +315,22 @@ public class GameScreen extends ScreenAdapter {
                     computeX(Gdx.input.getX()), 
                     computeY(Gdx.input.getY()),
                     RECT_WIDTH, RECT_HEIGHT));
-                    return true;
+                this.selectedName = tableBuildings.getChild(0).getName().replace(ICON_SUFFIX, "");
+                return true;
             }
             return false;
         }
 
         /*When the user has selected a building from the icon menù, this method 
-        is used to determine the consequences of a click of the mouse */
+        * is used to determine the consequences of a click of the mouse.
+        * It allows to place the building selected only if not overlapping another building and if the player
+        * has enough resources. */
         private boolean handlePlacement() {
-            if (isValidPosition(selected.get())) {
+            if (isValidPosition(selected.get()) && controller.checkResourcesAndBuild(this.selectedName)) {
                 this.construction.play();
-                final var im = new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + imageList[index].replace("icon", EXTENSION))));
+                final var im = new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + imageList[index].replace(ICON_SUFFIX, EXTENSION))));
                 im.setPosition(selected.get().x, selected.get().y);
-                im.setName(imageList[index].replace("icon", "").replace("_", " "));
+                im.setName(imageList[index].replace(ICON_SUFFIX, "").replace("_", " "));
                 stage.addActor(im);
                 im.setZIndex(0);
                 buildings.put(selected.get(), im);
@@ -340,14 +343,15 @@ public class GameScreen extends ScreenAdapter {
                     public void run() {
                         warning.hide();
                     }
-                }, 2f);
+                }, DURATION_WARNINGS);
                 this.wrong.play();
             }
             selected = Optional.empty();
             return true;
         }
 
-        /*This method is used to determine the consequences of a click of the mouse without carrying a building for placement. */
+        /*This method is used to determine the consequences of a click of the mouse when not carrying a building for placement.
+         * It allows for upgrading and destroying buildings already placed.*/
         private boolean handleTouch(final int screenX, final int screenY) {
             final var touched = buildings.entrySet().stream()
                 .filter(entry -> entry.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY))
