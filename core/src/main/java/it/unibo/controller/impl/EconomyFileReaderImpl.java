@@ -24,6 +24,8 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     private static final String FILE_EXTENSION = ".yml";
     private static final String PATH_RES = System.getProperty("user.dir")
         + File.separator
+        + "core"
+        + File.separator
         + "src"
         + File.separator
         + "main"

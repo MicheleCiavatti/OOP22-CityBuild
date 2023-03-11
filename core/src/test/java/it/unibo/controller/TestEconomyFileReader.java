@@ -27,4 +27,10 @@ public class TestEconomyFileReader {
         var tables = economyFileReader.getAdvancedEconomyTables(Resource.ENERGY);
         assertEquals(3, tables.size());
     }
+
+    @Test
+    public void testDepurator() {
+        var tables = economyFileReader.getSimpleEconomyTables(Resource.WATER);
+        assertEquals(3, tables.size());
+    }
 }
