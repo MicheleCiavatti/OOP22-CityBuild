@@ -18,7 +18,7 @@ public class ControllerImpl implements Controller {
     private final Set<ProductionBuilding> allBuildings;
     private final City city;
     private final BuildingFactory factory;
-    private static final Set<String> SIMPLE_BUILDINGS = Set.of("depurator", "foundry", "house", "mine", "power_plant", "woodcutter");
+    private static final Set<String> SIMPLE_BUILDINGS = Set.of("depurator", "foundry", "house", "mine", "power plant", "woodcutter");
 
     public ControllerImpl(final City city) {
         this.allBuildings = new HashSet<>();
@@ -29,9 +29,6 @@ public class ControllerImpl implements Controller {
         this.city = city;
         this.factory = new BuildingFactoryImpl();
     }
-
-
-
 
     @Override
     public boolean checkResourcesAndBuild(String buildingName) {
@@ -65,7 +62,7 @@ public class ControllerImpl implements Controller {
                 case "mine" -> Resource.GOLD;
                 case "power plant" -> Resource.ENERGY;
                 case "woodcutter" -> Resource.WOOD;
-                default -> throw new IllegalStateException();
+                default -> throw new IllegalStateException("Name not appropriate");
             });
         }
         return this.factory.createAdvancedProductionBuilding(switch(name.toLowerCase()) {
@@ -75,7 +72,7 @@ public class ControllerImpl implements Controller {
             case "mineral station" -> Resource.GOLD;
             case "quantum reactor" -> Resource.ENERGY;
             case "skyscraper" -> Resource.CITIZEN;
-            default -> throw new IllegalStateException();
+            default -> throw new IllegalStateException("Name not appropriate");
         });
     }
 
