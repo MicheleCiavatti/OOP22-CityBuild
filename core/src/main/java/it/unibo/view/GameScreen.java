@@ -1,12 +1,9 @@
 package it.unibo.view;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -32,13 +29,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import it.unibo.controller.api.Controller;
-import it.unibo.controller.impl.ControllerImpl;
-import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
-import it.unibo.model.impl.CityImpl;
-import it.unibo.model.impl.PlayerImpl;
 
 public class GameScreen extends ScreenAdapter {
 
