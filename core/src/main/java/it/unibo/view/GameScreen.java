@@ -98,6 +98,7 @@ public class GameScreen extends ScreenAdapter {
         this.constructionFailed.text("Wrong position or not enough resources");
         this.upgradeFailed.hide();
         this.upgradeFailed.text("Not enough resources or building already upgraded");
+        this.stage.addActor(new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + "background" + EXTENSION))));
         this.stage.addActor(this.constructionFailed);
         this.stage.addActor(this.upgradeFailed);
         this.stage.addActor(this.constructionLabel);
@@ -356,6 +357,7 @@ public class GameScreen extends ScreenAdapter {
                     controller.removeBuilding(touched.get().getValue().getName());
                     buildings.remove(touched.get().getKey());
                     touched.get().getValue().remove();
+                    updateTablePlayer();
                 } else if (this.pressingCtrl) {
                     this.upgrade(controller.upgradeBuilding(touched.get().getValue().getName()));
                 }
