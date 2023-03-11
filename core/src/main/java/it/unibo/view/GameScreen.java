@@ -56,7 +56,8 @@ public class GameScreen extends ScreenAdapter {
     private final ShapeRenderer shapeRenderer;
     private final Map<Rectangle, Image> buildings;
     private final Skin skin;
-    private final Dialog warning;
+    private final Dialog constructionFailed;
+    private final Dialog upgradeFailed;
     private final Label constructionLabel;
     private final Label upgradeLabel;
     private final GlyphLayout layout;
@@ -85,7 +86,8 @@ public class GameScreen extends ScreenAdapter {
         this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
-        this.warning = new Dialog("Warning", this.skin);
+        this.constructionFailed = new Dialog("Warning", this.skin);
+        this.upgradeFailed = new Dialog("Warning", this.skin);
         this.constructionLabel = new Label("Building label", this.skin);
         this.upgradeLabel = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
@@ -98,9 +100,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.startMusic();
-        this.warning.hide();
-        this.warning.text("Wrong position");
-        this.stage.addActor(this.warning);
+        this.constructionFailed.hide();
+        this.constructionFailed.text("Wrong position or not enough resources");
+        this.upgradeFailed.hide();
+        this.upgradeFailed.text("Not enough resources or building already upgraded");
+        this.stage.addActor(this.constructionFailed);
+        this.stage.addActor(this.upgradeFailed);
         this.stage.addActor(this.constructionLabel);
         this.stage.addActor(this.tablePlayer);
         this.stage.addActor(this.upgradeLabel);
@@ -335,16 +340,7 @@ public class GameScreen extends ScreenAdapter {
                 im.setZIndex(0);
                 buildings.put(selected.get(), im);
             } else {
-                warning.show(stage);
-                warning.setPosition(Gdx.graphics.getWidth() / 2 - warning.getWidth() / 2, 
-                    Gdx.graphics.getHeight() - warning.getHeight() - Gdx.graphics.getHeight() / 12);
-                Timer.schedule(new Task() {
-                    @Override
-                    public void run() {
-                        warning.hide();
-                    }
-                }, DURATION_WARNINGS);
-                this.wrong.play();
+                this.displayWarning(constructionFailed);
             }
             selected = Optional.empty();
             return true;
@@ -359,14 +355,40 @@ public class GameScreen extends ScreenAdapter {
             if (touched.isPresent()) {
                 if (this.pressingShift) {
                     this.destruction.play();
+                    controller.removeBuilding(touched.get().getValue().getName());
                     buildings.remove(touched.get().getKey());
                     touched.get().getValue().remove();
                 } else if (this.pressingCtrl) {
-                    this.upgrading.play();
+                    this.upgrade(controller.upgradeBuilding(touched.get().getValue().getName()));
                 }
                 return true;
             }
             return false;
+        }
+
+        private void upgrade(final boolean success) {
+            if (success) {
+                this.upgrading.play();
+                updateTablePlayer();
+            } else {
+                this.displayWarning(upgradeFailed);
+            }
+        }
+
+        /*Used to display warning regarding wrong inputs from the user. */
+        private void displayWarning(final Dialog d) {
+            this.wrong.play();
+            upgradeFailed.hide(); //Hides other warnings that may be active
+            constructionFailed.hide();
+            d.show(stage);
+            d.setPosition(Gdx.graphics.getWidth() / 2 - d.getWidth() / 2, 
+                Gdx.graphics.getHeight() - d.getHeight() - Gdx.graphics.getHeight() / 14);
+            Timer.schedule(new Task() {
+                @Override
+                public void run() {
+                    d.hide();
+                }
+            }, DURATION_WARNINGS);    
         }
 
         private void roundButtonList(int param){
