@@ -15,10 +15,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -354,14 +356,20 @@ public class GameScreen extends ScreenAdapter {
             Dialog dialog = new Dialog("Shop", skin);
             dialog.text("This is a shop");
             TextButton button = new TextButton("OK", skin);
-        
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    System.out.println("ciao");
-                    dialog.hide();
+            
+            dialog.addListener(new InputListener(){
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                    Actor hitActor = dialog.hit(x,y,true);
+                    if (hitActor != null && hitActor instanceof TextButton){
+                        System.out.println("ciao");
+                        return true;
+                    }
+                    return false;
                 }
             });
+
+            stage.addActor(dialog);
+            stage.addActor(button);
         }
     }
 }
