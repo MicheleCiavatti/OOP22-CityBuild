@@ -63,8 +63,13 @@ public class CityImpl implements City {
     public boolean upgrade(ProductionBuilding building) {
         final var toUp = this.firstSatisfying(building, ProductionBuilding::isUpgradable);
         if (toUp.isPresent()) {
-            return toUp.get().upgrade(this.player.getAllResources()) && 
+            final var out = toUp.get().upgrade(this.player.getAllResources()) && 
                 this.player.spendResources(building.getCostUpgrade());
+            if (out && building.getName().equals("House") || building.getName().equals("Skyscraper")) {
+                this.player.spendResources(building.getRevenue());
+                this.player.addResources(toUp.get().getRevenue());
+            }
+            return out;
         }
         return false;
     }
