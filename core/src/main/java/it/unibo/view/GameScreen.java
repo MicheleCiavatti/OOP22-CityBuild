@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -362,37 +363,43 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-
         private void Shop(){
+        
             //crea una finestra di dialogo dove si possono comprare edifici
-            Dialog dialog = new Dialog("Shop", skin);
+            Dialog dialog = new Dialog("Shop", skin){
+                @Override
+                public void result(Object object) {
+                    //TEST
+                    System.out.println("result " + object);
+                };
+            };
 
-            //imposta la finestra di dialogo come principale
-            dialog.setModal(true);  
+            dialog.addListener(new InputListener() {
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //imposta come listener la finestra di dialogo
+                event.setBubbles(true);
+                return true;
 
-            //aggiunge il testo alla finestra di dialogo
+            }
+        });
+
+            dialog.setModal(true);
             dialog.text(generateString()); 
 
-            dialog.button("OK", true);
-            dialog.button("Cancel", false);
-            dialog.key(Input.Keys.ENTER, true);
-            dialog.key(Input.Keys.ESCAPE, false);
+            //se si clicca su ok, viene decrementato size
+            dialog.button("ok", true);
+            //dialog.key(Input.Keys.ENTER, true);
+            //dialog.key(Input.Keys.ESCAPE, false);
             dialog.show(stage);
-
-            dialog.addListener(new ChangeListener() {
-               
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    
-                }
-            });
         }
 
+         
+
+
+           
         private String generateString(){
-            //casualmente, viene proposto un oggetto da comprare
             int randomItem = (int) (Math.random() * 8);
             int randomPrice = (int) (Math.random() * 3);
-            //genera la stringa scegliendo il valore x dalla lista buildingList
             String item = " vuoi comprare"+buildingList[randomItem]+" per "+randomPrice+"?";
             return item;
         }
