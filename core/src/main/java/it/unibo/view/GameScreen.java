@@ -204,6 +204,8 @@ public class GameScreen extends ScreenAdapter {
         private final Sound upgrading;
         private boolean pressingShift;
         private boolean pressingCtrl;
+        private int randomItem;
+        private int randomPrice;
 
         
 
@@ -374,6 +376,8 @@ public class GameScreen extends ScreenAdapter {
                 };
             };
 
+            dialog.setModal(true);
+
             dialog.addListener(new InputListener() {
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //imposta come listener la finestra di dialogo
@@ -382,8 +386,6 @@ public class GameScreen extends ScreenAdapter {
 
             }
         });
-
-            dialog.setModal(true);
             dialog.text(generateString()); 
 
             //se si clicca su ok, viene decrementato size
@@ -394,15 +396,32 @@ public class GameScreen extends ScreenAdapter {
         }
 
          
+        private int getRandomItem(){
+            return randomItem;
+        }
 
+        private int setRandomItem(){
+            return randomItem = (int) (Math.random() * 8);
+        }
+
+        private int getRandomPrice(){
+            return randomPrice;
+        }
+
+        private int setRandomPrice(){
+            return randomPrice = (int) (Math.random() * 50)+1;
+        }
 
            
         private String generateString(){
-            int randomItem = (int) (Math.random() * 8);
-            int randomPrice = (int) (Math.random() * 3);
-            String item = " vuoi comprare"+buildingList[randomItem]+" per "+randomPrice+"?";
+            //int randomItem = (int) (Math.random() * 8);
+            //int randomPrice = (int) (Math.random() * 3);
+            setRandomItem(); setRandomPrice();
+            String item = " vuoi comprare"+buildingList[getRandomItem()]+" per "+getRandomPrice()+"?";
             return item;
         }
+
+        
 
 
     }
