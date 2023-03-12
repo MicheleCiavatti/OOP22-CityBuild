@@ -38,10 +38,13 @@ public class CityImpl implements City {
 
     /**{@inheritDoc} */
     @Override
-    public boolean build(ProductionBuilding building) {
-        if (this.player.spendResources(building.getCostConstruction())) {
+    public boolean build(final ProductionBuilding building) {
+        if (building.getCostConstruction().containsKey(Resource.CITIZEN) 
+        && this.citizens >= building.getCostConstruction().get(Resource.CITIZEN)) {
+            if (this.player.spendResources(building.getCostConstruction())) {
             this.operations(true, building);
             return true;
+            }
         }
         return false;
     }
