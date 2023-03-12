@@ -370,13 +370,8 @@ public class GameScreen extends ScreenAdapter {
             //imposta la finestra di dialogo come principale
             dialog.setModal(true);  
 
-            //casualmente, viene proposto un oggetto da comprare
-            int randomItem = (int) (Math.random() * 8);
-            int randomPrice = (int) (Math.random() * 3);
-            //genera la stringa scegliendo il valore x dalla lista buildingList
-            String item = " vuoi comprare"+buildingList[randomItem]+" per "+randomPrice+"?";
             //aggiunge il testo alla finestra di dialogo
-            dialog.text(item); 
+            dialog.text(generateString()); 
 
             dialog.button("OK", true);
             dialog.button("Cancel", false);
@@ -391,6 +386,15 @@ public class GameScreen extends ScreenAdapter {
                     
                 }
             });
+        }
+
+        private String generateString(){
+            //casualmente, viene proposto un oggetto da comprare
+            int randomItem = (int) (Math.random() * 8);
+            int randomPrice = (int) (Math.random() * 3);
+            //genera la stringa scegliendo il valore x dalla lista buildingList
+            String item = " vuoi comprare"+buildingList[randomItem]+" per "+randomPrice+"?";
+            return item;
         }
 
 
