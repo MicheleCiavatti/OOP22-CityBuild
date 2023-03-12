@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -29,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -58,12 +61,16 @@ public class GameScreen extends ScreenAdapter {
     private final Stage stage;
     private final Rectangle border;
     private Optional<Rectangle> selected; //The building that the user selected from the icon menù to build.
-    //private ShopScreen shopScreen;
+    //crea una lista di stringhe che rappresentano i nomi degli oggetti
+    private final String[] buildingList = {"Item1", "Item2", "Item3", "House", "Lumber_refinary", "Mine", "Mineral_station", "Power_plant", "Quantum_reactor", "Skyscraper", "Ultrafiltration_complex", "Woodcutter"};
+
 
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
         "Mineral_stationicon", "Power_planticon", "Quantum_reactoricon", "Skyscrapericon", "Ultrafiltration_complexicon", "Woodcuttericon"};
     private final Table tableBuildings;
+    
+
 
     public GameScreen() {
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
@@ -197,6 +204,8 @@ public class GameScreen extends ScreenAdapter {
         private boolean pressingShift;
         private boolean pressingCtrl;
 
+        
+
         public GameProcessor() {
             this.selection = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "select_building.ogg"));
             this.destruction = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "destruction.ogg"));
@@ -227,7 +236,9 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
                 case Input.Keys.S -> this.Shop();
+
             }
+
             return false;
         }
 
@@ -351,25 +362,37 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        private void Shop(){
 
+        private void Shop(){
+            //crea una finestra di dialogo dove si possono comprare edifici
             Dialog dialog = new Dialog("Shop", skin);
-            dialog.text("This is a shop");
-            TextButton button = new TextButton("OK", skin);
-            
-            dialog.addListener(new InputListener(){
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                    Actor hitActor = dialog.hit(x,y,true);
-                    if (hitActor != null && hitActor instanceof TextButton){
-                        System.out.println("ciao");
-                        return true;
-                    }
-                    return false;
+
+            //imposta la finestra di dialogo come principale
+            dialog.setModal(true);  
+
+            //casualmente, viene proposto un oggetto da comprare
+            int randomItem = (int) (Math.random() * 8);
+            int randomPrice = (int) (Math.random() * 3);
+            //genera la stringa scegliendo il valore x dalla lista buildingList
+            String item = " vuoi comprare"+buildingList[randomItem]+" per "+randomPrice+"?";
+            //aggiunge il testo alla finestra di dialogo
+            dialog.text(item); 
+
+            dialog.button("OK", true);
+            dialog.button("Cancel", false);
+            dialog.key(Input.Keys.ENTER, true);
+            dialog.key(Input.Keys.ESCAPE, false);
+            dialog.show(stage);
+
+            dialog.addListener(new ChangeListener() {
+               
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    
                 }
             });
-
-            stage.addActor(dialog);
-            stage.addActor(button);
         }
+
+
     }
 }
