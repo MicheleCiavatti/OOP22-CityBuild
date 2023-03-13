@@ -11,20 +11,18 @@ public class FireImpl implements Fire{
     private static final int ARBITRARY_VALUE = 5;
     private static final int MIN_COST = 50;
     private static final int MIN_INTENSITY = 2;
-    private CityImpl city;
+    private CityImpl city = new CityImpl( new PlayerImpl());
     private int cityzen;
     private int intensity;
 
-    public FireImpl(CityImpl city) {
-        this.city = city;
-    }
+    
 
 
     @Override
     public int setIntensity() {
 
         Random random = new Random();
-        int randomRiskFactor = random.nextInt(this.getNumOfBuildings());
+        int randomRiskFactor = random.nextInt(5);
         intensity = MIN_INTENSITY + randomRiskFactor;
         return intensity;
     }
@@ -56,5 +54,22 @@ public class FireImpl implements Fire{
         return city.getBuildings().size();
     }
     
+    private void destroyBuildings(){
+        for(int i = 0; i < this.numBuildingsDestroyed(); i++){
+            city.demolish(city.getBuildings().get(i));
+        }
+    }
+
+    public int update(){
+        if(this.getNumOfBuildings() > 5){
+            this.setIntensity();
+            this.setCost();
+            this.destroyBuildings();
+            return 1;
+        }
+        return 0;
+    }
+
+
 
 }
