@@ -18,8 +18,8 @@ public class CityImpl implements City {
         Resource.METAL, 100, Resource.WATER, 100, Resource.WOOD, 100
     );
     public static final Map<Resource, Integer> COST_PER_CITIZEN = Map.of(
-        Resource.ENERGY, 3, Resource.GOLD, 1, Resource.METAL, 2,
-        Resource.WATER, 5, Resource.WOOD, 2
+        Resource.ENERGY, 1, Resource.GOLD, 0, Resource.METAL, 0,
+        Resource.WATER, 2, Resource.WOOD, 0
     );
     private static final Map<Resource, Integer> NULL_MAP = Map.of(Resource.CITIZEN, 0);
     private static final int CITIZENS_TO_ADD = 1;
