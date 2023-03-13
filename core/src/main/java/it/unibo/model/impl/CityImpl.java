@@ -68,13 +68,16 @@ public class CityImpl implements City {
 
     /**{@inheritDoc} */
     @Override
-    public boolean upgrade(ProductionBuilding building) {
+    public boolean upgrade(final ProductionBuilding building) {
         final var toUp = this.firstSatisfying(building, ProductionBuilding::isUpgradable);
         if (toUp.isPresent()) {
             final var out = toUp.get().upgrade(this.player.getAllResources()) && 
                 this.player.spendResources(building.getCostUpgrade());
+                //If the building is a house or skyscraper, special operations need to be done
+                if (building.getRevenue().containsKey(Resource.CITIZEN)) {
+                    this.player.spendResources(Map.of(Resource.CITIZEN, building.getRevenue().get(Resource.CITIZEN)));
+                }
             if (out && building.getName().equals("House") || building.getName().equals("Skyscraper")) {
-                System.out.println("It's a Citizen building");
                 this.player.spendResources(building.getRevenue());
                 this.player.addResources(toUp.get().getRevenue());
             }
