@@ -43,9 +43,20 @@ public class TestCity {
 
     @Test
     public void testBuild() {
+        
         assertTrue(this.p.spendResources(CityImpl.START_RESOURCES)); //Removing all resources from the city
+        final var simple = this.factory.createSimpleProductionBuilding(FIRST_RES);
+        final var advanced = this.factory.createAdvancedProductionBuilding(Resource.GOLD);
+        System.out.println(simple.getCostConstruction());
+        this.p.addResources(simple.getCostConstruction());
+        System.out.println(this.p.getAllResources());
+        this.p.addResources(advanced.getCostConstruction());
+        assertTrue(this.city.build(simple));
+        assertTrue(this.city.build(advanced));
+        /*
         this.addBuilding(FIRST_RES);
         this.addBuilding(Resource.GOLD); 
+        */
     }
 
     @Test

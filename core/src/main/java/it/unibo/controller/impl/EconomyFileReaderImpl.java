@@ -22,7 +22,7 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     private static final String SIMPLE_BUILDING_DIR = "simple_buildings";
     private static final String ADVANCED_BUILDING_DIR = "advanced_buildings";
     private static final String FILE_EXTENSION = ".yml";
-    public static final String PATH_RES = System.getProperty("user.dir").replace("core", "")
+    public static final String PATH_RES = System.getProperty("user.dir").replace("core", "") + File.separator
         + "assets" + File.separator + "buildings" + File.separator;
 
     private EconomyTables data;
