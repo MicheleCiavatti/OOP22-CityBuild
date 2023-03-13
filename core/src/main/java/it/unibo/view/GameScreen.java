@@ -409,8 +409,8 @@ public class GameScreen extends ScreenAdapter {
         }
 
         private void setCursor(Boolean b) {
-            Pixmap pmDefault = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "cursor.png"));
-            Pixmap pmHummer = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "hummer.png"));
+            Pixmap pmDefault = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "Cursor.png"));
+            Pixmap pmHummer = new Pixmap(Gdx.files.internal(IMAGE_FOLDER + "Hammer.png"));
             Cursor cursor;
 
             if (!b) {
