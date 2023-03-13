@@ -53,7 +53,6 @@ public class MainMenu extends ScreenAdapter {
 		this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
 		this.pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "Cursor.png"));
 		this.setCursorImage();
-		
 	}
 
 	/**{@inheritDoc} */
@@ -72,7 +71,6 @@ public class MainMenu extends ScreenAdapter {
 	@Override
 	public void show() {	
 		this.startMusic();
-		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
 		final var newGame = this.createButton("New Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2,
 			Gdx.graphics.getHeight() - BUTTON_HEIGHT - rowHeight,
@@ -85,7 +83,6 @@ public class MainMenu extends ScreenAdapter {
 					final City city = new CityImpl(p);
 					final Controller controller = new ControllerImpl(city);
 					game.setScreen(new GameScreen(controller));
-					//game.setScreen(new GameScreen());
 					dispose();
 				}
 			});

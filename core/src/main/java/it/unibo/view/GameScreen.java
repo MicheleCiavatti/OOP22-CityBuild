@@ -144,7 +144,6 @@ public class GameScreen extends ScreenAdapter {
      * It is also called when the player spends resources to create or upgrade buildings.
      */
     private void updateTablePlayer() {
-        System.out.println("Cycling");
         this.resources = this.controller.getPlayerResources();
         this.labelResources.setText(this.computeTextResources(this.resources) + 
             Resource.CITIZEN + ": " + this.controller.getCitizensInTown() + "/" + this.resources.get(Resource.CITIZEN));
