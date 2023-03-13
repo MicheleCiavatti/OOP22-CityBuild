@@ -1,8 +1,6 @@
 package it.unibo.controller.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +8,9 @@ import java.util.Map;
 import java.util.Arrays;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+
+import com.badlogic.gdx.Gdx;
+
 import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.model.api.Resource;
 
@@ -22,8 +23,6 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     private static final String SIMPLE_BUILDING_DIR = "simple_buildings";
     private static final String ADVANCED_BUILDING_DIR = "advanced_buildings";
     private static final String FILE_EXTENSION = ".yml";
-    public static final String PATH_RES = System.getProperty("user.dir").replace("core", "") + File.separator
-        + "assets" + File.separator + "buildings" + File.separator;
 
     private EconomyTables data;
 
@@ -39,22 +38,18 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
         return this.computeTables(this.getPath(false, r));
     }
 
-    private List<Map<Resource, Integer>> computeTables(final String path) {
-        try (InputStream input = new FileInputStream(path)) {
-            Yaml yaml = new Yaml(new Constructor(EconomyTables.class));
-            data = yaml.load(input);
-         } catch (IOException e) {
-             e.printStackTrace();
-         }
+    private List<Map<Resource, Integer>> computeTables(final InputStream input) {
+        Yaml yaml = new Yaml(new Constructor(EconomyTables.class));
+        data = yaml.load(input);
          return List.of(this.getTable(REVENUE_IN_FILE), this.getTable(CONSTRUCTION_IN_FILE), this.getTable(UPGRADE_IN_FILE));
     }
 
-    private String getPath(final boolean isSimpleBuilding, final Resource r) {
+    private InputStream getPath(final boolean isSimpleBuilding, final Resource r) {
         return isSimpleBuilding 
-            ? PATH_RES + SIMPLE_BUILDING_DIR 
-                + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION
-            : PATH_RES + ADVANCED_BUILDING_DIR
-                + File.separator + r.getAdvancedBuilding().toLowerCase() + FILE_EXTENSION;
+            ? Gdx.files.internal("buildings" + File.separator 
+                + SIMPLE_BUILDING_DIR + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION).read()
+            : Gdx.files.internal("buildings" + File.separator 
+                + ADVANCED_BUILDING_DIR + File.separator + r.getAdvancedBuilding().toLowerCase() + FILE_EXTENSION).read();
     }
 
     private Map<Resource, Integer> getTable(final String key) {
