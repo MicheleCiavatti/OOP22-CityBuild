@@ -23,8 +23,9 @@ public class TestCity {
         Resource.CITIZEN, 1000, Resource.ENERGY, 1000, Resource.GOLD, 1000,
         Resource.METAL, 1000, Resource.WATER, 1000, Resource.WOOD, 1000
     );
+    private static final int CITIZENS_TO_ADD = 100;
     private Player p;
-    private City city;
+    private CityImpl city;
     private final BuildingFactory factory = new BuildingFactoryImpl();
     private final Resource FIRST_RES = Resource.METAL;
 
@@ -32,33 +33,25 @@ public class TestCity {
     public void init() {
         this.p = new PlayerImpl();
         this.city = new CityImpl(this.p);
+        this.city.addCitizens(CITIZENS_TO_ADD);
     }
 
     @Test
     public void testStart() {
         assertEquals(0, this.city.getBuildings().size());
         assertEquals(CityImpl.START_RESOURCES, this.city.getPlayerResources());
+        this.city.addCitizens(- CITIZENS_TO_ADD);
         assertEquals(0, this.city.getCitizens());
     }
 
     @Test
     public void testBuild() {
-        
         assertTrue(this.p.spendResources(CityImpl.START_RESOURCES)); //Removing all resources from the city
         final var simple = this.factory.createSimpleProductionBuilding(FIRST_RES);
         final var advanced = this.factory.createAdvancedProductionBuilding(Resource.GOLD);
-        System.out.println(simple.getCostConstruction());
-        this.p.addResources(simple.getCostConstruction());
-        System.out.println(this.p.getAllResources());
-        this.p.addResources(advanced.getCostConstruction());
-        assertTrue(this.city.build(simple));
-        assertTrue(this.city.build(advanced));
-        /*
         this.addBuilding(FIRST_RES);
         this.addBuilding(Resource.GOLD); 
-        */
     }
-
     @Test
     public void testDemolish() {
         this.addBuilding(FIRST_RES);
@@ -113,6 +106,7 @@ public class TestCity {
         this.addBuilding(FIRST_RES);
         final var simpleRevenue = factory.createSimpleProductionBuilding(FIRST_RES).getRevenue().get(FIRST_RES);
         final var advancedRevenue = factory.createAdvancedProductionBuilding(FIRST_RES).getRevenue().get(FIRST_RES);
+        this.city.addCitizens(- CITIZENS_TO_ADD);
         assertTrue(this.removeCitizen(this.city.getPlayerResources()).values().stream().allMatch(value -> value == 0));
         this.city.doCycle();
         assertEquals(1, this.city.getCitizens());

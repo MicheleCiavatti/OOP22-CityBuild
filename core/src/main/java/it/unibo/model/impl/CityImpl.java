@@ -36,6 +36,11 @@ public class CityImpl implements City {
         this.citizens = 0;
     }
 
+    /**Method for debugging. */
+    public void addCitizens(final int toAdd) {
+        this.citizens += toAdd;
+    }
+
     /**{@inheritDoc} */
     @Override
     public boolean build(final ProductionBuilding building) {

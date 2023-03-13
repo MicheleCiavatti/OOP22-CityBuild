@@ -12,7 +12,6 @@ public class TestEconomyFileReader {
 
     @Test
     public void testHouse() {
-        System.out.println(EconomyFileReaderImpl.PATH_RES);
         var tables = economyFileReader.getSimpleEconomyTables(Resource.CITIZEN);
         assertEquals(3, tables.size());
     }
