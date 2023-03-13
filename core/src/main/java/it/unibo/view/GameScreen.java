@@ -1,10 +1,13 @@
 package it.unibo.view;
 
+import it.unibo.model.impl.FireImpl;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
@@ -39,6 +42,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import it.unibo.CityBuild;
 import it.unibo.model.api.Resource;
 
 public class GameScreen extends ScreenAdapter {
@@ -47,6 +52,8 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
+    private static final int PROBABILITY_FIRE = 100; //5%
+    private static final int ISFIRE = 1;
 
 
     private final Table tablePlayer;
@@ -56,6 +63,7 @@ public class GameScreen extends ScreenAdapter {
     private final Map<Rectangle, Image> buildings;
     private final Skin skin;
     private final Dialog warning;
+    private final Dialog warningFire;
     private final Label constructionLabel;
     private final Label upgradeLabel;
     private final GlyphLayout layout;
@@ -65,6 +73,8 @@ public class GameScreen extends ScreenAdapter {
     //crea una lista di stringhe che rappresentano i nomi degli oggetti
     private final String[] buildingList = {"Item1", "Item2", "Item3", "House", "Lumber_refinary", "Mine", "Mineral_station", "Power_plant", "Quantum_reactor", "Skyscraper", "Ultrafiltration_complex", "Woodcutter"};
 
+    private CityBuild city = new CityBuild();
+    private FireImpl fire = new FireImpl();
 
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
@@ -91,6 +101,7 @@ public class GameScreen extends ScreenAdapter {
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
         this.warning = new Dialog("Warning", this.skin);
+        this.warningFire = new Dialog("Is Firing", this.skin);
         this.constructionLabel = new Label("Building label", this.skin);
         this.upgradeLabel = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
@@ -128,6 +139,28 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
         shapeRenderer.end();
+
+        Random random = new Random();
+
+        int randomValue = random.nextInt(100);
+        if (randomValue<PROBABILITY_FIRE) {
+            if(fire.update()==ISFIRE){
+                //Avvisa che c'è un incendio tramite un dialog che si chiude dopo 3 secondi
+
+                this.warning.show(stage);
+                Timer.schedule(new Task(){
+                    @Override
+                    public void run() {
+                        warning.hide();
+                    }
+                }, 3);
+                
+            }
+
+        }
+
+
+        
         
     }
 
