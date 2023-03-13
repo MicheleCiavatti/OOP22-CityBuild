@@ -48,20 +48,22 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
 
     private InputStream getInput(final boolean isSimpleBuilding, final Resource r) {
         if (Gdx.files != null) {
-            return Gdx.files.internal("buildings" + File.separator + (isSimpleBuilding 
-                ? SIMPLE_BUILDING_DIR + File.separator + r.getSimpleBuilding().toLowerCase() 
-                : ADVANCED_BUILDING_DIR + File.separator + r.getAdvancedBuilding().toLowerCase()) 
-            + EXT).read();
+            return Gdx.files.internal("buildings" + File.separator + computePath(isSimpleBuilding, r)).read();
         }
         /*The following is just for the tests because the applications uses the Gdx.files.internal. */
         try {
-            return new FileInputStream(PATH_RES + (isSimpleBuilding
-                ? SIMPLE_BUILDING_DIR + File.separator + r.getSimpleBuilding().toLowerCase()
-                : ADVANCED_BUILDING_DIR + File.separator + r.getAdvancedBuilding().toLowerCase()) + EXT);
+            return new FileInputStream(PATH_RES + computePath(isSimpleBuilding, r));
         } catch (IOException e) {
             e.printStackTrace();
         }
         throw new IllegalStateException();
+    }
+
+    private String computePath(final boolean isSimpleBuilding, final Resource r) {
+        return (isSimpleBuilding
+            ? SIMPLE_BUILDING_DIR + File.separator + r.getSimpleBuilding().toLowerCase()
+            : ADVANCED_BUILDING_DIR + File.separator + r.getAdvancedBuilding().toLowerCase())
+            + EXT;
     }
 
     private Map<Resource, Integer> getTable(final String key) {
