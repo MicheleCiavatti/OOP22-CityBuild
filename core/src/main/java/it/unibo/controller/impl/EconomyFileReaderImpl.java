@@ -1,6 +1,8 @@
 package it.unibo.controller.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -20,34 +22,46 @@ public class EconomyFileReaderImpl implements EconomyFileReader {
     private static final String UPGRADE_IN_FILE = "upgrade";
     private static final String SIMPLE_BUILDING_DIR = "simple_buildings";
     private static final String ADVANCED_BUILDING_DIR = "advanced_buildings";
-    private static final String FILE_EXTENSION = ".yml";
+    private static final String EXT = ".yml";
+    private static final String PATH_RES = System.getProperty("user.dir").replace("core", "") + File.separator + "assets" 
+        + File.separator + "buildings" + File.separator;
 
     private EconomyTables data;
 
     /**{@inheritDoc} */
     @Override
     public List<Map<Resource, Integer>> getSimpleEconomyTables(final Resource r) {
-        return this.computeTables(this.getPath(true, r));
+        return this.computeTables(this.getInput(true, r));
     }
 
     /**{@inheritDoc} */
     @Override
     public List<Map<Resource, Integer>> getAdvancedEconomyTables(Resource r) {
-        return this.computeTables(this.getPath(false, r));
+        return this.computeTables(this.getInput(false, r));
     }
 
     private List<Map<Resource, Integer>> computeTables(final InputStream input) {
         Yaml yaml = new Yaml(new Constructor(EconomyTables.class));
         data = yaml.load(input);
-         return List.of(this.getTable(REVENUE_IN_FILE), this.getTable(CONSTRUCTION_IN_FILE), this.getTable(UPGRADE_IN_FILE));
+        return List.of(this.getTable(REVENUE_IN_FILE), this.getTable(CONSTRUCTION_IN_FILE), this.getTable(UPGRADE_IN_FILE));
     }
 
-    private InputStream getPath(final boolean isSimpleBuilding, final Resource r) {
-        return isSimpleBuilding 
-            ? Gdx.files.internal("buildings" + File.separator 
-                + SIMPLE_BUILDING_DIR + File.separator + r.getSimpleBuilding().toLowerCase() + FILE_EXTENSION).read()
-            : Gdx.files.internal("buildings" + File.separator 
-                + ADVANCED_BUILDING_DIR + File.separator + r.getAdvancedBuilding().toLowerCase() + FILE_EXTENSION).read();
+    private InputStream getInput(final boolean isSimpleBuilding, final Resource r) {
+        if (Gdx.files != null) {
+            return Gdx.files.internal("buildings" + File.separator + (isSimpleBuilding 
+                ? SIMPLE_BUILDING_DIR + File.separator + r.getSimpleBuilding().toLowerCase() 
+                : ADVANCED_BUILDING_DIR + File.separator + r.getAdvancedBuilding().toLowerCase()) 
+            + EXT).read();
+        }
+        /*The following is just for the tests because the applications uses the Gdx.files.internal. */
+        try {
+            return new FileInputStream(PATH_RES + (isSimpleBuilding
+                ? SIMPLE_BUILDING_DIR + File.separator + r.getSimpleBuilding().toLowerCase()
+                : ADVANCED_BUILDING_DIR + File.separator + r.getAdvancedBuilding().toLowerCase()) + EXT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException();
     }
 
     private Map<Resource, Integer> getTable(final String key) {
