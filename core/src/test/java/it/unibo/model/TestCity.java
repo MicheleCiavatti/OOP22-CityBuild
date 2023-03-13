@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import it.unibo.model.api.BuildingFactory;
-import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
@@ -47,8 +46,6 @@ public class TestCity {
     @Test
     public void testBuild() {
         assertTrue(this.p.spendResources(CityImpl.START_RESOURCES)); //Removing all resources from the city
-        final var simple = this.factory.createSimpleProductionBuilding(FIRST_RES);
-        final var advanced = this.factory.createAdvancedProductionBuilding(Resource.GOLD);
         this.addBuilding(FIRST_RES);
         this.addBuilding(Resource.GOLD); 
     }
