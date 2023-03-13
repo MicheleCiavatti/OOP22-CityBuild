@@ -1,6 +1,8 @@
 package it.unibo.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.File;
 import org.junit.jupiter.api.Test;
 import it.unibo.controller.api.EconomyFileReader;
 import it.unibo.controller.impl.EconomyFileReaderImpl;
@@ -12,6 +14,7 @@ public class TestEconomyFileReader {
 
     @Test
     public void testHouse() {
+        System.out.println(EconomyFileReaderImpl.PATH_RES);
         var tables = economyFileReader.getSimpleEconomyTables(Resource.CITIZEN);
         assertEquals(3, tables.size());
     }

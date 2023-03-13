@@ -45,7 +45,7 @@ public class TestCity {
     public void testBuild() {
         assertTrue(this.p.spendResources(CityImpl.START_RESOURCES)); //Removing all resources from the city
         this.addBuilding(FIRST_RES);
-        this.addBuilding(Resource.GOLD);
+        this.addBuilding(Resource.GOLD); 
     }
 
     @Test
