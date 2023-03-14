@@ -49,10 +49,6 @@ public class FireImpl implements Fire{
     private int numBuildingsDestroyed(){
         return this.getIntensity() / 2;
     }
-
-    private int getNumOfBuildings(){
-        return city.getBuildings().size();
-    }
     
     private void destroyBuildings(){
         for(int i = 0; i < this.numBuildingsDestroyed(); i++){
@@ -60,14 +56,10 @@ public class FireImpl implements Fire{
         }
     }
 
-    public int update(){
-        if(this.getNumOfBuildings() > 5){
-            this.setIntensity();
-            this.setCost();
-            this.destroyBuildings();
-            return 1;
-        }
-        return 0;
+    public void update(){
+        this.setIntensity();
+        this.setCost();
+        this.destroyBuildings();
     }
 
 

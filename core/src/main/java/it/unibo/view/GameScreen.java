@@ -47,7 +47,7 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
-    private static final int PROBABILITY_FIRE = 100; //5%
+    private static final int PROBABILITY_FIRE = 110; //5%
     private static final int ISFIRE = 1;
 
     //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
@@ -152,22 +152,23 @@ public class GameScreen extends ScreenAdapter {
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
         shapeRenderer.end();
 
+
+
+
         Random random = new Random();
 
         int randomValue = random.nextInt(100);
         if (randomValue<PROBABILITY_FIRE) {
-            if(fire.update()==ISFIRE){
-                //Avvisa che c'è un incendio tramite un dialog che si chiude dopo 3 secondi
-
-                this.warning.show(stage);
-                Timer.schedule(new Task(){
-                    @Override
-                    public void run() {
-                        warning.hide();
-                    }
-                }, 3);
-                
-            }
+            
+            //Avvisa che c'è un incendio tramite un dialog che si chiude dopo 3 secondi
+            this.warningFire.show(stage);
+            this.warning.show(stage);
+            Timer.schedule(new Task(){
+                @Override
+                public void run() {
+                    warning.hide();
+                }
+            }, 3);
 
         }
 
