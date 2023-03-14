@@ -154,13 +154,13 @@ public class GameScreen extends ScreenAdapter {
 
 
 
-
+        //TODO abbassare la probabilità di incendiare
         Random random = new Random();
         int randomValue = random.nextInt(100);
 
 
         if (randomValue<PROBABILITY_FIRE) {
-
+            System.out.println("FIREEEEEEEE");
             this.warningFire.show(stage);
             fire.update();
             Timer.schedule(new Task(){
