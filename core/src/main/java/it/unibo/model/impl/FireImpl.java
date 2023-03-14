@@ -51,10 +51,24 @@ public class FireImpl implements Fire{
     }
 
     private int numBuildingsDestroyed(){
-        return this.getIntensity() / 2;
+        //se non ci sono abbastanza risorse per pagare il costo del fuoco, distruggo tutti i building oppure ho meno edifici di quelli che posso distruggere
+        if(this.setCost() > this.getNumResource(Resource.GOLD) || city.getBuildings().size() < this.getIntensity() ){
+            return city.getBuildings().size();
+        }
+        //distruggo solo i building che non sono upgradabili
+        else{
+            int numBuildingsDestroyed = 0;
+            for(int i = 0; i < city.getBuildings().size(); i++){
+                if(!city.getBuildings().get(i).isUpgradable()){
+                    numBuildingsDestroyed++;
+                }
+            }
+            return numBuildingsDestroyed;
+        }
     }
     
     private void destroyBuildings(){
+
         for(int i = 0; i < this.numBuildingsDestroyed(); i++){
             city.demolish(city.getBuildings().get(i));
         }
@@ -62,8 +76,7 @@ public class FireImpl implements Fire{
 
     public void update(){
         this.setIntensity();
-        this.decreaseResource(Resource.GOLD, this.setCost());
-        this.setCost();
+        //this.decreaseResource(Resource.GOLD, this.setCost());
         this.destroyBuildings();
     }
 

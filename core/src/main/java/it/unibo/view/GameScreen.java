@@ -156,13 +156,13 @@ public class GameScreen extends ScreenAdapter {
 
 
         Random random = new Random();
-
         int randomValue = random.nextInt(100);
+
+
         if (randomValue<PROBABILITY_FIRE) {
-            
-            //Avvisa che c'è un incendio tramite un dialog che si chiude dopo 3 secondi
+
             this.warningFire.show(stage);
-            this.warning.show(stage);
+            fire.update();
             Timer.schedule(new Task(){
                 @Override
                 public void run() {
