@@ -1,4 +1,8 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "FSharp.suggestGitignore": false
+    "FSharp.suggestGitignore": false,
+    "java.debug.settings.onBuildFailureProceed": true,
+    "files.watcherExclude": {
+        "**/target": true
+    }
 }

@@ -14,12 +14,12 @@ import it.unibo.model.api.Resource;
 public class CityImpl implements City {
 
     public static final Map<Resource, Integer> START_RESOURCES = Map.of(
-        Resource.CITIZEN, 0, Resource.ENERGY, 50, Resource.GOLD, 50,
-        Resource.METAL, 50, Resource.WATER, 50, Resource.WOOD, 50
+        Resource.CITIZEN, 0, Resource.ENERGY, 100, Resource.GOLD, 100,
+        Resource.METAL, 100, Resource.WATER, 100, Resource.WOOD, 100
     );
     public static final Map<Resource, Integer> COST_PER_CITIZEN = Map.of(
-        Resource.ENERGY, 3, Resource.GOLD, 1, Resource.METAL, 2,
-        Resource.WATER, 5, Resource.WOOD, 2
+        Resource.ENERGY, 1, Resource.GOLD, 0, Resource.METAL, 0,
+        Resource.WATER, 2, Resource.WOOD, 0
     );
     private static final Map<Resource, Integer> NULL_MAP = Map.of(Resource.CITIZEN, 0);
     private static final int CITIZENS_TO_ADD = 1;
@@ -36,12 +36,20 @@ public class CityImpl implements City {
         this.citizens = 0;
     }
 
+    /**Method for debugging. */
+    public void addCitizens(final int toAdd) {
+        this.citizens += toAdd;
+    }
+
     /**{@inheritDoc} */
     @Override
-    public boolean build(ProductionBuilding building) {
-        if (this.player.spendResources(building.getCostConstruction())) {
+    public boolean build(final ProductionBuilding building) {
+        if (building.getCostConstruction().containsKey(Resource.CITIZEN) 
+        && this.citizens >= building.getCostConstruction().get(Resource.CITIZEN)) {
+            if (this.player.spendResources(building.getCostConstruction())) {
             this.operations(true, building);
             return true;
+            }
         }
         return false;
     }
@@ -60,11 +68,20 @@ public class CityImpl implements City {
 
     /**{@inheritDoc} */
     @Override
-    public boolean upgrade(ProductionBuilding building) {
+    public boolean upgrade(final ProductionBuilding building) {
         final var toUp = this.firstSatisfying(building, ProductionBuilding::isUpgradable);
         if (toUp.isPresent()) {
-            return toUp.get().upgrade(this.player.getAllResources()) && 
+            final var out = toUp.get().upgrade(this.player.getAllResources()) && 
                 this.player.spendResources(building.getCostUpgrade());
+                //If the building is a house or skyscraper, special operations need to be done
+                if (building.getRevenue().containsKey(Resource.CITIZEN)) {
+                    this.player.spendResources(Map.of(Resource.CITIZEN, building.getRevenue().get(Resource.CITIZEN)));
+                }
+            if (out && building.getName().equals("House") || building.getName().equals("Skyscraper")) {
+                this.player.spendResources(building.getRevenue());
+                this.player.addResources(toUp.get().getRevenue());
+            }
+            return out;
         }
         return false;
     }

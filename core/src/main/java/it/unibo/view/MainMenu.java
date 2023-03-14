@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,6 +21,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import it.unibo.CityBuild;
+import it.unibo.controller.api.Controller;
+import it.unibo.controller.impl.ControllerImpl;
+import it.unibo.model.api.City;
+import it.unibo.model.api.Player;
+import it.unibo.model.impl.CityImpl;
+import it.unibo.model.impl.PlayerImpl;
 
 /**This class is responsible for the main menù of the game. */
 public class MainMenu extends ScreenAdapter {
@@ -35,6 +43,7 @@ public class MainMenu extends ScreenAdapter {
 	private final Stage stage;
 	private final Sound buttonClick;
 	private final Music theme;
+	private final Pixmap pixmap;
 
 	public MainMenu(final CityBuild game) {
 		this.game = game;
@@ -42,6 +51,8 @@ public class MainMenu extends ScreenAdapter {
 		this.theme = Gdx.audio.newMusic(Gdx.files.internal(SOUND_FOLDER + "tlou_theme.mp3"));
 		this.stage = new Stage(new ScreenViewport());
 		this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
+		this.pixmap = new Pixmap(Gdx.files.internal(IMAGE_FOLDER +  "Cursor.png"));
+		this.setCursorImage();
 	}
 
 	/**{@inheritDoc} */
@@ -52,13 +63,14 @@ public class MainMenu extends ScreenAdapter {
 		this.buttonClick.dispose();
 		this.skin.dispose();
 		this.stage.dispose();
-	}
+		this.pixmap.dispose();
 
+	}
+		
 	/**{@inheritDoc} */
 	@Override
 	public void show() {	
 		this.startMusic();
-		
 		final int rowHeight = Gdx.graphics.getHeight() / SCREEN_DIVISOR;
 		final var newGame = this.createButton("New Game", Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2,
 			Gdx.graphics.getHeight() - BUTTON_HEIGHT - rowHeight,
@@ -67,8 +79,10 @@ public class MainMenu extends ScreenAdapter {
 				public void changed(ChangeEvent event, Actor actor) {
 					buttonClick.play();
 					sleeping(DELAY_CLICK_BUTTON);
-					game.setScreen(new GameScreen());
-					//game.setScreen(new GameScreen());
+					final Player p = new PlayerImpl();
+					final City city = new CityImpl(p);
+					final Controller controller = new ControllerImpl(city);
+					game.setScreen(new GameScreen(controller));
 					dispose();
 				}
 			});
@@ -138,5 +152,11 @@ public class MainMenu extends ScreenAdapter {
 			Gdx.graphics.getWidth() / 2 - background.getWidth() / 2, 
 			Gdx.graphics.getHeight() / 2 - background.getHeight() / 2);
 		return background;
+	}
+
+	private void setCursorImage(){
+		int xHotSpot = this.pixmap.getWidth() / 3;
+		Cursor cursor = Gdx.graphics.newCursor(this.pixmap, xHotSpot, 0);
+		Gdx.graphics.setCursor(cursor);
 	}
 }
