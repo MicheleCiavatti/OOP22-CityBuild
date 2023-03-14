@@ -42,8 +42,8 @@ public class FireImpl implements Fire{
         return cost;
     }
 
-    private void decreaseResource(Resource resource, int amount){
-        city.getPlayerResources().put(resource, city.getPlayerResources().get(resource) - amount);
+    private void spendGold(int cost) {
+        //TODO (?) spend gold
     }
 
     private int getNumResource(Resource resource){
@@ -68,7 +68,6 @@ public class FireImpl implements Fire{
     }
     
     private void destroyBuildings(){
-
         for(int i = 0; i < this.numBuildingsDestroyed(); i++){
             city.demolish(city.getBuildings().get(i));
         }
@@ -76,7 +75,7 @@ public class FireImpl implements Fire{
 
     public void update(){
         this.setIntensity();
-        //this.decreaseResource(Resource.GOLD, this.setCost());
+        //TODO DECRASE MONEY
         this.destroyBuildings();
     }
 
