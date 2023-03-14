@@ -160,7 +160,6 @@ public class GameScreen extends ScreenAdapter {
 
 
         if (randomValue<PROBABILITY_FIRE) {
-            System.out.println("FIREEEEEEEE");
             this.warningFire.show(stage);
             fire.update();
             Timer.schedule(new Task(){
