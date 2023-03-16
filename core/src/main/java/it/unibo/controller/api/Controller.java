@@ -22,6 +22,5 @@ public interface Controller {
     public Map<Resource, Integer> getPlayerResources();
 
     public void doCycle(); 
-
     
 }
