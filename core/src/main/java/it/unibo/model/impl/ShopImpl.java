@@ -10,9 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import it.unibo.controller.api.Controller;
+import it.unibo.controller.impl.ControllerImpl;
+import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.api.Shop;
+import it.unibo.view.GameScreen;
 
 public class ShopImpl implements Shop{
 
@@ -20,7 +23,6 @@ public class ShopImpl implements Shop{
     private final String[] buildingList = {"forge", "lumber_refinary", "mineral_station", "quantum_reactor", "skyscraper", "ultrafiltration_complex",
     "depurator", "foundry", "house","mine","power_plant", "woodcutter"};
 
-    private Controller controller;
     private int randomItem;
     private int randomPrice;
     private Map<Resource, Integer> resource;
@@ -32,18 +34,37 @@ public class ShopImpl implements Shop{
     
     private boolean shopBoolean;
 
-    public ShopImpl(Controller controller){
+    private Controller controller;
+
+    public ShopImpl(Controller controller) {
         this.resource = new HashMap<>();
         this.costResource = new HashMap<>();
-        this.controller = controller;
         this.button = false;
         this.shopBoolean = false;
+        this.controller = controller;
     }
 
     @Override
     public Controller getResource() {
-        this.controller.getPlayerResources().replace(fromNameToBuilding(buildingList[randomItem]), 1);
-        this.controller.getPlayerResources().replace(Resource.GOLD, randomPrice);
+        //this.controller.getPlayerResources().replace(fromNameToBuilding(buildingList[randomItem]), 1);
+        try {
+            final Player p = new PlayerImpl();
+            p.addResources(this.controller.getPlayerResources());
+            p.spendResources(costResource);
+            p.addResources(resource);
+
+            System.out.println("p resources: "+ p.getAllResources());
+
+            final City city = new CityImpl(p, p.getAllResources());
+
+            System.out.println(city.getPlayerResources());
+
+			this.controller = new ControllerImpl(city);
+            System.out.println("GetResource: " + this.controller.getPlayerResources());
+            this.setButtonFalse();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
         return this.controller;
     }
 
@@ -59,7 +80,7 @@ public class ShopImpl implements Shop{
         Dialog dialog = new Dialog("Shop", skin){ 
 
             protected void result(Object object){
-                System.out.println("Button clicked");
+                System.out.println(controller.getPlayerResources());
                 button = true;
             }
         };
@@ -69,13 +90,17 @@ public class ShopImpl implements Shop{
         return dialog;
     }
 
-    public Boolean isButtonClicked(){
+    public Boolean isButtonClicked(){ 
         return this.button;
+    }
+
+    private void setButtonFalse() {
+        this.button = false;
     }
 
     private void setResource() {
         this.resource.put(fromNameToBuilding(this.buildingList[this.randomItem]), 1);
-        this.costResource.put(Resource.GOLD, this.randomItem);
+        this.costResource.put(Resource.GOLD, this.randomPrice);
     }
 
     private String generateString() {

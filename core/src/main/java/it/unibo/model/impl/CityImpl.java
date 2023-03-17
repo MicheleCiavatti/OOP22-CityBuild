@@ -36,6 +36,11 @@ public class CityImpl implements City {
         this.citizens = 0;
     }
 
+    public CityImpl(final Player player, Map<Resource,Integer> resource) {
+        this.player = player;
+        this.buildings = new ArrayList<>();
+    }
+
     /**Method for debugging. */
     public void addCitizens(final int toAdd) {
         this.citizens += toAdd;
@@ -153,4 +158,6 @@ public class CityImpl implements City {
             .filter(b -> condition.test(b) && b.getName().equals(building.getName()))
             .findFirst();
     }
+
+
 }

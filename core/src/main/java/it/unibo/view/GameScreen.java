@@ -46,7 +46,7 @@ public class GameScreen extends ScreenAdapter {
     //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
     private static final float CYCLE_DURATION_SECONDS = 3; 
 
-    private final Controller controller;
+    private  Controller controller;
     private final Table tablePlayer;
     private Map<Resource, Integer> resources;
     private final Music theme;
@@ -146,11 +146,21 @@ public class GameScreen extends ScreenAdapter {
         if (this.cycle >= CYCLE_DURATION_SECONDS) {
             this.cycle = 0;
             this.controller.doCycle();
-            this.updateTablePlayer();
         }
         
         this.stage.act(delta);
         this.stage.draw();
+
+        if(shop.isButtonClicked().equals(true)) {
+            this.controller = this.shop.getResource();
+            updateTablePlayer();
+            Timer.schedule(new Task() {
+                @Override
+                public void run() {
+                    dialogShop.hide();
+                }
+            }, 0);  
+        }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
@@ -283,7 +293,7 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.UP -> this.roundButtonList(1);
                 case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
-                case Input.Keys.S -> this.createDialogShop();
+                case Input.Keys.S -> this.generateRandomShop();
             }
             return false;
         }
@@ -375,7 +385,7 @@ public class GameScreen extends ScreenAdapter {
 
         /*This method is used to determine the consequences of a click of the mouse when not carrying a building for placement.
          * It allows for upgrading and destroying buildings already placed.*/
-        private boolean handleTouch(final int screenX, final int screenY) {
+        private boolean handleTouch(final int screenX, final int screenY) {  
             final var touched = buildings.entrySet().stream()
                 .filter(entry -> entry.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY))
                 .findFirst();
@@ -467,10 +477,16 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
         }
+
+        private void generateRandomShop(){
+            System.out.println(shop.generateResource());
+            dialogShop = shop.createDialogShop();
+            showDialogShop();
+        }
         
-        private void createDialogShop() {
+        private void showDialogShop() {
+            System.out.println("create dialogshop");
             dialogShop.show(stage);
-            shop.isShopCalled();
         }
     }
 }
