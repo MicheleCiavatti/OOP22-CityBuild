@@ -105,7 +105,7 @@ public class ShopImpl implements Shop{
 
     private String generateString() {
         this.randomItem = (int) (Math.random() * 8);
-        this.randomPrice = (int) (Math.random() * 3);
+        this.randomPrice = (int) (Math.random() * 50);
         String item = " vuoi comprare "+ buildingList[randomItem]+" per "+ this.randomPrice + " " + Resource.GOLD +  "?";
         this.setResource();
         return item;
