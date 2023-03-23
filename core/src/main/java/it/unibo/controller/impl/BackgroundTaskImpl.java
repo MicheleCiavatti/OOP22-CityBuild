@@ -27,6 +27,11 @@ public class BackgroundTaskImpl {
     public void increaseValue(Resource res, int value) {
         resources.put(res, resources.get(res) + value);
     }
+    
+    private int computeValue(){
+        return 0; //TODO
+    }
+
 
 
     
