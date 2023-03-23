@@ -11,10 +11,10 @@ import it.unibo.model.impl.PlayerImpl;
 public class BackgroundTaskImpl {
     //mappa che contiene le risorse da incrementare
     
-    public Map<Resource, Integer> resources;
+    private Map<Resource, Integer> resources;
 
 
-    public void setResources() {
+    private void setResources() {
         final Player player = new PlayerImpl();
         //ottiene le risorse con le rispettive quantità
         resources = player.getAllResources();
@@ -26,6 +26,8 @@ public class BackgroundTaskImpl {
         }
         return resources;
     }
+
+
     
 
 
