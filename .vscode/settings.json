@@ -1,7 +1,11 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "FSharp.suggestGitignore": false,
+<<<<<<< HEAD
     "files.watcherExclude": {
         "**/target": true
     }
+=======
+    "java.debug.settings.onBuildFailureProceed": true
+>>>>>>> master
 }

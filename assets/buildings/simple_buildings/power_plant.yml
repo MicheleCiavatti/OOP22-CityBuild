@@ -1,0 +1,8 @@
+revenue:
+  ENERGY: 20
+construction: 
+  METAL: 10
+  CITIZEN: 4
+upgrade:
+  METAL: 25
+  CITIZEN: 8

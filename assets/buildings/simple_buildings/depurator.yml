@@ -1,0 +1,10 @@
+revenue:
+  WATER: 10
+construction: 
+  CITIZEN: 5
+  GOLD: 15
+  ENERGY: 5
+upgrade:
+  METAL: 10
+  GOLD: 10
+  ENERGY: 25

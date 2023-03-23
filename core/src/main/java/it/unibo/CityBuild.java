@@ -1,31 +1,16 @@
 package it.unibo;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
 
-public class CityBuild extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+import it.unibo.view.MainMenu;
 
-	@Override
-	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+public class CityBuild extends Game {
+    
+    public static final int GAME_WIDTH = 1440;
+	public static final int GAME_HEIGHT = 810;
+
+    @Override
+    public void create() {
+        this.setScreen(new MainMenu(this));
+    }
 }
