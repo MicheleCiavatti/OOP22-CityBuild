@@ -2,14 +2,11 @@ package it.unibo.controller.impl;
 
 
 import java.util.Map;
-
-import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.PlayerImpl;
 
 public class BackgroundTaskImpl {
-    //mappa che contiene le risorse da incrementare
     
     private Map<Resource, Integer> resources;
 
@@ -25,6 +22,10 @@ public class BackgroundTaskImpl {
             setResources();
         }
         return resources;
+    }
+
+    public void increaseValue(Resource res, int value) {
+        resources.put(res, resources.get(res) + value);
     }
 
 
