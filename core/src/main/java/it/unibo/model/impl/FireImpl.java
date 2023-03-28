@@ -37,15 +37,15 @@ public class FireImpl implements Fire {
         return cost;
     }
 
-    private void spendGold(int cost) {
-        player.spendResources(Map.of(Resource.GOLD, cost));
+    public void spendGold(int cost) {
+        player.addResources(Map.of(Resource.GOLD, -cost));
     }
 
     private int getNumResource(Resource resource) {
         return city.getPlayerResources().getOrDefault(resource, 0);
     }
 
-    private int numBuildingsDestroyed() {
+    public int numBuildingsDestroyed() {
         int numBuildingsDestroyed = 0;
         for (ProductionBuilding building : city.getBuildings()) {
             if (!building.isUpgradable()) {
