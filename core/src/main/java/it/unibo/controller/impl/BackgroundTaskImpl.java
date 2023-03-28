@@ -2,6 +2,8 @@ package it.unibo.controller.impl;
 
 
 import java.util.Map;
+import java.util.Random;
+
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.PlayerImpl;
@@ -9,6 +11,9 @@ import it.unibo.model.impl.PlayerImpl;
 public class BackgroundTaskImpl {
     
     private Map<Resource, Integer> resources;
+    private Random random = new Random();
+    private int goldValue;
+    private int genericValue;
 
 
     private void setResources() {
@@ -25,11 +30,22 @@ public class BackgroundTaskImpl {
     }
 
     public void increaseValue(Resource res, int value) {
-        resources.put(res, resources.get(res) + value);
+        if (res == Resource.GOLD) {
+            resources.put(res, resources.get(res) + goldValue);
+        } else {
+            resources.put(res, resources.get(res) + genericValue);
+        }
+
     }
     
-    private int computeValue(){
-        return 0; //TODO
+    private void computeValue(){
+        goldValue = random.nextInt(100);
+        genericValue = random.nextInt(10);
+    }
+
+    public void run() {
+        computeValue();
+        getResources().forEach((res, value) -> increaseValue(res, value));
     }
 
 
