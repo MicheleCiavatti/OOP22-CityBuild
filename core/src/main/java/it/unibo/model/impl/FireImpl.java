@@ -46,7 +46,7 @@ public class FireImpl implements Fire {
         int gold = this.getNumResource(Resource.GOLD);
         if (gold > cost) {
             city.getPlayerResources().put(Resource.GOLD, gold - cost);
-        }else{
+        } else {
             city.getPlayerResources().put(Resource.GOLD, 0);
         }
     }
@@ -83,7 +83,7 @@ public class FireImpl implements Fire {
         this.setIntensity();
         this.setCost();
         this.destroyBuildings();
-        this.spendGold(this.getCost()); 
+        this.spendGold(this.getCost());
     }
 
 }
