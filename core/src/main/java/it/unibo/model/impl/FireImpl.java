@@ -71,7 +71,7 @@ public class FireImpl implements Fire {
         }
     }
 
-    public void update() {
+    public void performFireAction() {
         this.calculateIntensity();
         this.setCost();
         this.destroyBuildings();
