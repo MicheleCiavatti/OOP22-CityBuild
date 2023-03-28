@@ -16,16 +16,11 @@ public class FireImpl implements Fire {
     private CityImpl city = new CityImpl(new PlayerImpl());
     Player player =  new PlayerImpl();
     private int citizen;
-    private int intensity;
     private int cost;
 
     @Override
     public int calculateIntensity() throws IllegalArgumentException {
         return MIN_INTENSITY + new Random().nextInt(5);
-    }
-
-    private int getIntensity() {
-        return intensity;
     }
 
     @Override
@@ -43,12 +38,7 @@ public class FireImpl implements Fire {
     }
 
     private void spendGold(int cost) {
-        //diminuisce il gold del player. Resource non è mutabile
-
-        
         player.spendResources(Map.of(Resource.GOLD, cost));
-        
-
     }
 
     private int getNumResource(Resource resource) {
