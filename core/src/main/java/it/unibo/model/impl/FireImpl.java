@@ -69,3 +69,6 @@ public class FireImpl implements Fire {
     }
 
 }
+
+
+//TODO analizzare public e private
