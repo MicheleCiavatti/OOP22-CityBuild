@@ -10,9 +10,9 @@ import it.unibo.model.api.Resource;
 
 public class FireImpl implements Fire {
 
-    private static final int ARBITRARY_VALUE = 5;
+    public static final int ARBITRARY_VALUE = 5;
     private static final int MIN_COST = 50;
-    private static final int MIN_INTENSITY = 2;
+    public static final int MIN_INTENSITY = 2;
     private CityImpl city = new CityImpl(new PlayerImpl());
     Player player =  new PlayerImpl();
     private int citizen;
@@ -33,7 +33,7 @@ public class FireImpl implements Fire {
         }
     }
 
-    private int getCost() {
+    public int getCost() {
         return cost;
     }
 
