@@ -1,8 +1,10 @@
 package it.unibo.model.impl;
 
+import java.util.Map;
 import java.util.Random;
 
 import it.unibo.model.api.Fire;
+import it.unibo.model.api.Player;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
@@ -12,6 +14,7 @@ public class FireImpl implements Fire {
     private static final int MIN_COST = 50;
     private static final int MIN_INTENSITY = 2;
     private CityImpl city = new CityImpl(new PlayerImpl());
+    Player player =  new PlayerImpl();
     private int citizen;
     private int intensity;
     private int cost;
@@ -42,7 +45,9 @@ public class FireImpl implements Fire {
     private void spendGold(int cost) {
         //diminuisce il gold del player. Resource non è mutabile
 
-        //TODO
+        
+        player.spendResources(Map.of(Resource.GOLD, cost));
+        
 
     }
 
