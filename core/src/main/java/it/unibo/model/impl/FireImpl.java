@@ -5,18 +5,14 @@ import java.util.Random;
 import it.unibo.model.api.Fire;
 import it.unibo.model.api.Resource;
 
-
-public class FireImpl implements Fire{
+public class FireImpl implements Fire {
 
     private static final int ARBITRARY_VALUE = 5;
     private static final int MIN_COST = 50;
     private static final int MIN_INTENSITY = 2;
-    private CityImpl city = new CityImpl( new PlayerImpl());
+    private CityImpl city = new CityImpl(new PlayerImpl());
     private int cityzen;
     private int intensity;
-
-    
-
 
     @Override
     public int setIntensity() {
@@ -35,50 +31,49 @@ public class FireImpl implements Fire{
     public int setCost() {
         this.cityzen = city.getCitizens();
         int water = this.getNumResource(Resource.WATER);
-        int cost = (this.cityzen/2) * (ARBITRARY_VALUE - water/2) * ARBITRARY_VALUE;
-        if(cost < MIN_COST) {
+        int cost = (this.cityzen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
+        if (cost < MIN_COST) {
             cost = MIN_COST;
         }
         return cost;
     }
 
     private void spendGold(int cost) {
-        //TODO (?) spend gold
+        // TODO (?) spend gold
     }
 
-    private int getNumResource(Resource resource){
+    private int getNumResource(Resource resource) {
         return city.getPlayerResources().getOrDefault(resource, 0);
     }
 
-    private int numBuildingsDestroyed(){
-        //se non ci sono abbastanza risorse per pagare il costo del fuoco, distruggo tutti i building oppure ho meno edifici di quelli che posso distruggere
-        if(this.setCost() > this.getNumResource(Resource.GOLD) || city.getBuildings().size() < this.getIntensity() ){
+    private int numBuildingsDestroyed() {
+        // se non ci sono abbastanza risorse per pagare il costo del fuoco, distruggo
+        // tutti i building oppure ho meno edifici di quelli che posso distruggere
+        if (this.setCost() > this.getNumResource(Resource.GOLD) || city.getBuildings().size() < this.getIntensity()) {
             return city.getBuildings().size();
         }
-        //distruggo solo i building che non sono upgradabili
-        else{
+        // distruggo solo i building che non sono upgradabili
+        else {
             int numBuildingsDestroyed = 0;
-            for(int i = 0; i < city.getBuildings().size(); i++){
-                if(!city.getBuildings().get(i).isUpgradable()){
+            for (int i = 0; i < city.getBuildings().size(); i++) {
+                if (!city.getBuildings().get(i).isUpgradable()) {
                     numBuildingsDestroyed++;
                 }
             }
             return numBuildingsDestroyed;
         }
     }
-    
-    private void destroyBuildings(){
-        for(int i = 0; i < this.numBuildingsDestroyed(); i++){
+
+    private void destroyBuildings() {
+        for (int i = 0; i < this.numBuildingsDestroyed(); i++) {
             city.demolish(city.getBuildings().get(i));
         }
     }
 
-    public void update(){
+    public void update() {
         this.setIntensity();
-        //TODO DECRASE MONEY
+        // TODO DECRASE MONEY
         this.destroyBuildings();
     }
-
-
 
 }
