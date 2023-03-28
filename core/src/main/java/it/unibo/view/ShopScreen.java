@@ -17,8 +17,6 @@ public class ShopScreen extends ScreenAdapter {
     private Table table;
     private Label label;
     private Skin skin;
-    private Game game;
-    private ShopScreen shopScreen;
 
     public ShopScreen(Game game) {
         this.game = game;
