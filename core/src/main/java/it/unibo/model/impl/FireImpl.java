@@ -16,12 +16,8 @@ public class FireImpl implements Fire {
     private int cost;
 
     @Override
-    public int setIntensity() {
-
-        Random random = new Random();
-        int randomRiskFactor = random.nextInt(5);
-        intensity = MIN_INTENSITY + randomRiskFactor;
-        return intensity;
+    public int calculateIntensity() throws IllegalArgumentException {
+        return MIN_INTENSITY + new Random().nextInt(5);
     }
 
     private int getIntensity() {
@@ -76,7 +72,7 @@ public class FireImpl implements Fire {
     }
 
     public void update() {
-        this.setIntensity();
+        this.calculateIntensity();
         this.setCost();
         this.destroyBuildings();
         this.spendGold(this.getCost());
