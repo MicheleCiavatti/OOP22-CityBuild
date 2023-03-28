@@ -13,7 +13,7 @@ import it.unibo.model.impl.PlayerImpl;
 
 import it.unibo.model.impl.FireImpl;
 
-public class FireImplTest {
+public class TestFireImpl {
    
 
     Player player = new PlayerImpl();
