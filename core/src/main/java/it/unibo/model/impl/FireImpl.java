@@ -13,6 +13,7 @@ public class FireImpl implements Fire {
     private CityImpl city = new CityImpl(new PlayerImpl());
     private int cityzen;
     private int intensity;
+    private int cost;
 
     @Override
     public int setIntensity() {
@@ -28,13 +29,16 @@ public class FireImpl implements Fire {
     }
 
     @Override
-    public int setCost() {
+    public void setCost() {
         this.cityzen = city.getCitizens();
         int water = this.getNumResource(Resource.WATER);
         int cost = (this.cityzen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
         if (cost < MIN_COST) {
             cost = MIN_COST;
         }
+    }
+
+    private int getCost() {
         return cost;
     }
 
@@ -77,8 +81,9 @@ public class FireImpl implements Fire {
 
     public void update() {
         this.setIntensity();
-        this.spendGold(this.setCost());
+        this.setCost();
         this.destroyBuildings();
+        this.spendGold(this.getCost()); 
     }
 
 }
