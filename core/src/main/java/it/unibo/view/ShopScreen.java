@@ -3,7 +3,6 @@ package it.unibo.view;
 
 import java.io.File;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,11 +16,6 @@ public class ShopScreen extends ScreenAdapter {
     private Table table;
     private Label label;
     private Skin skin;
-
-    public ShopScreen(Game game) {
-        this.game = game;
-        this.shopScreen = this;
-    }
 
     public void create(){
         stage = new Stage();
