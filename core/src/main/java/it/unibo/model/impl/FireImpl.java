@@ -3,6 +3,7 @@ package it.unibo.model.impl;
 import java.util.Random;
 
 import it.unibo.model.api.Fire;
+import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
 public class FireImpl implements Fire {
@@ -39,8 +40,8 @@ public class FireImpl implements Fire {
     }
 
     private void spendGold(int cost) {
-        int gold = this.getNumResource(Resource.GOLD);
-        city.getPlayerResources().put(Resource.GOLD, (gold > cost) ? gold - cost : 0);
+        int gold = getNumResource(Resource.GOLD);
+        city.getPlayerResources().put(Resource.GOLD, Math.max(gold - cost, 0));
     }
 
     private int getNumResource(Resource resource) {
@@ -48,21 +49,13 @@ public class FireImpl implements Fire {
     }
 
     private int numBuildingsDestroyed() {
-        // se non ci sono abbastanza risorse per pagare il costo del fuoco, distruggo
-        // tutti i building
-        if (this.getCost() > this.getNumResource(Resource.GOLD) || city.getBuildings().size() < this.getIntensity()) {
-            return city.getBuildings().size();
-        }
-        // distruggo solo i building che non sono upgradabili
-        else {
-            int numBuildingsDestroyed = 0;
-            for (int i = 0; i < city.getBuildings().size(); i++) {
-                if (!city.getBuildings().get(i).isUpgradable()) {
-                    numBuildingsDestroyed++;
-                }
+        int numBuildingsDestroyed = 0;
+        for (ProductionBuilding building : city.getBuildings()) {
+            if (!building.isUpgradable()) {
+                numBuildingsDestroyed++;
             }
-            return numBuildingsDestroyed;
         }
+        return numBuildingsDestroyed;
     }
 
     private void destroyBuildings() {
