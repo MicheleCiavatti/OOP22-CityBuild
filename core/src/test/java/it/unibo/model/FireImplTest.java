@@ -1,20 +1,23 @@
 package it.unibo.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-
-
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.CityImpl;
 import it.unibo.model.impl.PlayerImpl;
+
+
+
 import it.unibo.model.impl.FireImpl;
 
 public class FireImplTest {
+   
 
     Player player = new PlayerImpl();
+    
 
     @Test
     public void testCalculateIntensity() {
@@ -27,20 +30,34 @@ public class FireImplTest {
     @Test
     public void testSetCost() {
         CityImpl city = new CityImpl( player);
-    city.addCitizens(50);
-    player.addResources(Map.of(Resource.WATER, 10));
-    Resource gold = Resource.GOLD;
-    player.addResources(Map.of(gold, 5000));
-    FireImpl fire = new FireImpl();
-    fire.performFireAction();
+        city.addCitizens(50);
+        player.addResources(Map.of(Resource.WATER, 10));
+        Resource gold = Resource.GOLD;
+        player.addResources(Map.of(gold, 5000));
+        FireImpl fire = new FireImpl();
+        fire.performFireAction();
 
-    fire.setCost();
-    int expectedCost = (25 / 2) * (FireImpl.ARBITRARY_VALUE - 5) * FireImpl.ARBITRARY_VALUE;
-    assertTrue(expectedCost <= fire.getCost());
-
-
+        fire.setCost();
+        int expectedCost = (25 / 2) * (FireImpl.ARBITRARY_VALUE - 5) * FireImpl.ARBITRARY_VALUE;
+        assertTrue(expectedCost <= fire.getCost());
     }
 
+    @Test
+    public void testSpendGold() {
+        CityImpl city = new CityImpl( player);
+        city.addCitizens(50);
+        player.addResources(Map.of(Resource.WATER, 10));
+        FireImpl fire = new FireImpl();
+        fire.performFireAction();
 
-
+        fire.setCost();
+        int expectedCost = (25 / 2) * (FireImpl.ARBITRARY_VALUE - 5) * FireImpl.ARBITRARY_VALUE;
+        assertTrue(expectedCost <= fire.getCost());
+        fire.spendGold(fire.getCost());
+        assertEquals(100 - fire.getCost(), player.getAllResources().get(Resource.GOLD));
+    }
+    
 }
+
+
+
