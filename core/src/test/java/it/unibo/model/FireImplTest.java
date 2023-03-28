@@ -56,7 +56,6 @@ public class FireImplTest {
         fire.spendGold(fire.getCost());
         assertEquals(100 - fire.getCost(), player.getAllResources().get(Resource.GOLD));
     }
-    
 }
 
 

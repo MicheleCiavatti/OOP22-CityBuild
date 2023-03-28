@@ -55,7 +55,7 @@ public class FireImpl implements Fire {
         return numBuildingsDestroyed;
     }
 
-    private void destroyBuildings() {
+    public void destroyBuildings() {
         for (int i = 0; i < this.numBuildingsDestroyed(); i++) {
             city.demolish(city.getBuildings().get(i));
         }
