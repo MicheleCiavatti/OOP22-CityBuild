@@ -39,7 +39,12 @@ public class FireImpl implements Fire {
     }
 
     private void spendGold(int cost) {
-        // TODO (?) spend gold
+        int gold = this.getNumResource(Resource.GOLD);
+        if (gold > cost) {
+            city.getPlayerResources().put(Resource.GOLD, gold - cost);
+        }else{
+            city.getPlayerResources().put(Resource.GOLD, 0);
+        }
     }
 
     private int getNumResource(Resource resource) {
@@ -72,7 +77,7 @@ public class FireImpl implements Fire {
 
     public void update() {
         this.setIntensity();
-        // TODO DECRASE MONEY
+        this.spendGold(this.setCost());
         this.destroyBuildings();
     }
 
