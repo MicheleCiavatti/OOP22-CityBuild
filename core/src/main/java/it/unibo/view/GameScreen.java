@@ -48,7 +48,6 @@ public class GameScreen extends ScreenAdapter {
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
     private static final int PROBABILITY_FIRE = 110; //5%
-    private static final int ISFIRE = 1;
 
     //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
     private static final float CYCLE_DURATION_SECONDS = 3; 
@@ -154,9 +153,8 @@ public class GameScreen extends ScreenAdapter {
 
 
 
-        //TODO abbassare la probabilità di incendiare
         Random random = new Random();
-        int randomValue = random.nextInt(100);
+        int randomValue = random.nextInt(1);
 
 
         if (randomValue<PROBABILITY_FIRE) {
