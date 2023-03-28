@@ -11,7 +11,7 @@ public class FireImpl implements Fire {
     private static final int MIN_COST = 50;
     private static final int MIN_INTENSITY = 2;
     private CityImpl city = new CityImpl(new PlayerImpl());
-    private int cityzen;
+    private int citizen;
     private int intensity;
     private int cost;
 
@@ -30,9 +30,9 @@ public class FireImpl implements Fire {
 
     @Override
     public void setCost() {
-        this.cityzen = city.getCitizens();
+        this.citizen = city.getCitizens();
         int water = this.getNumResource(Resource.WATER);
-        int cost = (this.cityzen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
+        int cost = (this.citizen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
         if (cost < MIN_COST) {
             cost = MIN_COST;
         }
