@@ -40,8 +40,10 @@ public class FireImpl implements Fire {
     }
 
     private void spendGold(int cost) {
-        int gold = getNumResource(Resource.GOLD);
-        city.getPlayerResources().put(Resource.GOLD, Math.max(gold - cost, 0));
+        //diminuisce il gold del player. Resource non è mutabile
+
+        //TODO
+
     }
 
     private int getNumResource(Resource resource) {
