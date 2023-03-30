@@ -34,7 +34,7 @@ public enum Resource {
         return this.simpleBuilding;
     }
 
-    /**Returns the advanced {@link it.unibo.model.api.ProductionBuildingImpl} that produces the resource.
+    /**Returns the advanced {@link it.unibo.model.impl.ProductionBuildingImpl} that produces the resource.
      * @return a string with the name of the simple building associated, used by {@link it.unibo.controller.impl.EconomyFileReaderImpl}
      * and {@link it.unibo.model.impl.ProductionBuildingImpl}
     */
