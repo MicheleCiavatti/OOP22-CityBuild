@@ -3,6 +3,7 @@ package it.unibo.controller.impl;
 import java.util.Map;
 import java.util.Random;
 
+import it.unibo.controller.BackgroundTask;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.PlayerImpl;
@@ -13,6 +14,7 @@ public class BackgroundTaskImpl {
     private Random random = new Random();
     private int goldValue;
     private int genericValue;
+    BackgroundTask task = new BackgroundTask();
 
     private void setResources() {
         final Player player = new PlayerImpl();
@@ -41,9 +43,14 @@ public class BackgroundTaskImpl {
         genericValue = random.nextInt(10);
     }
 
+    
+
     public void run() {
         computeValue();
         getResources().forEach((res, value) -> increaseValue(res, value));
+
+        //quando arrivo qui il valore delle risorse è stato aggiornato e fermo il thread
+        task.stopRunning();
     }
 
 }
