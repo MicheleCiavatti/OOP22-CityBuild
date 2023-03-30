@@ -16,6 +16,9 @@ public class BackgroundTaskImpl {
     private int genericValue;
     BackgroundTask task = new BackgroundTask();
 
+    private static final int MAX_GOLD_VALUE = 100;
+    private static final int MAX_GENERIC_VALUE = 10;
+
     private void setResources() {
         final Player player = new PlayerImpl();
         // ottiene le risorse con le rispettive quantità
@@ -39,8 +42,12 @@ public class BackgroundTaskImpl {
     }
 
     private void computeValue() {
-        goldValue = random.nextInt(100);
-        genericValue = random.nextInt(10);
+        
+        int randomizedGoldValue = random.nextInt(MAX_GOLD_VALUE);
+        int randomizedGenericValue = random.nextInt(MAX_GENERIC_VALUE);
+    
+        goldValue = randomizedGoldValue;
+        genericValue = randomizedGenericValue;
     }
 
     
