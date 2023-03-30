@@ -53,9 +53,13 @@ public class BackgroundTaskImpl {
     
 
     public void run() {
+        System.out.println("BackgroundTask started");
         computeValue();
         getResources().forEach(this::increaseValue);
+        
         task.stopRunning();
+        task.stop();
+
     }
 
 }
