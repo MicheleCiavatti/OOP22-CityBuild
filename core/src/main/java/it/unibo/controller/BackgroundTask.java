@@ -3,6 +3,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import it.unibo.controller.impl.BackgroundTaskImpl;
+
 /*A class for executing specific procedures when application is 
 closed*/
 
@@ -19,14 +21,22 @@ public class BackgroundTask {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                while(running){
-                    //execute task //TODO
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                //deve partire quando l'applicazione viene chiusa
+                Runtime.getRuntime().addShutdownHook(new Thread() {
+                    BackgroundTaskImpl task = new BackgroundTaskImpl();
+                    @Override
+                    public void run() {
+                        while(running){
+                            task.run();
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                }
+                });
+                
                 
             }
         };
