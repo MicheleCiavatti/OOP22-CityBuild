@@ -94,7 +94,7 @@ public class GameScreen extends ScreenAdapter {
         
         Gdx.input.setInputProcessor(new GameProcessor());
         this.cycle = 0;
-        this.backgroundTask.start();
+        //this.backgroundTask.start();
     }
 
     /**{@inheritDoc} */
