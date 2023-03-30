@@ -47,9 +47,7 @@ public class BackgroundTaskImpl {
 
     public void run() {
         computeValue();
-        getResources().forEach((res, value) -> increaseValue(res, value));
-
-        //quando arrivo qui il valore delle risorse è stato aggiornato e fermo il thread
+        getResources().forEach(this::increaseValue);
         task.stopRunning();
     }
 
