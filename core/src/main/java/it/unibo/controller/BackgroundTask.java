@@ -27,6 +27,7 @@ public class BackgroundTask {
                     @Override
                     public void run() {
                         while(running){
+                            System.out.println("Running");
                             task.run();
                             try {
                                 Thread.sleep(1000);
