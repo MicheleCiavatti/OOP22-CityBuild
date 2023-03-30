@@ -38,8 +38,8 @@ public class FireImpl implements Fire {
         return cost;
     }
 
-    public void spendGold(int cost) {
-        player.addResources(Map.of(Resource.GOLD, -cost));
+    public void spendGold(Player player, int cost) {
+        player.spendResources(Map.of(Resource.GOLD, cost));   
     }
 
     private int getNumResource(Resource resource) {
@@ -66,7 +66,7 @@ public class FireImpl implements Fire {
         this.calculateIntensity();
         this.setCost();
         this.destroyBuildings();
-        this.spendGold(this.getCost());
+        this.spendGold(player,cost);
     }
 
 }
