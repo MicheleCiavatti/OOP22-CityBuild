@@ -31,6 +31,7 @@ public class FireImpl implements Fire {
         if (cost < MIN_COST) {
             cost = MIN_COST;
         }
+        this.cost = cost;
     }
 
     public int getCost() {
