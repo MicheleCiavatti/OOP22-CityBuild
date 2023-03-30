@@ -9,6 +9,7 @@ closed*/
 
 public class BackgroundTask {
     private ScheduledExecutorService executorService;
+    private volatile boolean running = true;
 
     public BackgroundTask() {
         executorService = Executors.newSingleThreadScheduledExecutor();
@@ -18,7 +19,15 @@ public class BackgroundTask {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                //TODO
+                while(running){
+                    //execute task //TODO
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                
             }
         };
         executorService.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
@@ -26,6 +35,10 @@ public class BackgroundTask {
 
     public void stop(){
         executorService.shutdown();
+    }
+
+    public void stopRunning(){
+        running = false;
     }
     
 }
