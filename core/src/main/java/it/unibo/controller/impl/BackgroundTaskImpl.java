@@ -14,6 +14,7 @@ public class BackgroundTaskImpl {
     private Random random = new Random();
     private int goldValue;
     private int genericValue;
+    Player player = new PlayerImpl();
     BackgroundTask task = new BackgroundTask();
 
     private static final int MAX_GOLD_VALUE = 100;
@@ -34,9 +35,13 @@ public class BackgroundTaskImpl {
 
     public void increaseValue(Resource res, int value) {
         if (res == Resource.GOLD) {
-            resources.put(res, resources.get(res) + goldValue);
+
+            player.addResources(Map.of( Resource.GOLD, goldValue));
+
+            //resources.put(res, resources.get(res) + goldValue);
         } else {
-            resources.put(res, resources.get(res) + genericValue);
+            player.addResources(Map.of( res, genericValue));
+            //resources.put(res, resources.get(res) + genericValue);
         }
 
     }
@@ -55,6 +60,9 @@ public class BackgroundTaskImpl {
     public void run() {
         System.out.println("BackgroundTask started");
         computeValue();
+
+
+
         getResources().forEach(this::increaseValue);
         
         task.stopRunning();
