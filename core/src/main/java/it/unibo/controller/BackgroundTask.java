@@ -11,7 +11,7 @@ closed*/
 
 public class BackgroundTask {
     private ScheduledExecutorService executorService;
-    private volatile boolean running = true;
+    private volatile boolean running = false;
 
     public BackgroundTask() {
         executorService = Executors.newSingleThreadScheduledExecutor();
@@ -26,7 +26,7 @@ public class BackgroundTask {
                     BackgroundTaskImpl task = new BackgroundTaskImpl();
                     @Override
                     public void run() {
-                        while(running){
+                        while(running == true){
                             task.run();
                             try {
                                 Thread.sleep(1000);
@@ -49,6 +49,10 @@ public class BackgroundTask {
 
     public void stopRunning(){
         running = false;
+    }
+
+    public void startRunning(){
+        running = true;
     }
     
 }
