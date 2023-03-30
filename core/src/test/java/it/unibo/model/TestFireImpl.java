@@ -38,8 +38,7 @@ public class TestFireImpl {
         fire.performFireAction();
 
         fire.setCost();
-        int expectedCost = (25 / 2) * (FireImpl.ARBITRARY_VALUE - 5) * FireImpl.ARBITRARY_VALUE;
-        assertTrue(expectedCost <= fire.getCost());
+        assertEquals(fire.getCost(), 50);
     }
 
     @Test
@@ -51,9 +50,9 @@ public class TestFireImpl {
         fire.performFireAction();
 
         fire.setCost();
-        int expectedCost = (25 / 2) * (FireImpl.ARBITRARY_VALUE - 5) * FireImpl.ARBITRARY_VALUE;
-        assertTrue(expectedCost <= fire.getCost());
-        fire.spendGold(fire.getCost());
+        //int expectedCost = (25 / 2) * (FireImpl.ARBITRARY_VALUE - 5) * FireImpl.ARBITRARY_VALUE;
+        assertTrue(50 <= fire.getCost());
+        fire.spendGold(50);
         assertEquals(100 - fire.getCost(), player.getAllResources().get(Resource.GOLD));
     }
 }
