@@ -43,17 +43,13 @@ public class TestFireImpl {
 
     @Test
     public void testSpendGold() {
-        CityImpl city = new CityImpl( player);
-        city.addCitizens(50);
         player.addResources(Map.of(Resource.WATER, 10));
         FireImpl fire = new FireImpl();
         fire.performFireAction();
+        assertTrue(50 == fire.getCost());
+        fire.spendGold(player, 50);
+        assertEquals(50, player.getResource(Resource.GOLD));
 
-        fire.setCost();
-        //int expectedCost = (25 / 2) * (FireImpl.ARBITRARY_VALUE - 5) * FireImpl.ARBITRARY_VALUE;
-        assertTrue(50 <= fire.getCost());
-        fire.spendGold(50);
-        assertEquals(100 - fire.getCost(), player.getAllResources().get(Resource.GOLD));
     }
 }
 
