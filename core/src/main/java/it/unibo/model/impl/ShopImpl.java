@@ -90,7 +90,7 @@ public class ShopImpl implements Shop{
         dialog.text(generateString());
         dialog.button("Ok", true);
         dialog.button("NO", false); 
-        //possibilita di chiudere lo shop con il tasto c
+        //shop closed with C
         dialog.key(com.badlogic.gdx.Input.Keys.C, false);
 
         return dialog;
