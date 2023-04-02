@@ -15,7 +15,6 @@ import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.api.Shop;
-import it.unibo.view.GameScreen;
 
 public class ShopImpl implements Shop{
 
@@ -62,6 +61,7 @@ public class ShopImpl implements Shop{
 			this.controller = new ControllerImpl(city);
             System.out.println("GetResource: " + this.controller.getPlayerResources());
             this.setButtonFalse();
+
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -81,11 +81,17 @@ public class ShopImpl implements Shop{
 
             protected void result(Object object){
                 System.out.println(controller.getPlayerResources());
-                button = true;
+
+                if((Boolean) object) {
+                    button=true;
+                }
             }
         };
         dialog.text(generateString());
         dialog.button("Ok", true);
+        dialog.button("NO", false); 
+        //possibilita di chiudere lo shop con il tasto c
+        dialog.key(com.badlogic.gdx.Input.Keys.C, false);
 
         return dialog;
     }
