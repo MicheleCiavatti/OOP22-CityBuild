@@ -7,6 +7,7 @@ import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 
+/* A class representing a Fire object that implements the Fire interface. */
 public class FireImpl implements Fire {
 
     public static final int ARBITRARY_VALUE = 5;
@@ -17,11 +18,20 @@ public class FireImpl implements Fire {
     private int citizen;
     private int cost;
 
+    /* 
+ * Calculates the intensity of the fire.
+ *
+ * @return The intensity of the fire.
+ * @throws IllegalArgumentException if the calculation fails.
+ */ 
     @Override
     public int calculateIntensity() throws IllegalArgumentException {
         return MIN_INTENSITY + new Random().nextInt(5);
     }
 
+    /**
+ * Sets the cost of the fire based on the number of citizens and water resources in the city.
+ */
     @Override
     public void setCost() {
         this.citizen = city.getCitizens();
@@ -30,13 +40,26 @@ public class FireImpl implements Fire {
         this.cost = cost < MIN_COST ? MIN_COST : cost;
     }
 
+
     private int calculateCost(int citizen, int water) { 
         return (citizen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
     }
 
+    /**
+ * Returns the cost of the fire.
+ *
+ * @return The cost of the fire.
+ */
     public int getCost() {
         return cost;
     }
+
+    /**
+ * Spends the given amount of gold by the player.
+ *
+ * @param player The player who is spending the gold.
+ * @param cost The amount of gold to be spent.
+ */
 
     public void spendGold(Player player, int cost) {
         player.spendResources(Map.of(Resource.GOLD, cost));
@@ -53,6 +76,9 @@ public class FireImpl implements Fire {
             .forEach(building -> city.demolish(building));
     }
 
+    /**
+ * Performs the action of starting a fire.
+ */
     public void performFireAction() {
         this.calculateIntensity();
         this.setCost();
