@@ -34,7 +34,6 @@ public class BackgroundTaskImpl {
 
     public void increaseValue(Resource res, int value) {
         if (res == Resource.GOLD) {
-
             player.addResources(Map.of( Resource.GOLD, goldValue));
         } else {
             player.addResources(Map.of( res, genericValue));
@@ -43,10 +42,8 @@ public class BackgroundTaskImpl {
     }
 
     private void computeValue() {
-        
         int randomizedGoldValue = random.nextInt(MAX_GOLD_VALUE);
         int randomizedGenericValue = random.nextInt(MAX_GENERIC_VALUE);
-    
         goldValue = randomizedGoldValue;
         genericValue = randomizedGenericValue;
     }
@@ -56,11 +53,7 @@ public class BackgroundTaskImpl {
     public void run() {
         System.out.println("BackgroundTask started");
         computeValue();
-
-
-
         getResources().forEach(this::increaseValue);
-        
         task.stopRunning();
         task.stop();
 
