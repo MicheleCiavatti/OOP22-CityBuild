@@ -29,12 +29,13 @@ public class BackgroundTask {
      */
     public void start() {
         Runnable task = new Runnable() {
+            /** {@inheritDoc} */
             @Override
             public void run() {
                 // deve partire quando l'applicazione viene chiusa
                 Runtime.getRuntime().addShutdownHook(new Thread() {
                     BackgroundTaskImpl task = new BackgroundTaskImpl();
-
+                    /** {@inheritDoc} */
                     @Override
                     public void run() {
                         while (running) {
