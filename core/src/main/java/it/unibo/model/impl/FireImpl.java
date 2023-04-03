@@ -27,11 +27,12 @@ public class FireImpl implements Fire {
     public void setCost() {
         this.citizen = city.getCitizens();
         int water = this.getNumResource(Resource.WATER);
-        int cost = (this.citizen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
-        if (cost < MIN_COST) {
-            cost = MIN_COST;
-        }
-        this.cost = cost;
+        int cost = calculateCost(citizen, water);
+        this.cost = cost < MIN_COST ? MIN_COST : cost;
+    }
+
+    private int calculateCost(int citizen, int water) { 
+        return (citizen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
     }
 
     public int getCost() {
