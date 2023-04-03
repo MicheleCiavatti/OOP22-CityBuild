@@ -48,13 +48,17 @@ public class FireImpl implements Fire {
     }
 
     private int numBuildingsDestroyed() {
-        int numBuildingsDestroyed = 0;
+        /*int numBuildingsDestroyed = 0;
         for (ProductionBuilding building : city.getBuildings()) {
             if (!building.isUpgradable()) {
                 numBuildingsDestroyed++;
             }
         }
-        return numBuildingsDestroyed;
+        return numBuildingsDestroyed;*/
+
+        return (int) city.getBuildings().stream()
+            .filter(building -> !building.isUpgradable())
+            .count();
     }
 
     private void destroyBuildings() {
