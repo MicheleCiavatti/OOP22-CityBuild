@@ -23,11 +23,7 @@ public class FireImpl implements Fire {
     private int cost;
 
     /**
-     * Calculates the intensity of the fire.
-     *
-     * @return The intensity of the fire.
-     * 
-     * @throws IllegalArgumentException if the calculation fails.
+     * {@inheritDoc}
      */
     @Override
     public int calculateIntensity() throws IllegalArgumentException {
@@ -35,8 +31,7 @@ public class FireImpl implements Fire {
     }
 
     /**
-     * Sets the cost of the fire based on the number of citizens and water resources
-     * in the city.
+     * {@inheritDoc}
      */
     @Override
     public void setCost() {
