@@ -26,13 +26,18 @@ public class BackgroundTaskImpl {
         resources = player.getAllResources();
     }
 
+    /* Returns the resources map with the player's resources.
+       If the resources map is null, it is set using setResources().
+        @return The resources map with the player's resources */
     public Map<Resource, Integer> getResources() {
         if (resources == null) {
             setResources();
         }
         return resources;
     }
-
+    /* Increases the player's resource with the provided value.
+        @param res The resource to increase.
+        @param value The value to increase the resource with. */
     public void increaseValue(Resource res, int value) {
         if (res == Resource.GOLD) {
             player.addResources(Map.of( Resource.GOLD, goldValue));
@@ -50,7 +55,8 @@ public class BackgroundTaskImpl {
     }
 
     
-
+    /* Runs the background task by computing the randomized values and increasing the player's resources with them.
+        It also stops the running state of the task and stops the task itself. */
     public void run() {
         System.out.println("BackgroundTask started");
         computeValue();
