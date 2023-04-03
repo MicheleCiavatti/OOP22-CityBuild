@@ -26,7 +26,7 @@ public class BackgroundTaskImpl {
         resources = player.getAllResources();
     }
 
-    /*
+    /**
      * Returns the resources map with the player's resources.
      * If the resources map is null, it is set using setResources().
      * 
@@ -39,7 +39,7 @@ public class BackgroundTaskImpl {
         return resources;
     }
 
-    /*
+    /**
      * Increases the player's resource with the provided value.
      * 
      * @param res The resource to increase.
@@ -62,7 +62,7 @@ public class BackgroundTaskImpl {
         genericValue = randomizedGenericValue;
     }
 
-    /*
+    /**
      * Runs the background task by computing the randomized values and increasing
      * the player's resources with them.
      * It also stops the running state of the task and stops the task itself.
