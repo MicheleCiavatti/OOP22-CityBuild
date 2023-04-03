@@ -9,10 +9,10 @@ public interface Fire {
      */
     public int calculateIntensity();
 
-    /** 
+    /**
      * 
-     * Sets the cost of the fire. 
+     * Sets the cost of the fire.
      * 
-     * */
+     */
     public void setCost();
 }

@@ -7,7 +7,11 @@ import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 
-/* A class representing a Fire object that implements the Fire interface. */
+/**
+ * 
+ * A class representing a Fire object that implements the Fire interface.
+ * 
+ */
 public class FireImpl implements Fire {
 
     public static final int ARBITRARY_VALUE = 5;
@@ -18,7 +22,7 @@ public class FireImpl implements Fire {
     private int citizen;
     private int cost;
 
-    /*
+    /**
      * Calculates the intensity of the fire.
      *
      * @return The intensity of the fire.
