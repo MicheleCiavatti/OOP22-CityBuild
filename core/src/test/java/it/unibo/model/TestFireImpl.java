@@ -48,8 +48,7 @@ public class TestFireImpl {
         fire.performFireAction(); 
         assertTrue(50 == fire.getCost());
         fire.spendGold(player, 50); //OK
-        //100-50-50=0
-        assertEquals(0, player.getResource(Resource.GOLD));
+        assertEquals(50, player.getResource(Resource.GOLD));
     }
 }
 

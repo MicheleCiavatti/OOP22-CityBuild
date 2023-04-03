@@ -39,16 +39,19 @@ public class FireImpl implements Fire {
     }
 
     public void spendGold(Player player, int cost) {
-        
         player.spendResources(Map.of(Resource.GOLD, cost));  
         System.out.println("ENTRATO"); 
+    }
+
+    public void getSpendGold() {
+        this.spendGold(player, cost);
     }
 
     private int getNumResource(Resource resource) {
         return city.getPlayerResources().getOrDefault(resource, 0);
     }
 
-    public int numBuildingsDestroyed() {
+    private int numBuildingsDestroyed() {
         int numBuildingsDestroyed = 0;
         for (ProductionBuilding building : city.getBuildings()) {
             if (!building.isUpgradable()) {
@@ -58,7 +61,7 @@ public class FireImpl implements Fire {
         return numBuildingsDestroyed;
     }
 
-    public void destroyBuildings() {
+    private void destroyBuildings() {
         for (int i = 0; i < this.numBuildingsDestroyed(); i++) {
             city.demolish(city.getBuildings().get(i));
         }
