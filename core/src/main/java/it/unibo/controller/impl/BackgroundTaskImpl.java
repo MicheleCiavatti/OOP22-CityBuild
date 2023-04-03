@@ -22,7 +22,6 @@ public class BackgroundTaskImpl {
 
     private void setResources() {
         final Player player = new PlayerImpl();
-        // ottiene le risorse con le rispettive quantità
         resources = player.getAllResources();
     }
 
@@ -37,11 +36,8 @@ public class BackgroundTaskImpl {
         if (res == Resource.GOLD) {
 
             player.addResources(Map.of( Resource.GOLD, goldValue));
-
-            //resources.put(res, resources.get(res) + goldValue);
         } else {
             player.addResources(Map.of( res, genericValue));
-            //resources.put(res, resources.get(res) + genericValue);
         }
 
     }
