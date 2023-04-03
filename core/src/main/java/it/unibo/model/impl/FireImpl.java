@@ -5,7 +5,6 @@ import java.util.Random;
 
 import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
-import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
 public class FireImpl implements Fire {
