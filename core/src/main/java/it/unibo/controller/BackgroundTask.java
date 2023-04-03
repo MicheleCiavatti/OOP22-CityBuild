@@ -9,11 +9,13 @@ import it.unibo.controller.impl.BackgroundTaskImpl;
 public class BackgroundTask {
     private ScheduledExecutorService executorService;
     private volatile boolean running = true;
-
+    
+    /* Constructs a new BackgroundTask instance with a single thread scheduled executor service. */
     public BackgroundTask() {
         executorService = Executors.newSingleThreadScheduledExecutor();
     }    
 
+    /* Starts the background task*/
     public void start(){
         Runnable task = new Runnable() {
             @Override
@@ -41,14 +43,15 @@ public class BackgroundTask {
         executorService.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
     }
 
+    /* Stops the background task */
     public void stop(){
         executorService.shutdown();
     }
-
+    /* Stops the running state of the background task */
     public void stopRunning(){
         running = false;
     }
-
+    /* tarts the running state of the background task */
     public void startRunning(){
         running = true;
     }
