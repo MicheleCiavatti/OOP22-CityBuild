@@ -39,12 +39,7 @@ public class FireImpl implements Fire {
     }
 
     public void spendGold(Player player, int cost) {
-        player.spendResources(Map.of(Resource.GOLD, cost));  
-        System.out.println("ENTRATO"); 
-    }
-
-    public void getSpendGold() {
-        this.spendGold(player, cost);
+        player.spendResources(Map.of(Resource.GOLD, cost));
     }
 
     private int getNumResource(Resource resource) {
