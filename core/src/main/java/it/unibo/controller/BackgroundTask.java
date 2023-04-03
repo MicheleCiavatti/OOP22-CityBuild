@@ -5,10 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import it.unibo.controller.impl.BackgroundTaskImpl;
 
-/*A class for executing specific procedures when application is 
-closed*/
-
-
+/*A class that provides a background task that runs while the application is not open.*/
 public class BackgroundTask {
     private ScheduledExecutorService executorService;
     private volatile boolean running = true;
