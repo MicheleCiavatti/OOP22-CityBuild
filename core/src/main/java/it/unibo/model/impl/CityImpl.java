@@ -95,7 +95,9 @@ public class CityImpl implements City {
     /**{@inheritDoc} */
     @Override
     public int getCitizens() {
-        return this.citizens;
+        return this.citizens <= this.player.getResource(Resource.CITIZEN)
+            ? this.citizens
+            : this.player.getResource(Resource.CITIZEN);
     }
 
     /**{@inheritDoc} */
