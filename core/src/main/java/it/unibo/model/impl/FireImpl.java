@@ -14,24 +14,26 @@ public class FireImpl implements Fire {
     private static final int MIN_COST = 50;
     public static final int MIN_INTENSITY = 2;
     private CityImpl city = new CityImpl(new PlayerImpl());
-    Player player =  new PlayerImpl();
+    Player player = new PlayerImpl();
     private int citizen;
     private int cost;
 
-    /* 
- * Calculates the intensity of the fire.
- *
- * @return The intensity of the fire.
- * @throws IllegalArgumentException if the calculation fails.
- */ 
+    /*
+     * Calculates the intensity of the fire.
+     *
+     * @return The intensity of the fire.
+     * 
+     * @throws IllegalArgumentException if the calculation fails.
+     */
     @Override
     public int calculateIntensity() throws IllegalArgumentException {
         return MIN_INTENSITY + new Random().nextInt(5);
     }
 
     /**
- * Sets the cost of the fire based on the number of citizens and water resources in the city.
- */
+     * Sets the cost of the fire based on the number of citizens and water resources
+     * in the city.
+     */
     @Override
     public void setCost() {
         this.citizen = city.getCitizens();
@@ -40,26 +42,25 @@ public class FireImpl implements Fire {
         this.cost = cost < MIN_COST ? MIN_COST : cost;
     }
 
-
-    private int calculateCost(int citizen, int water) { 
+    private int calculateCost(int citizen, int water) {
         return (citizen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
     }
 
     /**
- * Returns the cost of the fire.
- *
- * @return The cost of the fire.
- */
+     * Returns the cost of the fire.
+     *
+     * @return The cost of the fire.
+     */
     public int getCost() {
         return cost;
     }
 
     /**
- * Spends the given amount of gold by the player.
- *
- * @param player The player who is spending the gold.
- * @param cost The amount of gold to be spent.
- */
+     * Spends the given amount of gold by the player.
+     *
+     * @param player The player who is spending the gold.
+     * @param cost   The amount of gold to be spent.
+     */
 
     public void spendGold(Player player, int cost) {
         player.spendResources(Map.of(Resource.GOLD, cost));
@@ -72,18 +73,18 @@ public class FireImpl implements Fire {
     private void destroyBuildings() {
 
         city.getBuildings().stream()
-            .filter(building -> !building.isUpgradable())
-            .forEach(building -> city.demolish(building));
+                .filter(building -> !building.isUpgradable())
+                .forEach(building -> city.demolish(building));
     }
 
     /**
- * Performs the action of starting a fire.
- */
+     * Performs the action of starting a fire.
+     */
     public void performFireAction() {
         this.calculateIntensity();
         this.setCost();
         this.destroyBuildings();
-        this.spendGold(player,cost);
+        this.spendGold(player, cost);
     }
 
 }
