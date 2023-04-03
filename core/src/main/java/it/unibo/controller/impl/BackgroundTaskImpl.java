@@ -8,7 +8,10 @@ import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.PlayerImpl;
 
-/* A class that implements a background task that increases the player's resources with randomized values */
+/**
+ * A class that implements a background task that increases the player's
+ * resources with randomized values
+ */
 public class BackgroundTaskImpl {
 
     private Map<Resource, Integer> resources;
@@ -42,7 +45,7 @@ public class BackgroundTaskImpl {
     /**
      * Increases the player's resource with the provided value.
      * 
-     * @param res The resource to increase.
+     * @param res   The resource to increase.
      * 
      * @param value The value to increase the resource with.
      */
