@@ -1,4 +1,5 @@
 package it.unibo.controller;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -9,23 +10,27 @@ import it.unibo.controller.impl.BackgroundTaskImpl;
 public class BackgroundTask {
     private ScheduledExecutorService executorService;
     private volatile boolean running = true;
-    
-    /* Constructs a new BackgroundTask instance with a single thread scheduled executor service. */
+
+    /*
+     * Constructs a new BackgroundTask instance with a single thread scheduled
+     * executor service.
+     */
     public BackgroundTask() {
         executorService = Executors.newSingleThreadScheduledExecutor();
-    }    
+    }
 
-    /* Starts the background task*/
-    public void start(){
+    /* Starts the background task */
+    public void start() {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                //deve partire quando l'applicazione viene chiusa
+                // deve partire quando l'applicazione viene chiusa
                 Runtime.getRuntime().addShutdownHook(new Thread() {
                     BackgroundTaskImpl task = new BackgroundTaskImpl();
+
                     @Override
                     public void run() {
-                        while(running){
+                        while (running) {
                             System.out.println("Running");
                             task.run();
                             try {
@@ -36,24 +41,25 @@ public class BackgroundTask {
                         }
                     }
                 });
-                
-                
+
             }
         };
         executorService.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
     }
 
     /* Stops the background task */
-    public void stop(){
+    public void stop() {
         executorService.shutdown();
     }
+
     /* Stops the running state of the background task */
-    public void stopRunning(){
+    public void stopRunning() {
         running = false;
     }
+
     /* tarts the running state of the background task */
-    public void startRunning(){
+    public void startRunning() {
         running = true;
     }
-    
+
 }
