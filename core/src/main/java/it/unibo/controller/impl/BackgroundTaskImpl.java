@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Random;
 
 import it.unibo.controller.BackgroundTaskRun;
+import it.unibo.controller.api.BackgroundTask;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.PlayerImpl;
@@ -12,7 +13,7 @@ import it.unibo.model.impl.PlayerImpl;
  * A class that implements a background task that increases the player's
  * resources with randomized values
  */
-public class BackgroundTaskImpl {
+public class BackgroundTaskImpl implements BackgroundTask {
 
     private Map<Resource, Integer> resources;
     private Random random = new Random();
