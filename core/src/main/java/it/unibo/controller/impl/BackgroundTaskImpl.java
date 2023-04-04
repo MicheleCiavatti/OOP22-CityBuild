@@ -3,7 +3,7 @@ package it.unibo.controller.impl;
 import java.util.Map;
 import java.util.Random;
 
-import it.unibo.controller.BackgroundTask;
+import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.PlayerImpl;
@@ -19,7 +19,7 @@ public class BackgroundTaskImpl {
     private int goldValue;
     private int genericValue;
     Player player = new PlayerImpl();
-    BackgroundTask task = new BackgroundTask();
+    BackgroundTaskRun task = new BackgroundTaskRun();
 
     private static final int MAX_GOLD_VALUE = 100;
     private static final int MAX_GENERIC_VALUE = 10;

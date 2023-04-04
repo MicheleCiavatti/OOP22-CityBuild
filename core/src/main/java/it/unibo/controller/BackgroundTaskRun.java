@@ -10,7 +10,7 @@ import it.unibo.controller.impl.BackgroundTaskImpl;
  * A class that provides a background task that runs while the application is
  * not open.
  */
-public class BackgroundTask {
+public class BackgroundTaskRun {
     private ScheduledExecutorService executorService;
     private volatile boolean running = true;
 
@@ -18,7 +18,7 @@ public class BackgroundTask {
      * Constructs a new BackgroundTask instance with a single thread scheduled
      * executor service.
      */
-    public BackgroundTask() {
+    public BackgroundTaskRun() {
         executorService = Executors.newSingleThreadScheduledExecutor();
     }
 

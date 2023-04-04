@@ -2,7 +2,7 @@ package it.unibo;
 
 import com.badlogic.gdx.Game;
 
-import it.unibo.controller.BackgroundTask;
+import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.controller.impl.BackgroundTaskImpl;
 import it.unibo.view.MainMenu;
 

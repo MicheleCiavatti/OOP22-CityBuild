@@ -31,7 +31,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import it.unibo.controller.BackgroundTask;
+import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
 
@@ -67,7 +67,7 @@ public class GameScreen extends ScreenAdapter {
         "Mineral_stationicon", "Power_planticon", "Quantum_reactoricon", "Skyscrapericon", "Ultrafiltration_complexicon", "Woodcuttericon"};
     private final Table tableBuildings;
     
-    BackgroundTask backgroundTask = new BackgroundTask();
+    BackgroundTaskRun backgroundTask = new BackgroundTaskRun();
 
     
 
