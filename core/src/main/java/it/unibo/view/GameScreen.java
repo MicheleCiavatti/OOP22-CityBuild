@@ -158,7 +158,7 @@ public class GameScreen extends ScreenAdapter {
 
 
 
-        Random random = new Random();
+       /*Random random = new Random();
         int randomValue = random.nextInt(1);
 
         
@@ -173,7 +173,7 @@ public class GameScreen extends ScreenAdapter {
                 }
             }, 3);
 
-        }
+        }*/
 
 
         
