@@ -1,12 +1,9 @@
 package it.unibo.view;
 
-import it.unibo.model.impl.FireImpl;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -37,7 +34,6 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import it.unibo.CityBuild;
 import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
@@ -48,7 +44,6 @@ public class GameScreen extends ScreenAdapter {
     private static final String IMAGE_FOLDER = "images" + File.separator;
     private static final Rectangle NULL_RECTANGLE = new Rectangle(0, 0, 0, 0);
     private static final String EXTENSION = ".png";
-    private static final int PROBABILITY_FIRE = 110; //5%
 
     //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
     private static final float CYCLE_DURATION_SECONDS = 3; 
@@ -60,8 +55,6 @@ public class GameScreen extends ScreenAdapter {
     private final ShapeRenderer shapeRenderer;
     private final Map<Rectangle, Image> buildings;
     private final Skin skin;
-    private final Dialog warning;
-    private final Dialog warningFire;
     private final Dialog constructionFailed;
     private final Dialog upgradeFailed;
     private final Label constructionLabel;
@@ -74,8 +67,6 @@ public class GameScreen extends ScreenAdapter {
     //crea una lista di stringhe che rappresentano i nomi degli oggetti
     private final String[] buildingList = {"Item1", "Item2", "Item3", "House", "Lumber_refinary", "Mine", "Mineral_station", "Power_plant", "Quantum_reactor", "Skyscraper", "Ultrafiltration_complex", "Woodcutter"};
 
-    private CityBuild city = new CityBuild();
-    private FireImpl fire = new FireImpl();
     private float cycle;
 
     private int index = 0;
@@ -102,8 +93,6 @@ public class GameScreen extends ScreenAdapter {
         this.buildings = new HashMap<>();
         this.shapeRenderer = new ShapeRenderer();
         this.selected = Optional.empty();
-        this.warning = new Dialog("Warning", this.skin);
-        this.warningFire = new Dialog("Is Firing", this.skin);
         this.constructionFailed = new Dialog("Warning", this.skin);
         this.upgradeFailed = new Dialog("Warning", this.skin);
         this.constructionLabel = new Label("Building label", this.skin);
