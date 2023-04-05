@@ -1,7 +1,6 @@
 package it.unibo.model.impl;
 
 import java.util.Map;
-import java.util.Random;
 
 import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
@@ -16,19 +15,11 @@ public class FireImpl implements Fire {
 
     public static final int ARBITRARY_VALUE = 5;
     private static final int MIN_COST = 50;
-    public static final int MIN_INTENSITY = 2;
+    public static final int MIN_INTENSITY = 99;
     private CityImpl city = new CityImpl(new PlayerImpl());
     Player player = new PlayerImpl();
     private int citizen;
     private int cost;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int calculateIntensity() throws IllegalArgumentException {
-        return MIN_INTENSITY + new Random().nextInt(5);
-    }
 
     /**
      * {@inheritDoc}
@@ -46,21 +37,15 @@ public class FireImpl implements Fire {
     }
 
     /**
-     * Returns the cost of the fire.
-     *
-     * @return The cost of the fire.
+     * {@inheritDoc}
      */
     public int getCost() {
         return cost;
     }
 
     /**
-     * Spends the given amount of gold by the player.
-     *
-     * @param player The player who is spending the gold.
-     * @param cost   The amount of gold to be spent.
+     * {@inheritDoc}
      */
-
     public void spendGold(Player player, int cost) {
         player.spendResources(Map.of(Resource.GOLD, cost));
     }
@@ -77,13 +62,12 @@ public class FireImpl implements Fire {
     }
 
     /**
-     * Performs the action of starting a fire.
+     * {@inheritDoc}
      */
     public void performFireAction() {
-        this.calculateIntensity();
         this.setCost();
+        this.spendGold(player, this.getCost());
         this.destroyBuildings();
-        this.spendGold(player, cost);
     }
 
 }
