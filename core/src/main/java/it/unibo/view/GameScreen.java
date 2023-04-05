@@ -38,6 +38,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import it.unibo.CityBuild;
+import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
 
@@ -83,6 +84,9 @@ public class GameScreen extends ScreenAdapter {
     private final Table tableBuildings;
     
 
+    BackgroundTaskRun backgroundTask = new BackgroundTaskRun();
+
+    
 
     public GameScreen(final Controller controller) {
         this.controller = controller;
@@ -109,6 +113,7 @@ public class GameScreen extends ScreenAdapter {
         
         Gdx.input.setInputProcessor(new GameProcessor());
         this.cycle = 0;
+        //this.backgroundTask.start();
     }
 
     /**{@inheritDoc} */
@@ -182,6 +187,8 @@ public class GameScreen extends ScreenAdapter {
         this.theme.dispose();
         this.stage.dispose();
         this.skin.dispose();
+
+
     }
 
     /*This method is called at the end of every cycle of the game to update the resources and citizens in town.
