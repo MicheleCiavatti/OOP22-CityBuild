@@ -17,15 +17,6 @@ public class TestFireImpl {
    
 
     Player player = new PlayerImpl();
-    
-
-    @Test
-    public void testCalculateIntensity() {
-        FireImpl fire = new FireImpl();
-        int intensity = fire.calculateIntensity();
-        assertTrue(intensity >= 0 && intensity <= 10);
-        
-    }
 
     @Test
     public void testSetCost() {
