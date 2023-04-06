@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -28,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -37,6 +39,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
+import it.unibo.model.api.Shop;
+import it.unibo.model.impl.ShopImpl;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -48,7 +52,7 @@ public class GameScreen extends ScreenAdapter {
     //The game is structured in cycles: at the end of a cycle, it checks for new citizens and updates the resources
     private static final float CYCLE_DURATION_SECONDS = 3; 
 
-    private final Controller controller;
+    private  Controller controller;
     private final Table tablePlayer;
     private Map<Resource, Integer> resources;
     private final Music theme;
@@ -69,6 +73,12 @@ public class GameScreen extends ScreenAdapter {
 
     private float cycle;
 
+    private InputMultiplexer inputMultiplexer;
+
+    // Shop for dialog Shop
+    private Shop shop;
+    private Dialog dialogShop;
+
     private int index = 0;
     private final String[] imageList = {"Depuratoricon", "Forgeicon", "Foundryicon", "Houseicon", "Lumber_refinaryicon", "Mineicon", 
         "Mineral_stationicon", "Power_planticon", "Quantum_reactoricon", "Skyscrapericon", "Ultrafiltration_complexicon", "Woodcuttericon"};
@@ -80,11 +90,13 @@ public class GameScreen extends ScreenAdapter {
     
 
     public GameScreen(final Controller controller) {
+        
         this.controller = controller;
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         this.tablePlayer = new Table(this.skin);
         this.tableBuildings = new Table(this.skin);
         this.labelResources = new Label("", this.skin);
+
         //Setting up the tablePlayer that contains the resources in possesion of the player
         this.tablePlayer.add(this.labelResources);
         this.updateTablePlayer();
@@ -99,9 +111,16 @@ public class GameScreen extends ScreenAdapter {
         this.upgradeLabel = new Label("Upgrade label", this.skin);
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
-        Gdx.input.setInputProcessor(new GameProcessor());
+
+        this.shop = new ShopImpl(this.controller);
+        this.dialogShop = this.shop.createDialogShop();
+
+        this.inputMultiplexer = new InputMultiplexer();
+        this.inputMultiplexer.addProcessor(new GameProcessor());
+        this.inputMultiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(this.inputMultiplexer);
         this.cycle = 0;
+
         //this.backgroundTask.start();
     }
 
@@ -113,12 +132,16 @@ public class GameScreen extends ScreenAdapter {
         this.constructionFailed.text("Wrong position or not enough resources");
         this.upgradeFailed.hide();
         this.upgradeFailed.text("Not enough resources or building already upgraded");
+
+        this.dialogShop.hide();
+
         this.stage.addActor(new Image(new Texture(Gdx.files.internal(IMAGE_FOLDER + "background" + EXTENSION))));
         this.stage.addActor(this.constructionFailed);
         this.stage.addActor(this.upgradeFailed);
         this.stage.addActor(this.constructionLabel);
         this.stage.addActor(this.tablePlayer);
         this.stage.addActor(this.upgradeLabel);
+        this.stage.addActor(this.dialogShop);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
         this.setColorLabel(this.upgradeLabel, Color.BROWN);
@@ -132,18 +155,32 @@ public class GameScreen extends ScreenAdapter {
     /**{@inheritDoc} */
     @Override
     public void render(float delta) {
+        
         ScreenUtils.clear(0, 0, 0, 1);
         this.cycle += delta;
         if (this.cycle >= CYCLE_DURATION_SECONDS) {
             this.cycle = 0;
             this.controller.doCycle();
-            this.updateTablePlayer();
         }
+        
         this.stage.act(delta);
         this.stage.draw();
+
+        if(shop.isButtonClicked().equals(true)) {
+            this.controller = this.shop.getResource();
+            updateTablePlayer();
+            Timer.schedule(new Task() {
+                @Override
+                public void run() {
+                    dialogShop.hide();
+                }
+            }, 0);  
+        }
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
         shapeRenderer.end();
+        
 
 
 
@@ -279,6 +316,7 @@ public class GameScreen extends ScreenAdapter {
             this.wrong = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "wrong1.ogg"));
             this.scroll = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "scroll.ogg"));
             this.upgrading = Gdx.audio.newSound(Gdx.files.internal(SOUND_FOLDER + "upgrade.ogg"));
+
             this.pressingShift = false;
             this.pressingCtrl = false;
         }
@@ -303,6 +341,7 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
                 case Input.Keys.S -> this.Shop();
 
+                case Input.Keys.S -> this.generateRandomShop();
             }
 
             return false;
@@ -395,7 +434,7 @@ public class GameScreen extends ScreenAdapter {
 
         /*This method is used to determine the consequences of a click of the mouse when not carrying a building for placement.
          * It allows for upgrading and destroying buildings already placed.*/
-        private boolean handleTouch(final int screenX, final int screenY) {
+        private boolean handleTouch(final int screenX, final int screenY) {  
             final var touched = buildings.entrySet().stream()
                 .filter(entry -> entry.getKey().contains(screenX, Gdx.graphics.getHeight() - screenY))
                 .findFirst();
@@ -545,6 +584,17 @@ public class GameScreen extends ScreenAdapter {
                     upgradeLabel.setPosition(screenX - (RECT_WIDTH / 2), Gdx.graphics.getHeight() - screenY);
                 }
             }
+        }
+
+        private void generateRandomShop(){
+            System.out.println(shop.generateResource());
+            dialogShop = shop.createDialogShop();
+            showDialogShop();
+        }
+        
+        private void showDialogShop() {
+            System.out.println("create dialogshop");
+            dialogShop.show(stage);
         }
     }
 }
