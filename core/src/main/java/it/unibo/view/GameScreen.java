@@ -29,7 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -339,9 +338,9 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.UP -> this.roundButtonList(1);
                 case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
-                //case Input.Keys.S -> this.Shop();
+                case Input.Keys.S -> this.Shop();
 
-                case Input.Keys.S -> this.generateRandomShop();
+                //case Input.Keys.S -> this.generateRandomShop();
             }
 
             return false;
