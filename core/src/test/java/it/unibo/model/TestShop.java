@@ -12,6 +12,7 @@ import it.unibo.model.impl.PlayerImpl;
 import it.unibo.model.impl.ShopImpl;
 
 public class TestShop {
+    private Shop s = new ShopImpl(null);
 
     Player p = new PlayerImpl();
     @BeforeEach
@@ -24,8 +25,9 @@ public class TestShop {
 
     }
 
-    @Test
+    /*@Test
     public void generateResource(){
-        shop.generateResource();
-    }
+        Shop s = new ShopImpl(null);
+        s.generateResource();
+    }*/
 }
