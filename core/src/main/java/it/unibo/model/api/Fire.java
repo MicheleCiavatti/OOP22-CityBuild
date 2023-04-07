@@ -23,7 +23,7 @@ public interface Fire {
      * @param player The player who is spending the gold.
      * @param cost   The amount of gold to be spent.
      */
-    public void spendGold(Player player, int cost);
+    public void spendGold();
 
     /**
      * Performs the fire action.

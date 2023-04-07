@@ -26,7 +26,7 @@ public class CityImpl implements City {
     private static final Map<Resource, Integer> NULL_MAP = Map.of(Resource.CITIZEN, 0);
     private static final int CITIZENS_TO_ADD = 1;
     private static final int CITIZENS_TO_LOSE = 2;
-    private static final int PROBABILITY_FIRE = 3; //3% of probability
+    private static final int PROBABILITY_FIRE = 99; //3% of probability
 
     private final Player player;
     private final List<ProductionBuilding> buildings;
@@ -142,7 +142,7 @@ public class CityImpl implements City {
             FireImpl fire = new FireImpl();
             System.out.println("Fire started");
 
-            fire.performFireAction();
+            fire.spendGold();
         }
 
 

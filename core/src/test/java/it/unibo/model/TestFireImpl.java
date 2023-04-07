@@ -36,11 +36,16 @@ public class TestFireImpl {
         city.addCitizens(50);
         player.addResources(Map.of(Resource.WATER, 10));
         FireImpl fire = new FireImpl();
-        fire.performFireAction(); 
+        fire.spendGold(); 
         assertTrue(50 == fire.getCost());
-        fire.spendGold(player, 50); //OK
+        fire.spendGold(); //OK
         assertEquals(50, player.getResource(Resource.GOLD));
     }
+
+
+
+
+
 }
 
 

@@ -46,8 +46,15 @@ public class FireImpl implements Fire {
     /**
      * {@inheritDoc}
      */
-    public void spendGold(Player player, int cost) {
+    public void spendGold() {
+        setCost();
+        System.out.println(cost);
         player.spendResources(Map.of(Resource.GOLD, cost));
+        System.out.println(player.getResource(Resource.GOLD));
+
+        //decrementa il numero di risorse gold del player
+        //player.addResources(Map.of(Resource.GOLD, -cost));
+
     }
 
     private int getNumResource(Resource resource) {
@@ -65,8 +72,8 @@ public class FireImpl implements Fire {
      * {@inheritDoc}
      */
     public void performFireAction() {
-        this.setCost();
-        this.spendGold(player, this.getCost());
+        //this.setCost();
+        //this.spendGold(player, this.getCost());
         this.destroyBuildings();
     }
 

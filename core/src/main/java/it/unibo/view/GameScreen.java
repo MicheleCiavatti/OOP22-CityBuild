@@ -338,9 +338,9 @@ public class GameScreen extends ScreenAdapter {
                 case Input.Keys.UP -> this.roundButtonList(1);
                 case Input.Keys.DOWN -> this.roundButtonList(-1);
                 case Input.Keys.ESCAPE -> Gdx.app.exit(); //TODO exit game.
-                case Input.Keys.S -> this.Shop();
+                //case Input.Keys.S -> this.Shop();
 
-                //case Input.Keys.S -> this.generateRandomShop();
+                case Input.Keys.S -> this.generateRandomShop();
             }
 
             return false;
