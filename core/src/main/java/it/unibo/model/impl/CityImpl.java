@@ -114,6 +114,7 @@ public class CityImpl implements City {
         return List.copyOf(this.buildings);
     }
 
+    /**{@inheritDoc} */
     @Override
     public void doCycle() {
         //Adding the revenue of every building built to the player resources
@@ -144,8 +145,12 @@ public class CityImpl implements City {
 
             fire.spendGold();
         }
+    }
 
-
+    /**{@inheritDoc} */
+    @Override
+    public Player getPlayer() {
+        return this.player;
     }
 
     private final Map<Resource, Integer> citizensCost() {
