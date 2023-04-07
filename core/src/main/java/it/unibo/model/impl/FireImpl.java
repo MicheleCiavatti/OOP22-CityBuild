@@ -16,10 +16,14 @@ public class FireImpl implements Fire {
     public static final int ARBITRARY_VALUE = 5;
     private static final int MIN_COST = 50;
     public static final int MIN_INTENSITY = 99;
-    private CityImpl city = new CityImpl(new PlayerImpl());
+    private CityImpl city;
     Player player = new PlayerImpl();
     private int citizen;
     private int cost;
+
+    public FireImpl() {
+        this.city = new CityImpl(player);
+    }
 
     /**
      * {@inheritDoc}
@@ -48,9 +52,10 @@ public class FireImpl implements Fire {
      */
     public void spendGold() {
         setCost();
-        System.out.println(cost);
+        System.out.println("COSTO" + cost);
+        System.out.println("BEFORE" + player.getResource(Resource.GOLD));
         player.spendResources(Map.of(Resource.GOLD, cost));
-        System.out.println(player.getResource(Resource.GOLD));
+        System.out.println("AFTER" + player.getResource(Resource.GOLD));
 
         //decrementa il numero di risorse gold del player
         //player.addResources(Map.of(Resource.GOLD, -cost));
