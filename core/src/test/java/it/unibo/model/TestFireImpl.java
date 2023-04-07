@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+
+import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.CityImpl;
@@ -25,7 +27,7 @@ public class TestFireImpl {
         player.addResources(Map.of(Resource.WATER, 10));
         Resource gold = Resource.GOLD;
         player.addResources(Map.of(gold, 5000));
-        FireImpl fire = new FireImpl();
+        FireImpl fire = new FireImpl(city);
         fire.performFireAction();
         assertEquals(fire.getCost(), 50);
     }
@@ -35,7 +37,7 @@ public class TestFireImpl {
         CityImpl city = new CityImpl( player);
         city.addCitizens(50);
         player.addResources(Map.of(Resource.WATER, 10));
-        FireImpl fire = new FireImpl();
+        Fire fire = new FireImpl(city);
         fire.spendGold();
         System.out.println("GOLD" + fire.getCost()); 
         assertTrue(50 == fire.getCost());

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -39,7 +40,10 @@ import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
 import it.unibo.model.api.Shop;
+import it.unibo.model.impl.FireImpl;
 import it.unibo.model.impl.ShopImpl;
+import it.unibo.model.api.City;
+import it.unibo.model.api.Fire;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -160,6 +164,7 @@ public class GameScreen extends ScreenAdapter {
         if (this.cycle >= CYCLE_DURATION_SECONDS) {
             this.cycle = 0;
             this.controller.doCycle();
+            this.updateTablePlayer();
         }
         
         this.stage.act(delta);
@@ -173,34 +178,12 @@ public class GameScreen extends ScreenAdapter {
                 public void run() {
                     dialogShop.hide();
                 }
-            }, 0);  
+            }, 0);
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         drawRectangle(this.selected.orElse(NULL_RECTANGLE));
         shapeRenderer.end();
-        
-
-
-
-       /*Random random = new Random();
-        int randomValue = random.nextInt(1);
-
-        
-        if (randomValue<PROBABILITY_FIRE) {
-            this.warningFire.show(stage);
-            
-            Timer.schedule(new Task(){
-                @Override
-                public void run() {
-                    warning.hide();
-                    fire.performFireAction();
-                }
-            }, 3);
-
-        }*/
-
-
         
         
     }

@@ -18,12 +18,13 @@ public class FireImpl implements Fire {
     private static final int MIN_COST = 50;
     public static final int MIN_INTENSITY = 99;
     private City city;
-    //*Player player = new PlayerImpl();
+    Player player;
     private int citizen;
     private int cost;
 
     public FireImpl(City city) {
         this.city = city;
+        this.player = city.getPlayer();
     }
 
     /**

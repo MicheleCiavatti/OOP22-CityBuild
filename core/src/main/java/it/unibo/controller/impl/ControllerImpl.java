@@ -4,14 +4,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.BuildingFactory;
 import it.unibo.model.api.City;
+import it.unibo.model.api.Fire;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 import it.unibo.model.impl.BuildingFactoryImpl;
+import it.unibo.model.impl.FireImpl;
 
 public class ControllerImpl implements Controller {
 
@@ -19,6 +22,7 @@ public class ControllerImpl implements Controller {
     private final City city;
     private final BuildingFactory factory;
     private static final Set<String> SIMPLE_BUILDINGS = Set.of("depurator", "foundry", "house", "mine", "power plant", "woodcutter");
+    private static final int PROBABILITY_FIRE = 99;
 
     public ControllerImpl(final City city) {
         this.allBuildings = new HashSet<>();
@@ -129,6 +133,17 @@ public class ControllerImpl implements Controller {
     @Override
     public void doCycle() {
         this.city.doCycle();
+
+        Random random = new Random();
+        int randomValue = random.nextInt(1);
+
+        Fire fire = new FireImpl(this.city);
+        if (randomValue<PROBABILITY_FIRE) {
+            //this.warningFire.show(stage);
+            
+            fire.spendGold();
+
+        }
     }
     
 }
