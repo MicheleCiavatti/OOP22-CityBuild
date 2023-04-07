@@ -2,6 +2,7 @@ package it.unibo.model.impl;
 
 import java.util.Map;
 
+import it.unibo.model.api.City;
 import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
@@ -16,13 +17,13 @@ public class FireImpl implements Fire {
     public static final int ARBITRARY_VALUE = 5;
     private static final int MIN_COST = 50;
     public static final int MIN_INTENSITY = 99;
-    private CityImpl city;
-    Player player = new PlayerImpl();
+    private City city;
+    //*Player player = new PlayerImpl();
     private int citizen;
     private int cost;
 
-    public FireImpl() {
-        this.city = new CityImpl(player);
+    public FireImpl(City city) {
+        this.city = city;
     }
 
     /**

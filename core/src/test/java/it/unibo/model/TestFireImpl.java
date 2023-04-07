@@ -38,9 +38,9 @@ public class TestFireImpl {
         FireImpl fire = new FireImpl();
         fire.spendGold();
         System.out.println("GOLD" + fire.getCost()); 
-        //assertTrue(50 == fire.getCost());
+        assertTrue(50 == fire.getCost());
         fire.spendGold(); //OK
-        assertEquals(50, player.getResource(Resource.GOLD));
+        assertEquals(0, player.getResource(Resource.GOLD));
     }
 
 
