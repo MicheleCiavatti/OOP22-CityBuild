@@ -127,10 +127,11 @@ public class ControllerImpl implements Controller {
         this.city.doCycle();
 
         Random random = new Random();
-        int randomValue = random.nextInt(1);
+        int randomValue = random.nextInt(100);
 
         Fire fire = new FireImpl(this.city);
         if (randomValue < PROBABILITY_FIRE) {
+            System.out.println("A fire has started!");
             fire.performFireAction();
         }
     }
