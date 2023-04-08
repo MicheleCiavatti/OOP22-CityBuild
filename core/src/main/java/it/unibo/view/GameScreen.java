@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -40,11 +39,7 @@ import it.unibo.controller.BackgroundTaskRun;
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.Resource;
 import it.unibo.model.api.Shop;
-import it.unibo.model.impl.FireImpl;
 import it.unibo.model.impl.ShopImpl;
-import it.unibo.model.api.City;
-import it.unibo.model.api.Fire;
-
 public class GameScreen extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
