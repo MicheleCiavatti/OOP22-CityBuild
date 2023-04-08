@@ -3,7 +3,6 @@ package it.unibo.model;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
@@ -16,14 +15,4 @@ public class TestShop {
         p.addResources(Map.of(Resource.WATER, 10, Resource.ENERGY, 5));
     }
 
-    @Test
-    public void testGetResource(){
-
-    }
-
-    /*@Test
-    public void generateResource(){
-        Shop s = new ShopImpl(null);
-        s.generateResource();
-    }*/
 }
