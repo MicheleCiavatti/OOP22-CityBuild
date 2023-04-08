@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Shop;
-import it.unibo.model.impl.ShopImpl;
 
 public class DialogShop {
     private Dialog dialog;
