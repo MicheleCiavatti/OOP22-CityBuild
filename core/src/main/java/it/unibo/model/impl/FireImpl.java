@@ -53,7 +53,6 @@ public class FireImpl implements Fire {
      * {@inheritDoc}
      */
     public void spendGold() {
-        setCost();
         System.out.println("COSTO" + cost);
         System.out.println("BEFORE" + player.getResource(Resource.GOLD));
         player.spendResources(Map.of(Resource.GOLD, cost));
@@ -79,8 +78,8 @@ public class FireImpl implements Fire {
      * {@inheritDoc}
      */
     public void performFireAction() {
-        //this.setCost();
-        //this.spendGold(player, this.getCost());
+        this.setCost();
+        this.spendGold();
         this.destroyBuildings();
     }
 
