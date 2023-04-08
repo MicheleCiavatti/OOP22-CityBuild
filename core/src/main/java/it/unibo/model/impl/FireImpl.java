@@ -2,6 +2,8 @@ package it.unibo.model.impl;
 
 import java.util.Map;
 
+import it.unibo.controller.api.Controller;
+import it.unibo.controller.impl.ControllerImpl;
 import it.unibo.model.api.City;
 import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
@@ -21,6 +23,8 @@ public class FireImpl implements Fire {
     Player player;
     private int citizen;
     private int cost;
+    Controller controller = new ControllerImpl(city);
+
 
     public FireImpl(City city) {
         this.city = city;
@@ -57,10 +61,6 @@ public class FireImpl implements Fire {
         System.out.println("BEFORE" + player.getResource(Resource.GOLD));
         player.spendResources(Map.of(Resource.GOLD, cost));
         System.out.println("AFTER" + player.getResource(Resource.GOLD));
-
-        //decrementa il numero di risorse gold del player
-        //player.addResources(Map.of(Resource.GOLD, -cost));
-
     }
 
     private int getNumResource(Resource resource) {
@@ -73,6 +73,7 @@ public class FireImpl implements Fire {
                 .filter(building -> !building.isUpgradable())
                 .forEach(building -> city.demolish(building));
     }
+
 
     /**
      * {@inheritDoc}

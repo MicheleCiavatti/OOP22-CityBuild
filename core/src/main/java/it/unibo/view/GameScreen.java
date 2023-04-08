@@ -573,5 +573,6 @@ public class GameScreen extends ScreenAdapter {
             System.out.println("create dialogshop");
             dialogShop.show(stage);
         }
+
     }
 }
