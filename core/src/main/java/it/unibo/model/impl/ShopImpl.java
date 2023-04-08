@@ -3,7 +3,6 @@ package it.unibo.model.impl;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -18,11 +17,10 @@ import it.unibo.model.api.Shop;
 
 public class ShopImpl implements Shop{
 
-    private static final Set<String> SIMPLE_BUILDINGS = Set.of("depurator", "foundry", "house", "mine", "power_plant", "woodcutter");
-    private final String[] buildingList = {"forge", "lumber_refinary", "mineral_station", "quantum_reactor", "skyscraper", "ultrafiltration_complex",
-    "depurator", "foundry", "house","mine","power_plant", "woodcutter"};
+    private final String[] resourceStringList = {"WATER", "WOOD", "ENERGY", "METAL", "CITIZEN"};
 
-    private int randomItem;
+    private int randomAmount;
+    private int randomResource;
     private int randomPrice;
     private Map<Resource, Integer> resource;
     private Map<Resource,Integer> costResource;
@@ -31,32 +29,27 @@ public class ShopImpl implements Shop{
     private boolean button;
     private Skin skin;
     
-    private boolean shopBoolean;
+    private boolean visibility;
 
     private Controller controller;
 
-    public ShopImpl(Controller controller) {
+    public ShopImpl() {
         this.resource = new HashMap<>();
         this.costResource = new HashMap<>();
         this.button = false;
-        this.shopBoolean = false;
-        this.controller = controller;
+        this.visibility = false;
     }
 
     @Override
     public Controller getResource() {
-        //this.controller.getPlayerResources().replace(fromNameToBuilding(buildingList[randomItem]), 1);
+        this.setResource();
         try {
             final Player p = new PlayerImpl();
             p.addResources(this.controller.getPlayerResources());
             p.spendResources(costResource);
             p.addResources(resource);
 
-            System.out.println("p resources: "+ p.getAllResources());
-
             final City city = new CityImpl(p, p.getAllResources());
-
-            System.out.println(city.getPlayerResources());
 
 			this.controller = new ControllerImpl(city);
             System.out.println("GetResource: " + this.controller.getPlayerResources());
@@ -70,28 +63,33 @@ public class ShopImpl implements Shop{
 
     @Override
     public String generateResource() {
-        this.text = this.generateString();
-        return this.text;
+        this.randomAmount = (int)(Math.random() * 10 + 1);
+        this.randomResource = (int) (Math.random() * 4);
+        this.randomPrice = (int) (Math.random() * 50);
+        text  = " vuoi comprare "+ randomAmount + " di " +  resourceStringList[randomResource]+" per "+ this.randomPrice + " " + Resource.GOLD +  "?";
+        System.out.println(text);
+        return text;
     }
 
     @Override
-    public Dialog createDialogShop() {
+    public Dialog createDialogShop(Controller c) {
+        this.controller = c;
+
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         Dialog dialog = new Dialog("Shop", skin){ 
 
             protected void result(Object object){
-                System.out.println(controller.getPlayerResources());
+                System.out.println("OK button: "+ controller.getPlayerResources());
 
                 if((Boolean) object) {
                     button=true;
                 }
             }
         };
-        dialog.text(generateString());
+
+        dialog.text(generateResource());
         dialog.button("Ok", true);
         dialog.button("NO", false); 
-        //shop closed with C
-        dialog.key(com.badlogic.gdx.Input.Keys.C, false);
 
         return dialog;
     }
@@ -105,54 +103,20 @@ public class ShopImpl implements Shop{
     }
 
     private void setResource() {
-        this.resource.put(fromNameToBuilding(this.buildingList[this.randomItem]), 1);
+        System.out.println("setResource(): " + Resource.valueOf(Resource.class, resourceStringList[randomResource]) +" " + randomAmount);
+        this.resource.put(Resource.valueOf(Resource.class, resourceStringList[randomResource]), randomAmount);
+        System.out.println("CostResource " + Resource.GOLD  + " " + randomPrice);
         this.costResource.put(Resource.GOLD, this.randomPrice);
     }
 
-    private String generateString() {
-        this.randomItem = (int) (Math.random() * 8);
-        this.randomPrice = (int) (Math.random() * 50);
-        String item = " vuoi comprare "+ buildingList[randomItem]+" per "+ this.randomPrice + " " + Resource.GOLD +  "?";
-        this.setResource();
-        return item;
-    }
-
-    private Resource fromNameToBuilding(final String name) {
-        if (this.simpleOrAdvanced(name)) {
-            switch(name.toLowerCase()) {
-                case "depurator": return Resource.WATER; 
-                case "foundry": return Resource.METAL; 
-                case "house": return Resource.CITIZEN;
-                case "mine": return Resource.GOLD;
-                case "power_plant": return Resource.ENERGY;
-                case "woodcutter": return Resource.WOOD;
-                default:throw new IllegalStateException("Name not appropriate");
-            }
-        }
-
-        switch(name.toLowerCase()) {
-            case "ultrafiltration_complex": return Resource.WATER;
-            case "forge": return Resource.METAL;
-            case "lumber_refinary": return Resource.WOOD;
-            case "mineral_station": return Resource.GOLD;
-            case "quantum_reactor": return Resource.ENERGY;
-            case "skyscraper": return Resource.CITIZEN;
-            default: throw new IllegalStateException("Name not appropriate");
-        }
-    }
-
-    private boolean simpleOrAdvanced(final String name) {
-        return SIMPLE_BUILDINGS.contains(name.toLowerCase());
+    @Override
+    public Boolean getVisibility() {
+        return this.visibility;
     }
 
     @Override
-    public Boolean isShopCalled() {
-        return this.shopBoolean;
-    }
-
-    @Override
-    public void setShopCalled(Boolean b) {
-        this.shopBoolean = b;
+    public void setVisibility(Boolean b) {
+        this.visibility = b;
     }
 
 }

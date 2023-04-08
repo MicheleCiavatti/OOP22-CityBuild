@@ -26,7 +26,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -98,8 +97,8 @@ public class GameScreen extends ScreenAdapter {
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        this.shop = new ShopImpl(this.controller);
-        this.dialogShop = this.shop.createDialogShop();
+        this.shop = new ShopImpl();
+        this.dialogShop = this.shop.createDialogShop(controller);
 
         this.inputMultiplexer = new InputMultiplexer();
         this.inputMultiplexer.addProcessor(new GameProcessor());
@@ -153,13 +152,14 @@ public class GameScreen extends ScreenAdapter {
 
         if(shop.isButtonClicked().equals(true)) {
             this.controller = this.shop.getResource();
-            updateTablePlayer();
             Timer.schedule(new Task() {
                 @Override
                 public void run() {
+                    shop.setVisibility(false);
                     dialogShop.hide();
                 }
             }, 0);  
+            updateTablePlayer();
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -479,14 +479,12 @@ public class GameScreen extends ScreenAdapter {
         }
 
         private void generateRandomShop(){
-            System.out.println(shop.generateResource());
-            dialogShop = shop.createDialogShop();
-            showDialogShop();
+            if (shop.getVisibility().equals(false)) {
+                dialogShop = shop.createDialogShop(controller);
+                shop.setVisibility(true);
+                dialogShop.show(stage);
+            }
         }
-        
-        private void showDialogShop() {
-            System.out.println("create dialogshop");
-            dialogShop.show(stage);
-        }
+
     }
 }

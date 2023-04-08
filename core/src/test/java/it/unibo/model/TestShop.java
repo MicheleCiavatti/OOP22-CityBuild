@@ -13,19 +13,5 @@ import it.unibo.model.impl.ShopImpl;
 
 public class TestShop {
 
-    Player p = new PlayerImpl();
-    @BeforeEach
-    public void init() {
-        p.addResources(Map.of(Resource.WATER, 10, Resource.ENERGY, 5));
-    }
-
-    @Test
-    public void testGetResource(){
-
-    }
-
-    @Test
-    public void generateResource(){
-        shop.generateResource();
-    }
+    
 }
