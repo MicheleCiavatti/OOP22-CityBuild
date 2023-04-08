@@ -8,8 +8,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
 import it.unibo.controller.api.Controller;
 import it.unibo.model.api.BuildingFactory;
 import it.unibo.model.api.City;
@@ -24,8 +22,7 @@ public class ControllerImpl implements Controller {
     private final City city;
     private final BuildingFactory factory;
     private static final Set<String> SIMPLE_BUILDINGS = Set.of("depurator", "foundry", "house", "mine", "power plant", "woodcutter");
-    private static final int PROBABILITY_FIRE = 99;
-    //Dialog dialog = new Dialog("Attenzione", null, "dialog");
+    private static final int PROBABILITY_FIRE = 3; // 3% of probability to have a fire
 
     public ControllerImpl(final City city) {
         this.allBuildings = new HashSet<>();
