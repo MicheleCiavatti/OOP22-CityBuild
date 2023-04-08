@@ -7,13 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
-import it.unibo.model.api.Shop;
 import it.unibo.model.impl.PlayerImpl;
-import it.unibo.model.impl.ShopImpl;
 
 public class TestShop {
-    private Shop s = new ShopImpl(null);
-
     Player p = new PlayerImpl();
     @BeforeEach
     public void init() {
