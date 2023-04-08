@@ -17,11 +17,11 @@ public interface Shop {
      */
     public String generateResource();
 
-    public Dialog createDialogShop();
+    public Dialog createDialogShop(Controller c);
 
     public Boolean isButtonClicked();
 
-    public Boolean isShopCalled();
+    public Boolean getVisibility();
 
-    public void setShopCalled(Boolean b);
+    public void setVisibility(Boolean b);
 }
