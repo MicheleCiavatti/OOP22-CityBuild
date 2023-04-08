@@ -1,14 +1,5 @@
 package it.unibo.model.impl;
-
-import java.io.File;
 import java.util.Map;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
-import it.unibo.controller.api.Controller;
-import it.unibo.controller.impl.ControllerImpl;
 import it.unibo.model.api.City;
 import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
