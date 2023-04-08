@@ -59,7 +59,6 @@ public class GameScreen extends ScreenAdapter {
     private final Skin skin;
     private final Dialog constructionFailed;
     private final Dialog upgradeFailed;
-    private final Dialog warningFire;
     private final Label constructionLabel;
     private final Label upgradeLabel;
     private final GlyphLayout layout;
@@ -111,9 +110,6 @@ public class GameScreen extends ScreenAdapter {
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        this.warningFire = new Dialog("Warning", this.skin);
-        this.warningFire.text("You have to build a fire station to prevent the fire");
-
 
 
         this.shop = new ShopImpl(this.controller);
@@ -146,7 +142,6 @@ public class GameScreen extends ScreenAdapter {
         this.stage.addActor(this.tablePlayer);
         this.stage.addActor(this.upgradeLabel);
         this.stage.addActor(this.dialogShop);
-        this.stage.addActor(this.warningFire);
         this.tablePlayer.setFillParent(true);
         this.tablePlayer.top().right();
         this.setColorLabel(this.upgradeLabel, Color.BROWN);
@@ -155,10 +150,6 @@ public class GameScreen extends ScreenAdapter {
         tableBuildings.top().left();
         this.stage.addActor(tableBuildings);
         this.selectButton(this.index);
-    }
-
-    public Stage getStage() {
-        return this.stage;
     }
 
     /**{@inheritDoc} */
@@ -587,9 +578,6 @@ public class GameScreen extends ScreenAdapter {
             dialogShop.show(stage);
         }
 
-        public Stage getStage() {
-            return stage;
-        }
 
     }
 }

@@ -55,10 +55,6 @@ public class FireImpl implements Fire {
     private int calculateCost(int citizen, int water) {
         return (citizen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
     }
-
-    private void showMessage() {
-        fireWarning.show(gameScreen.getStage());
-    }
     /**
      * {@inheritDoc}
      */
@@ -92,7 +88,6 @@ public class FireImpl implements Fire {
      * {@inheritDoc}
      */
     public void performFireAction() {
-        this.showMessage();
         this.setCost();
         this.spendGold();
         this.destroyBuildings();
