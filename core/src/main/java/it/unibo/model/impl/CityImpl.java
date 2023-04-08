@@ -6,14 +6,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import it.unibo.model.api.City;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
-
 public class CityImpl implements City {
+
     public static final Map<Resource, Integer> START_RESOURCES = Map.of(
         Resource.CITIZEN, 0, Resource.ENERGY, 100, Resource.GOLD, 100,
         Resource.METAL, 100, Resource.WATER, 100, Resource.WOOD, 100
@@ -129,8 +128,6 @@ public class CityImpl implements City {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> Math.min(e.getValue(), this.player.getResource(e.getKey())))));
             this.citizens = Math.max(0, this.citizens - CITIZENS_TO_LOSE);
         }
-
-
     }
 
     /**{@inheritDoc} */

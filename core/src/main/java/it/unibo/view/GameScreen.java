@@ -489,7 +489,6 @@ public class GameScreen extends ScreenAdapter {
         }
 
         private void Shop() {
-
             // crea una finestra di dialogo dove si possono comprare edifici
             Dialog dialog = new Dialog("Shop", skin) {
                 @Override
