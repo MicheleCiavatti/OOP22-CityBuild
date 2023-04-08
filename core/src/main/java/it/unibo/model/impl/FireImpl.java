@@ -1,4 +1,5 @@
 package it.unibo.model.impl;
+
 import java.util.Map;
 import it.unibo.model.api.City;
 import it.unibo.model.api.Fire;
@@ -20,7 +21,6 @@ public class FireImpl implements Fire {
     private int citizen;
     private int cost;
 
-
     public FireImpl(City city) {
         this.city = city;
         this.player = city.getPlayer();
@@ -40,6 +40,7 @@ public class FireImpl implements Fire {
     private int calculateCost(int citizen, int water) {
         return (citizen / 2) * (ARBITRARY_VALUE - water / 2) * ARBITRARY_VALUE;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -67,7 +68,6 @@ public class FireImpl implements Fire {
                 .filter(building -> !building.isUpgradable())
                 .forEach(building -> city.demolish(building));
     }
-
 
     /**
      * {@inheritDoc}
