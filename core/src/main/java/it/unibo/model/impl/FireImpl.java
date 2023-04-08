@@ -13,7 +13,6 @@ import it.unibo.model.api.City;
 import it.unibo.model.api.Fire;
 import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
-import it.unibo.view.GameScreen;
 
 /**
  * 
@@ -29,16 +28,11 @@ public class FireImpl implements Fire {
     Player player;
     private int citizen;
     private int cost;
-    Controller controller = new ControllerImpl(city);
-    GameScreen gameScreen = new GameScreen(controller);
-    private final Skin skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
-    private Dialog fireWarning = new Dialog("Warning", skin);
 
 
     public FireImpl(City city) {
         this.city = city;
         this.player = city.getPlayer();
-        fireWarning.text("The city is on fire!");
     }
 
     /**
