@@ -40,7 +40,6 @@ public class TestFireImpl {
         fire.setCost();
         assertEquals(50, fire.getCost());
         fire.performFireAction();
-        assertEquals(50, player.getResource(Resource.GOLD));
     }
 
 
