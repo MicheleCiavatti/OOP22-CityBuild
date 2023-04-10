@@ -1,7 +1,7 @@
 revenue:
   METAL: 20
 construction: 
-
+  GOLD: 10
 upgrade:
   ENERGY: 700
   
