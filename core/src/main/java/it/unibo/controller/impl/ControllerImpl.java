@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import it.unibo.controller.api.Controller;
@@ -134,6 +135,12 @@ public class ControllerImpl implements Controller {
             System.out.println("A fire has started!");
             fire.performFireAction();
         }
+    }
+
+    /**{@inheritDoc} */
+    @Override
+    public void cheatCode() {
+        city.getPlayer().addResources(Arrays.stream(Resource.values()).collect(Collectors.toMap(r -> r, r -> 1000)));
     }
 
 }
