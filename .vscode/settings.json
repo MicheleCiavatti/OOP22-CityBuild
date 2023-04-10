@@ -1,5 +1,18 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "FSharp.suggestGitignore": false,
+<<<<<<< HEAD
+    "java.debug.settings.onBuildFailureProceed": true,
+    "files.watcherExclude": {
+        "**/target": true
+    }
+=======
+<<<<<<< HEAD
+    "files.watcherExclude": {
+        "**/target": true
+    }
+=======
     "java.debug.settings.onBuildFailureProceed": true
+>>>>>>> master
+>>>>>>> gameLoop
 }

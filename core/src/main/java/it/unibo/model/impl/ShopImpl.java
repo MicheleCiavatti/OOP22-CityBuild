@@ -3,6 +3,7 @@ package it.unibo.model.impl;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -25,40 +26,46 @@ public class ShopImpl implements Shop{
     private Map<Resource, Integer> resource;
     private Map<Resource,Integer> costResource;
     private String text;
-
-    private boolean button;
+    private boolean okButton;
+    private boolean noButton;
     private Skin skin;
-    
     private boolean visibility;
-
     private Controller controller;
 
     public ShopImpl() {
         this.resource = new HashMap<>();
         this.costResource = new HashMap<>();
-        this.button = false;
+        this.okButton = false;
+        this.noButton = false;
         this.visibility = false;
     }
 
     @Override
     public Controller getResource() {
         this.setResource();
-        try {
-            final Player p = new PlayerImpl();
-            p.addResources(this.controller.getPlayerResources());
-            p.spendResources(costResource);
-            p.addResources(resource);
 
-            final City city = new CityImpl(p, p.getAllResources());
-
-			this.controller = new ControllerImpl(city);
-            System.out.println("GetResource: " + this.controller.getPlayerResources());
-            this.setButtonFalse();
-
-        } catch (Exception e) {
-            System.err.println(e);
+        if(!isTransitionValid()) {
+            System.out.println("Transition failed");
+            return this.controller;
         }
-        return this.controller;
+        else {
+            try {
+                final Player p = new PlayerImpl();
+                p.addResources(this.controller.getPlayerResources());
+                p.spendResources(costResource);
+                p.addResources(resource);
+    
+                final City city = new CityImpl(p, p.getAllResources());
+    
+                this.controller = new ControllerImpl(city);
+                System.out.println("GetResource: " + this.controller.getPlayerResources());
+                this.setButtonFalse();
+    
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+            return this.controller;
+        }
     }
 
     @Override
@@ -74,39 +81,28 @@ public class ShopImpl implements Shop{
     @Override
     public Dialog createDialogShop(Controller c) {
         this.controller = c;
+        
+        if(!this.resource.isEmpty()) {
+            this.resource.clear();
+        }
 
         this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
         Dialog dialog = new Dialog("Shop", skin){ 
 
             protected void result(Object object){
-                System.out.println("OK button: "+ controller.getPlayerResources());
-
-                if((Boolean) object) {
-                    button=true;
+                if(object.equals(1L)){
+                    okButton = true;
+                } else {
+                    noButton = true;
                 }
             }
         };
 
         dialog.text(generateResource());
-        dialog.button("Ok", true);
+        dialog.button("Ok", 1L);
         dialog.button("NO", false); 
 
         return dialog;
-    }
-
-    public Boolean isButtonClicked(){ 
-        return this.button;
-    }
-
-    private void setButtonFalse() {
-        this.button = false;
-    }
-
-    private void setResource() {
-        System.out.println("setResource(): " + Resource.valueOf(Resource.class, resourceStringList[randomResource]) +" " + randomAmount);
-        this.resource.put(Resource.valueOf(Resource.class, resourceStringList[randomResource]), randomAmount);
-        System.out.println("CostResource " + Resource.GOLD  + " " + randomPrice);
-        this.costResource.put(Resource.GOLD, this.randomPrice);
     }
 
     @Override
@@ -117,6 +113,38 @@ public class ShopImpl implements Shop{
     @Override
     public void setVisibility(Boolean b) {
         this.visibility = b;
+    }
+
+    public Boolean isOkButtonClicked(){ 
+        return this.okButton;
+    }
+
+    public Boolean isNoButtonClicked() {
+        return this.noButton;
+    }
+
+    private void setButtonFalse() {
+        this.okButton = false;
+        this.noButton = false;
+    }
+
+    private void setResource() {
+        this.resource.put(Resource.valueOf(Resource.class, resourceStringList[randomResource]), randomAmount);
+        this.costResource.put(Resource.GOLD, this.randomPrice);
+
+    }
+
+    private Boolean isTransitionValid() {
+        for (Entry<Resource,Integer> entry: this.controller.getPlayerResources().entrySet()) {
+            if(entry.getKey().equals(Resource.GOLD)) {
+                if(entry.getValue() < this.randomPrice){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
     }
 
 }

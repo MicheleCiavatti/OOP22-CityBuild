@@ -14,8 +14,8 @@ import it.unibo.model.api.Resource;
 public class CityImpl implements City {
 
     public static final Map<Resource, Integer> START_RESOURCES = Map.of(
-        Resource.CITIZEN, 0, Resource.ENERGY, 100, Resource.GOLD, 100,
-        Resource.METAL, 100, Resource.WATER, 100, Resource.WOOD, 100
+        Resource.CITIZEN, 5, Resource.ENERGY, 25, Resource.GOLD, 500,
+        Resource.METAL, 25, Resource.WATER, 50, Resource.WOOD, 50
     );
     public static final Map<Resource, Integer> COST_PER_CITIZEN = Map.of(
         Resource.ENERGY, 1, Resource.GOLD, 0, Resource.METAL, 0,
@@ -24,7 +24,6 @@ public class CityImpl implements City {
     private static final Map<Resource, Integer> NULL_MAP = Map.of(Resource.CITIZEN, 0);
     private static final int CITIZENS_TO_ADD = 1;
     private static final int CITIZENS_TO_LOSE = 2;
-
     private final Player player;
     private final List<ProductionBuilding> buildings;
     private int citizens;
@@ -100,7 +99,9 @@ public class CityImpl implements City {
     /**{@inheritDoc} */
     @Override
     public int getCitizens() {
-        return this.citizens;
+        return this.citizens <= this.player.getResource(Resource.CITIZEN)
+            ? this.citizens
+            : this.player.getResource(Resource.CITIZEN);
     }
 
     /**{@inheritDoc} */
@@ -109,6 +110,7 @@ public class CityImpl implements City {
         return List.copyOf(this.buildings);
     }
 
+    /**{@inheritDoc} */
     @Override
     public void doCycle() {
         //Adding the revenue of every building built to the player resources
@@ -126,6 +128,12 @@ public class CityImpl implements City {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> Math.min(e.getValue(), this.player.getResource(e.getKey())))));
             this.citizens = Math.max(0, this.citizens - CITIZENS_TO_LOSE);
         }
+    }
+
+    /**{@inheritDoc} */
+    @Override
+    public Player getPlayer() {
+        return this.player;
     }
 
     private final Map<Resource, Integer> citizensCost() {

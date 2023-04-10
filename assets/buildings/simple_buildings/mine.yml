@@ -1,11 +1,9 @@
 revenue:
-  GOLD: 15
+  GOLD: 75
 construction: 
-  CITIZEN: 10
-  WOOD: 10
-  METAL: 5
+  WOOD: 250
+  METAL: 500
 upgrade:
-  CITIZEN: 20
-  WOOD: 25
-  METAL: 10
+  WOOD: 500
+  METAL: 1000
   
