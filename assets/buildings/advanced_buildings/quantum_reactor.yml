@@ -1,6 +1,7 @@
 #advanced building of power plant
 revenue:
   ENERGY: 40
+  CITIZEN: 20
 construction: 
   WOOD: 200
   METAL: 200

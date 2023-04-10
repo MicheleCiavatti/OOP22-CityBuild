@@ -1,5 +1,6 @@
 revenue:
   ENERGY: 25
+  CITIZEN: 5
 construction: 
   WOOD: 100
   METAL: 100
