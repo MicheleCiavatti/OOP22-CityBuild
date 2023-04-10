@@ -145,6 +145,7 @@ public class GameScreen extends ScreenAdapter {
         if (this.cycle >= CYCLE_DURATION_SECONDS) {
             this.cycle = 0;
             this.controller.doCycle();
+            this.updateTablePlayer();
         }
         
         this.stage.act(delta);
