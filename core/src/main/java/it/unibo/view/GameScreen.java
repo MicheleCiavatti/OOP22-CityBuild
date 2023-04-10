@@ -97,7 +97,7 @@ public class GameScreen extends ScreenAdapter {
         this.stage = new Stage(new ScreenViewport());
         this.border = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        this.shop = new ShopImpl();
+        this.shop = new ShopImpl(this.controller);
         this.dialogShop = this.shop.createDialogShop(controller);
 
         this.inputMultiplexer = new InputMultiplexer();
