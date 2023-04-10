@@ -150,8 +150,10 @@ public class GameScreen extends ScreenAdapter {
         this.stage.act(delta);
         this.stage.draw();
 
+        /* Checks where button's shop is clicked.
+         * If yes button is clicked, it 
+         */
         if(shop.isOkButtonClicked()) {
-            
             this.controller = this.shop.getResource();
             Timer.schedule(new Task() {
                 @Override
@@ -162,6 +164,7 @@ public class GameScreen extends ScreenAdapter {
             }, 0);  
             updateTablePlayer();
         } else if(shop.isNoButtonClicked()){
+            
             shop.setVisibility(false);
         }
 
@@ -482,7 +485,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         private void generateRandomShop(){
-            if (shop.getVisibility().equals(false)) {
+            if (!shop.getVisibility()) {
                 dialogShop = shop.createDialogShop(controller);
                 shop.setVisibility(true);
                 dialogShop.show(stage);

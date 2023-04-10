@@ -105,6 +105,16 @@ public class ShopImpl implements Shop{
         return dialog;
     }
 
+    @Override
+    public Boolean getVisibility() {
+        return this.visibility;
+    }
+
+    @Override
+    public void setVisibility(Boolean b) {
+        this.visibility = b;
+    }
+
     public Boolean isOkButtonClicked(){ 
         return this.okButton;
     }
@@ -122,16 +132,6 @@ public class ShopImpl implements Shop{
         this.resource.put(Resource.valueOf(Resource.class, resourceStringList[randomResource]), randomAmount);
         this.costResource.put(Resource.GOLD, this.randomPrice);
 
-    }
-
-    @Override
-    public Boolean getVisibility() {
-        return this.visibility;
-    }
-
-    @Override
-    public void setVisibility(Boolean b) {
-        this.visibility = b;
     }
 
     private Boolean isTransitionValid() {
