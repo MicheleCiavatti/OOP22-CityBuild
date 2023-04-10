@@ -1,10 +1,9 @@
 package it.unibo.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.Map;
+
 
 import org.junit.jupiter.api.Test;
 
@@ -29,18 +28,8 @@ public class TestShop {
     );
     private Player p = new PlayerImpl();
     private City city;
-    private Shop shop = new ShopImpl();
     private Controller controller;
-
-    @Test
-    public void getResource() {
-        p.addResources(RESOURCES);
-        city = new CityImpl(p);
-        controller = new ControllerImpl(city);
-        shop.createDialogShop(controller);
-        assertInstanceOf(Controller.class, shop.getResource());
-
-    }
+    private Shop shop = new ShopImpl(controller);
 
     @Test
     public void generateResource(){

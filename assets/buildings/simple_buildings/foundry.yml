@@ -1,9 +1,7 @@
 revenue:
   METAL: 20
 construction: 
-  WOOD: 300
-  METAL: 200
-  GOLD: 500
+
 upgrade:
   ENERGY: 700
   

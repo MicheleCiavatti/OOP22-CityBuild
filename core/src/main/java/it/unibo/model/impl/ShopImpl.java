@@ -28,16 +28,17 @@ public class ShopImpl implements Shop{
     private String text;
     private boolean okButton;
     private boolean noButton;
-    private Skin skin;
+    private Skin skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
     private boolean visibility;
     private Controller controller;
 
-    public ShopImpl() {
+    public ShopImpl(Controller c) {
         this.resource = new HashMap<>();
         this.costResource = new HashMap<>();
         this.okButton = false;
         this.noButton = false;
         this.visibility = false;
+        this.controller = c;
     }
 
     @Override
@@ -86,7 +87,7 @@ public class ShopImpl implements Shop{
             this.resource.clear();
         }
 
-        this.skin = new Skin(Gdx.files.internal("skin_flatEarth" + File.separator + "flat-earth-ui.json"));
+        
         Dialog dialog = new Dialog("Shop", skin){ 
 
             protected void result(Object object){
@@ -115,7 +116,7 @@ public class ShopImpl implements Shop{
         this.visibility = b;
     }
 
-    public Boolean isOkButtonClicked(){ 
+    public Boolean isOkButtonClicked() { 
         return this.okButton;
     }
 
