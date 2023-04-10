@@ -1,6 +1,7 @@
 #advanced building of depurator
 revenue:
   WATER: 15
+  CITIZEN: 10
 construction: 
   WOOD: 100
   GOLD: 200

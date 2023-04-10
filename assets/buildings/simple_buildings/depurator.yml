@@ -1,5 +1,6 @@
 revenue:
   WATER: 10
+  CITIZEN: 2
 construction: 
   WOOD: 20
   GOLD: 50
