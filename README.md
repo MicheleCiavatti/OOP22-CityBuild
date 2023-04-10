@@ -12,7 +12,7 @@ In the game view, follow these commands:
 - You can see the upgrade cost (and name) of a placed building by hovering over it with the mouse while pressing LEFT_CTRL
 - press S to open shop
 - purchase proposal will be generated
--if you want buy, press ok button. otherwise press C to close
+- if you want buy, press ok button. otherwise press C to close
 
 ### Credits
 #### Music and sounds
