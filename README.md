@@ -20,3 +20,7 @@ In the game view, follow these commands:
 [Lakey Inspired - Chill Day](https://www.youtube.com/watch?v=23IiqeIw38w)<br>
 All the sounds have been taken from [freesound.org](https://freesound.org/)
 
+#### Sprites
+Special thanks to [Mariastella di Criscio](https://www.instagram.com/mariastelladicriscio/)<br>
+
+
