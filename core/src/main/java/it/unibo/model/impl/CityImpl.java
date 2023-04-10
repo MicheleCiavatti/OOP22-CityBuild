@@ -11,6 +11,7 @@ import it.unibo.model.api.Player;
 import it.unibo.model.api.ProductionBuilding;
 import it.unibo.model.api.Resource;
 
+/**An implementation of {@link it.unibo.model.api.City}. */
 public class CityImpl implements City {
 
     public static final Map<Resource, Integer> START_RESOURCES = Map.of(

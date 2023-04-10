@@ -36,6 +36,7 @@ import it.unibo.model.api.Resource;
 import it.unibo.model.api.Shop;
 import it.unibo.model.impl.ShopImpl;
 
+/**The main class for the view of the game. In the MVC pattern, this class is the view. */
 public class GameScreen extends ScreenAdapter {
 
     private static final String SOUND_FOLDER = "sounds" + File.separator;
