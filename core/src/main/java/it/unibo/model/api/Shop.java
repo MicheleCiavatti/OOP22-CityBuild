@@ -20,7 +20,9 @@ public interface Shop {
 
     public Dialog createDialogShop(Controller c);
 
-    public Boolean isButtonClicked();
+    public Boolean isOkButtonClicked();
+
+    public Boolean isNoButtonClicked();
 
     public Boolean getVisibility();
 

@@ -150,7 +150,8 @@ public class GameScreen extends ScreenAdapter {
         this.stage.act(delta);
         this.stage.draw();
 
-        if(shop.isButtonClicked().equals(true)) {
+        if(shop.isOkButtonClicked()) {
+            
             this.controller = this.shop.getResource();
             Timer.schedule(new Task() {
                 @Override
@@ -160,6 +161,8 @@ public class GameScreen extends ScreenAdapter {
                 }
             }, 0);  
             updateTablePlayer();
+        } else if(shop.isNoButtonClicked()){
+            shop.setVisibility(false);
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
