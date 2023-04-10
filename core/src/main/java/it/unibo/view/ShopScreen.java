@@ -58,10 +58,6 @@ public class ShopScreen extends ScreenAdapter {
         skin.dispose();
     }
 
-    
-
-   
-
 }
 
 

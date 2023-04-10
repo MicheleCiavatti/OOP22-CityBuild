@@ -1,10 +1,9 @@
 #advanced building of house
 revenue:
-  CITIZEN: 30
+  CITIZEN: 60
 construction: 
-  WOOD: 10
-  METAL: 20
+  WOOD: 50
+  GOLD: 50
 upgrade:
-  ENERGY: 25
-  GOLD: 40
-  METAL: 6
+  GOLD: 100
+  WOOD: 100

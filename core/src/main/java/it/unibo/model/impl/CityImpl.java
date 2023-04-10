@@ -14,8 +14,8 @@ import it.unibo.model.api.Resource;
 public class CityImpl implements City {
 
     public static final Map<Resource, Integer> START_RESOURCES = Map.of(
-        Resource.CITIZEN, 0, Resource.ENERGY, 100, Resource.GOLD, 100,
-        Resource.METAL, 100, Resource.WATER, 100, Resource.WOOD, 100
+        Resource.CITIZEN, 5, Resource.ENERGY, 25, Resource.GOLD, 500,
+        Resource.METAL, 25, Resource.WATER, 50, Resource.WOOD, 50
     );
     public static final Map<Resource, Integer> COST_PER_CITIZEN = Map.of(
         Resource.ENERGY, 1, Resource.GOLD, 0, Resource.METAL, 0,
