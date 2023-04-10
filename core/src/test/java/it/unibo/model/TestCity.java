@@ -91,9 +91,9 @@ public class TestCity {
         this.addBuilding(Resource.CITIZEN);
         final var houseRevenue = factory.createSimpleProductionBuilding(Resource.CITIZEN).getRevenue().get(Resource.CITIZEN);
         final var skyscraperRevenue = factory.createAdvancedProductionBuilding(Resource.CITIZEN).getRevenue().get(Resource.CITIZEN);
-        assertEquals(houseRevenue + skyscraperRevenue,this.city.getPlayerResources().get(Resource.CITIZEN));
+        assertEquals(houseRevenue + skyscraperRevenue + CityImpl.START_RESOURCES.get(Resource.CITIZEN),this.city.getPlayerResources().get(Resource.CITIZEN));
         this.city.demolish(factory.createSimpleProductionBuilding(Resource.CITIZEN));
-        assertEquals(skyscraperRevenue, this.city.getPlayerResources().get(Resource.CITIZEN));
+        assertEquals(skyscraperRevenue + CityImpl.START_RESOURCES.get(Resource.CITIZEN), this.city.getPlayerResources().get(Resource.CITIZEN));
     }
 
     @Test
