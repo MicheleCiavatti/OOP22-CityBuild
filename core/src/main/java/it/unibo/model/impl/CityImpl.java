@@ -24,7 +24,6 @@ public class CityImpl implements City {
     private static final Map<Resource, Integer> NULL_MAP = Map.of(Resource.CITIZEN, 0);
     private static final int CITIZENS_TO_ADD = 1;
     private static final int CITIZENS_TO_LOSE = 2;
-
     private final Player player;
     private final List<ProductionBuilding> buildings;
     private int citizens;
@@ -100,7 +99,9 @@ public class CityImpl implements City {
     /**{@inheritDoc} */
     @Override
     public int getCitizens() {
-        return this.citizens;
+        return this.citizens <= this.player.getResource(Resource.CITIZEN)
+            ? this.citizens
+            : this.player.getResource(Resource.CITIZEN);
     }
 
     /**{@inheritDoc} */
@@ -109,6 +110,7 @@ public class CityImpl implements City {
         return List.copyOf(this.buildings);
     }
 
+    /**{@inheritDoc} */
     @Override
     public void doCycle() {
         //Adding the revenue of every building built to the player resources
@@ -126,6 +128,12 @@ public class CityImpl implements City {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> Math.min(e.getValue(), this.player.getResource(e.getKey())))));
             this.citizens = Math.max(0, this.citizens - CITIZENS_TO_LOSE);
         }
+    }
+
+    /**{@inheritDoc} */
+    @Override
+    public Player getPlayer() {
+        return this.player;
     }
 
     private final Map<Resource, Integer> citizensCost() {

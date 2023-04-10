@@ -47,4 +47,10 @@ public interface City {
      * and increase/decrease the number of citizens living in the city based on the satisfaction of their requests.
      */
     public void doCycle();
+
+    /**Returns the player controlling the city.
+     * @return the player of the city
+     * @return
+     */
+    public Player getPlayer();
 }
