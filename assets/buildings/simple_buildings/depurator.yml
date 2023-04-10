@@ -1,10 +1,8 @@
 revenue:
   WATER: 10
 construction: 
-  CITIZEN: 5
-  GOLD: 15
-  ENERGY: 5
+  WOOD: 20
+  GOLD: 50
 upgrade:
-  METAL: 10
-  GOLD: 10
-  ENERGY: 25
+  WOOD: 50
+  GOLD: 100

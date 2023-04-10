@@ -2,8 +2,8 @@
 revenue:
   ENERGY: 40
 construction: 
-  METAL: 20
-  CITIZEN: 10
+  WOOD: 200
+  METAL: 200
+  GOLD: 500
 upgrade:
-  METAL: 45
-  CITIZEN: 15
+  GOLD: 1000
