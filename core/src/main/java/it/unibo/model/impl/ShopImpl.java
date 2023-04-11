@@ -44,6 +44,7 @@ public class ShopImpl implements Shop{
         this.controller = c;
     }
 
+    /**{@inheritDoc} */
     @Override
     public Controller getResource() {
         this.setResource();
@@ -72,6 +73,7 @@ public class ShopImpl implements Shop{
         }
     }
 
+    /**{@inheritDoc} */
     @Override
     public String generateResource() {
         this.randomAmount = (int)(Math.random() * 10 + 1);
@@ -82,6 +84,7 @@ public class ShopImpl implements Shop{
         return text;
     }
 
+    /**{@inheritDoc} */
     @Override
     public Dialog createDialogShop(Controller c) {
         this.controller = c;
@@ -132,12 +135,18 @@ public class ShopImpl implements Shop{
         this.noButton = false;
     }
 
+    /*
+     * This method set the resource generated and the cost in the field in order to add it to the player's resources 
+     */
     private void setResource() {
         this.resource.put(Resource.valueOf(Resource.class, resourceStringList[randomResource]), randomAmount);
         this.costResource.put(Resource.GOLD, this.randomPrice);
 
     }
 
+    /*
+     * This method checks whether the player has sufficient gold to proceed with the purchase
+     */
     private Boolean isTransitionValid() {
         for (Entry<Resource,Integer> entry: this.controller.getPlayerResources().entrySet()) {
             if(entry.getKey().equals(Resource.GOLD)) {

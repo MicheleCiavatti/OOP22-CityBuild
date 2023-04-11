@@ -8,6 +8,7 @@ import it.unibo.model.api.EconomyHandlerFactory;
  */
 public class EconomyHandlerFactoryImpl implements EconomyHandlerFactory {
 
+    /**{@inheritDoc} */
     @Override
     public EconomyHandler createEconomyHandler() {
         return new EconomyHandlerImpl();
