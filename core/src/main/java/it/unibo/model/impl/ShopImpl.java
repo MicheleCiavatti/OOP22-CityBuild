@@ -16,6 +16,9 @@ import it.unibo.model.api.Player;
 import it.unibo.model.api.Resource;
 import it.unibo.model.api.Shop;
 
+/**This class is the implementation of the interface {@link it.unibo.model.api.Shop}
+ * 
+ */
 public class ShopImpl implements Shop{
 
     private final String[] resourceStringList = {"WATER", "WOOD", "ENERGY", "METAL", "CITIZEN"};
