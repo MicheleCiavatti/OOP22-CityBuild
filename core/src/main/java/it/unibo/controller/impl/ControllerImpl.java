@@ -27,6 +27,11 @@ public class ControllerImpl implements Controller {
             "woodcutter");
     private static final int PROBABILITY_FIRE = 3; // 3% of probability to have a fire
 
+    /**
+     * Constructs a new instance of the ControllerImpl class with the specified City object.
+     * 
+     * @param city the City object to use for the controller
+    */
     public ControllerImpl(final City city) {
         this.allBuildings = new HashSet<>();
         final BuildingFactory factory = new BuildingFactoryImpl();
@@ -38,22 +43,26 @@ public class ControllerImpl implements Controller {
         this.factory = new BuildingFactoryImpl();
     }
 
+    /**{@inheritDoc} */
     @Override
     public boolean checkResourcesAndBuild(String buildingName) {
         return this.city.build(this.fromNameToBuilding(buildingName));
     }
 
+    /**{@inheritDoc} */
     @Override
     public void removeBuilding(String buildingName) {
         this.city.demolish(this.fromNameToBuilding(buildingName));
 
     }
 
+    /**{@inheritDoc} */
     @Override
     public boolean upgradeBuilding(String buildingName) {
         return this.city.upgrade(this.fromNameToBuilding(buildingName));
     }
 
+    /**{@inheritDoc} */
     @Override
     public int getCitizensInTown() {
         return this.city.getCitizens();
@@ -103,26 +112,31 @@ public class ControllerImpl implements Controller {
         };
     }
 
+    /**{@inheritDoc} */
     @Override
     public Map<Resource, Integer> getCost(String buildingName) {
         return this.getTable(buildingName, 1);
     }
 
+    /**{@inheritDoc} */
     @Override
     public Map<Resource, Integer> getUpgrade(String buildingName) {
         return this.getTable(buildingName, 2);
     }
 
+    /**{@inheritDoc} */
     @Override
     public Map<Resource, Integer> getRevenue(String buildingName) {
         return this.getTable(buildingName, 0);
     }
 
+    /**{@inheritDoc} */
     @Override
     public Map<Resource, Integer> getPlayerResources() {
         return this.city.getPlayerResources();
     }
 
+    /**{@inheritDoc} */
     @Override
     public void doCycle() {
         this.city.doCycle();
