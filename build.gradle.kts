@@ -1,6 +1,5 @@
 buildscript {
     
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -10,6 +9,7 @@ buildscript {
             }
         google()
     }
+
     dependencies {
         
 
@@ -20,15 +20,13 @@ allprojects {
     apply (plugin = "eclipse")
 
     version = "1.0"
-    extra.apply {
-        set("appName", "CityBuild")
-        set("gdxVersion", "1.11.0")
-        set("roboVMVersion", "2.3.16")
-        set("box2DLightsVersion", "1.5")
-        set("ashleyVersion", "1.7.4")
-        set("aiVersion", "1.8.2")
-        set("gdxControllersVersion", "2.2.1")
-    }
+    val appName by extra("CityBuild")
+    val gdxVersion by extra("1.11.0")
+    val roboVMVersion by extra("2.3.16")
+    val box2DLightsVersion by extra("1.5")
+    val ashleyVersion by extra("1.7.4")
+    val aiVersion by extra("1.8.2")
+    val gdxControllersVersion by extra("2.2.1")
 
     repositories {
         mavenLocal()
@@ -52,11 +50,26 @@ project(":desktop") {
 
 
     dependencies {
-        implementation project(":core")
-        api ("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion")
-        api ("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
-        api ("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
-        api ("com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:$gdxVersion")
+        "implementation"(project(":core"))
+        "api" ("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.11.0")
+        "api" ("com.badlogicgames.gdx:gdx-platform:1.11.0:natives-desktop")
+        "api" ("com.badlogicgames.gdx:gdx-box2d-platform:1.11.0:natives-desktop")
+        "api" ("com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:1.11.0")
+    }
+
+    configurations {
+        "implementation" {
+            resolutionStrategy.failOnVersionConflict()
+        }
+        "api" {
+            resolutionStrategy.failOnVersionConflict()
+        }
+        "testImplementation" {
+            resolutionStrategy.failOnVersionConflict()
+        }
+        "testRuntimeOnly" {
+            resolutionStrategy.failOnVersionConflict()
+        }
     }
 }
 
@@ -65,11 +78,11 @@ project(":core") {
 
 
     dependencies {
-        api ("com.badlogicgames.gdx:gdx:$gdxVersion")
-        api ("com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion")
-        api ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
-        implementation("org.yaml:snakeyaml:1.33")
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+        "api" ("com.badlogicgames.gdx:gdx:1.11.0")
+        "api" ("com.badlogicgames.box2dlights:box2dlights:1.5")
+        "api" ("com.badlogicgames.gdx:gdx-box2d:1.11.0")
+        "implementation"("org.yaml:snakeyaml:1.33")
+       "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.2")
+        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
     }
 }
