@@ -19,7 +19,7 @@ buildscript {
 allprojects {
     apply (plugin = "eclipse")
 
-    version = '1.0'
+    version = "1.0"
     extra.apply {
         set("appName", "CityBuild")
         set("gdxVersion", "1.11.0")
