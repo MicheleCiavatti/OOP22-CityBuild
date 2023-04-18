@@ -5,7 +5,9 @@ buildscript {
         mavenLocal()
         mavenCentral()
         gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { 
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/") 
+            }
         google()
     }
     dependencies {
@@ -15,7 +17,7 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: "eclipse"
+    apply (plugin = "eclipse")
 
     version = '1.0'
     extra.apply {
@@ -33,33 +35,39 @@ allprojects {
         mavenCentral()
         google()
         gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven { url "https://jitpack.io" }
+        maven { 
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots/") 
+            }
+        maven { 
+            url = uri("https://oss.sonatype.org/content/repositories/releases/") 
+            }
+        maven { 
+            url = uri("https://jitpack.io") 
+            }
     }
 }
 
 project(":desktop") {
-    apply plugin: "java-library"
+    apply (plugin = "java-library")
 
 
     dependencies {
         implementation project(":core")
-        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:$gdxVersion"
+        api ("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion")
+        api ("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
+        api ("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
+        api ("com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:$gdxVersion")
     }
 }
 
 project(":core") {
-    apply plugin: "java-library"
+    apply (plugin = "java-library")
 
 
     dependencies {
-        api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        api ("com.badlogicgames.gdx:gdx:$gdxVersion")
+        api ("com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion")
+        api ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         implementation("org.yaml:snakeyaml:1.33")
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
