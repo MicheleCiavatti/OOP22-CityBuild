@@ -18,14 +18,14 @@ allprojects {
     apply plugin: "eclipse"
 
     version = '1.0'
-    ext {
-        appName = "CityBuild"
-        gdxVersion = '1.11.0'
-        roboVMVersion = '2.3.16'
-        box2DLightsVersion = '1.5'
-        ashleyVersion = '1.7.4'
-        aiVersion = '1.8.2'
-        gdxControllersVersion = '2.2.1'
+    extra.apply {
+        set("appName", "CityBuild")
+        set("gdxVersion", "1.11.0")
+        set("roboVMVersion", "2.3.16")
+        set("box2DLightsVersion", "1.5")
+        set("ashleyVersion", "1.7.4")
+        set("aiVersion", "1.8.2")
+        set("gdxControllersVersion", "2.2.1")
     }
 
     repositories {
